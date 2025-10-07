@@ -11,7 +11,7 @@ After these two commands, in your browser go to : localhost:9000  <br><br>
 To stop the running container, open a new terminal and do:<br><br>
 
 docker ps<br>
-docker stop <containerIDHere> <br><br>
+docker stop containerIDHere <br><br>
 
 
 You can also run it using "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
