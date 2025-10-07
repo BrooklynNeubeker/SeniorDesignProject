@@ -16,3 +16,9 @@ docker stop containerIDHere <br><br>
 
 You can also run it using "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
 " then "npm run start" commands, but I think the docker way standardizes it so no matter which machine we are on it will work.
+
+To run Environment:
+
+Open the backend and frontend folders in two different terminals.
+
+Run "npm run dev" in both terminals
