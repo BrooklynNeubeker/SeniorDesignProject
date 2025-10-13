@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User } from "lucide-react";
+import { Camera, Mail, User, Eye, EyeOff } from "lucide-react";
 
 const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+  const { authUser, isUpdatingProfile, updateProfile, password } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
-
+  {/* used for users changing the password */}  
+  const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState({
+      email: "",
+      password: "",
+    });
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -81,8 +86,13 @@ const ProfilePage = () => {
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.email}</p>
             </div>
-          </div>
 
+            {/* password section */}
+          
+
+
+          </div>        
+          { /* account info section */}
           <div className="mt-6 bg-base-300 rounded-xl p-6">
             <h2 className="text-lg font-medium  mb-4">Account Information</h2>
             <div className="space-y-3 text-sm">
