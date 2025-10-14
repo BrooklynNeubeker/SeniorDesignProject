@@ -9,6 +9,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import SitePlanPage from "./pages/SitePlanPage";
 
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
@@ -55,6 +56,9 @@ const App = () => {
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
+
+        <Route path="/event" element={<SitePlanPage />} />
+
       </Routes>
 
       <Toaster />
