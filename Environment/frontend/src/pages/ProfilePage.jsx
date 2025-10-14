@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User, Eye, EyeOff } from "lucide-react";
+import { Camera, Mail, User, Shield, Eye, EyeOff} from "lucide-react";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile, password } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
   {/* used for users changing the password */}  
-  const [showPassword, setShowPassword] = useState(false);
-    const [formData, setFormData] = useState({
+  const [showPassword] = useState(false);
+  const [formData, setFormData] = useState({
       email: "",
       password: "",
     });
@@ -25,7 +25,7 @@ const ProfilePage = () => {
       await updateProfile({ profilePic: base64Image });
     };
   };
-
+  
   return (
     <div className="h-screen pt-20">
       <div className="max-w-2xl mx-auto p-4 py-8">
@@ -88,7 +88,24 @@ const ProfilePage = () => {
             </div>
 
             {/* password section */}
-          
+            <div className="space-y-1.5">
+              <div className="text-sm text-zinc-400 flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Password
+              </div>
+              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
+                {showPassword ? password : "********"}
+              </p>
+              <form>
+                <input
+                  type="text"
+                  value="Change Password"
+                  className="ml-2"
+                >
+                </input>
+              </form>
+             
+            </div>
 
 
           </div>        

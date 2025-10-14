@@ -2,6 +2,7 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
+import transporter from "./nodemailer.js";
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -121,4 +122,67 @@ export const checkAuth = (req, res) => {
     console.log("Error in checkAuth controller", error.message);
     res.status(500).json({ message: "Internal Server Error." });
   }
+};
+
+export const forgetPassword = async (req, res) => {
+  try {
+    // finding the user by email
+    const user = await User.findOne({ email: req.body.email });
+    // verifies if user email in the database
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const token = generateToken(user._id, res, {expiresIn: '10m'});
+   
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: user.email,
+      subject: "Password Reset",
+      html: `<p>You requested for password reset</p>
+      <p> Click on the link to reset your password: </p>
+      <a href="http://localhost:5173/reset-password/${token}">Reset Password</a>
+      <p>This link will expire in 10 minutes</p>
+      <p>If you did not request for password reset, please ignore this email</p>`,
+    };
+
+    // send the email
+    transporter.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.log("Error sending email", error);
+      }
+      res.status(200).json({ message: "Email sent successfully" });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error." });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    console.log("Begining reset password");
+    const decodedToken = jwt.verify(req.params.token, 
+      process.env.JWT_SECRET);
+    console.log("Decoded token: ", decodedToken);
+    if (!decodedToken) {
+      return res.status(400).json({ message: "Invalid or expired token." });
+    }
+
+    // find the user by id from token 
+    const user = await User.findById(decodedToken.id);
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
+    }
+    // hash the new password
+    const salt = await bcrypt.genSalt(10);
+    req.body.newPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+    // update the user's password
+    user.password = req.body.newPassword;
+    console.log("New hashed password: ", user.password);
+    await user.save();
+    //sending success response
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error." });
+  } 
 };

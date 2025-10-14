@@ -13,6 +13,8 @@ import ProfilePage from "./pages/ProfilePage";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import ForgetPass from "./pages/ForgetPass";
+import { ResetPass } from "./pages/ResetPass";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -55,6 +57,8 @@ const App = () => {
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
+        <Route path="/forget-password" element={<ForgetPass />}></Route>
+        <Route path="/reset-password/:token" element={<ResetPass />}></Route>
       </Routes>
 
       <Toaster />
