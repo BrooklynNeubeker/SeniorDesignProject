@@ -1,0 +1,30 @@
+import mongoose, { Schema } from "mongoose";
+
+const eventItinerarySchema = new mongoose.Schema(
+    {
+        name: {
+            type: String, 
+            required: true,
+            default: ""
+        },
+        location: {
+            type: String, 
+            required: true,
+            default: ""  
+        }, 
+        time: {
+            type: String, 
+            required: true,
+            default: "" 
+        },
+        description: {
+            type: String, //lookup value in itinerary table that has the itinerary data
+            default: "",
+        }
+    },
+    { timestamps: true }
+);
+
+const eventItinerary = mongoose.model("eventItinerary", eventItinerarySchema);
+
+export default eventItinerary;
