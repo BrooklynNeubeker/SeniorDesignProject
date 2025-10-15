@@ -17,7 +17,7 @@ export const ResetPass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = window.location.pathname.split("/").pop();
-     if (newPassword !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
@@ -26,9 +26,11 @@ export const ResetPass = () => {
       return;
     }
     try {
-      await axiosInstance.post(`/auth/reset-password/${token}`, { newPassword });
-      console.log("password reset succesfully");
+      await axiosInstance.post(`auth/reset-password/${token}`, { newPassword });
       toast.success("Password reset successfully");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
     } catch (error) {
       toast.error("Error resetting password");
     }

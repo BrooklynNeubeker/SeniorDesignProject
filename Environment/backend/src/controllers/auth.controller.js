@@ -2,7 +2,8 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
-import transporter from "./nodemailer.js";
+import transporter from "./nodemailer.controller.js";
+import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -132,7 +133,12 @@ export const forgetPassword = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    const token = generateToken(user._id, res, {expiresIn: '10m'});
+    
+    const token = generateToken(
+      user._id, res,
+      process.env.JWT_SECRET,
+      { expiresIn: '10m' }
+    );
    
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
@@ -159,26 +165,21 @@ export const forgetPassword = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   try {
-    console.log("Begining reset password");
-    const decodedToken = jwt.verify(req.params.token, 
-      process.env.JWT_SECRET);
-    console.log("Decoded token: ", decodedToken);
+  
+    const decodedToken = jwt.verify(req.params.token, process.env.JWT_SECRET);
     if (!decodedToken) {
       return res.status(400).json({ message: "Invalid or expired token." });
     }
-
     // find the user by id from token 
-    const user = await User.findById(decodedToken.id);
+    const user = await User.findById( {_id: decodedToken.userId} );
     if (!user) {
       return res.status(400).json({ message: "User not found." });
     }
     // hash the new password
     const salt = await bcrypt.genSalt(10);
     req.body.newPassword = await bcrypt.hash(req.body.newPassword, salt);
-
     // update the user's password
     user.password = req.body.newPassword;
-    console.log("New hashed password: ", user.password);
     await user.save();
     //sending success response
     res.status(200).json({ message: "Password reset successful." });
