@@ -1,24 +1,31 @@
-import ChatContainer from "../components/ChatContainer";
-import NoChatSelected from "../components/NoChatSelected";
-import Sidebar from "../components/Sidebar";
-import { useChatStore }  from "../store/useChatStore";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  const { selectedUser } = useChatStore();
-
   return (
-    <div className="h-screen bg-base-200">
-      <div className="flex items-center justify-center pt-20 px-4">
-        <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h[calc(100vh-8rem)]">
-          <div className="flex h-full rounded-lg overflow-hidden">
-            <Sidebar />
+    <div className="h-screen pt-20">
+        <div className="w-full flex flex-1 flex-col items-center justify-left p-16 bg-base-100/50">
+            <div className="max-w-md text-center space-y-6 gap-2">
+
+            <h1 className="text-2xl font-bold">My Events</h1>
             
-            {!selectedUser ? <NoChatSelected/> : <ChatContainer/>}
-          </div>
+            <div className="flex items-center gap-2">
+                <button class="btn btn-neutral btn-outline">
+                    <span>View Events</span>
+                </button>
+
+                <Link to={"/event"} className={`btn btn-neutral btn-outline`}>
+                    <span>Create Event</span>
+                </Link>
+            </div>
+
+            <p className="text-base-content/60">
+            text
+            </p>
+
+            </div>
         </div>
-      </div>
     </div>
-  )
+  );
 }
 
 export default HomePage;
