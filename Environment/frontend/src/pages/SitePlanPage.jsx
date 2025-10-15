@@ -1,16 +1,21 @@
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2 } from 'lucide-react';
 import TileMapButton from '../components/TileMapButton';
+import Map from '../components/Map';
 
 const SitePlanPage = () => {
 
     return (
         <div>
 
-            <iframe src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d805.8578922607866!2d-115.14859835226156!3d36.107342274678345!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDA2JzI1LjQiTiAxMTXCsDA4JzU0LjYiVw!5e0!3m2!1sen!2sus!4v1760383343586!5m2!1sen!2sus" 
+            <div className="fixed inset-0 -z-10">
+                <Map />
+            </div>
+
+            {/* <iframe src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d805.8578922607866!2d-115.14859835226156!3d36.107342274678345!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDA2JzI1LjQiTiAxMTXCsDA4JzU0LjYiVw!5e0!3m2!1sen!2sus!4v1760383343586!5m2!1sen!2sus" 
             className="h-screen w-screen fixed -z-10"
             allowFullScreen=""
             loading="lazy"
-            ></iframe>
+            ></iframe> */}
 
             <div className="fixed top-20 left-0 right-0 flex justify-center gap-2">
                 <button class="btn btn-neutral btn-outline">
