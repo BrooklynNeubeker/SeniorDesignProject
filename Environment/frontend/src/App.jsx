@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import SitePlanPage from "./pages/SitePlanPage";
+import ChatPage from "./pages/ChatPage";
 
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
@@ -63,6 +64,11 @@ const App = () => {
 
         <Route path="/forget-password" element={<ForgetPass />}></Route>
         <Route path="/reset-password/:token" element={<ResetPass />}></Route>
+
+        <Route
+          path="/chat"
+          element={authUser ? <ChatPage /> : <Navigate to="/login" />}
+        />
       </Routes>
 
       <Toaster />

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { LogOut, MapPin, Settings, User } from "lucide-react";
+import { LogOut, MapPin, Settings, User, MessageSquareMore } from "lucide-react";
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
@@ -29,39 +29,37 @@ const Navbar = () => {
 
           {/* right side */}
           <div className="flex items-center gap-2">
-            <Link
-              to={"/settings"}
-              className={`
-              btn btn-sm gap-2 transition-colors
-                
-              `}
-            >
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">Settings</span>
-            </Link>
-            <Link
-              to={'/event'}
-              className={`
-                btn btn-sm gap-2 transition-colors
+            
 
-                `}
-            >
+            <Link to={'/event'} className={`btn btn-sm gap-2 transition-colors`} >
               <MapPin className="w-4 h-4" />
               <span className="hidden sm:inline">Event</span>
             </Link>
-            {authUser && (
-              <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2`}>
-                  <User className="size-5" />
-                  <span className="hidden sm:inline">Profile</span>
-                </Link>
 
+            <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
+              <MessageSquareMore className="w-4 h-4" />
+              <span className="hidden sm:inline">Chat</span>
+            </Link>
+            <>
+              {authUser && (
+                <>
+                  <Link to={"/profile"} className="btn btn-sm gap-2">
+                    <User className="size-5" />
+                    <span className="hidden sm:inline">Profile</span>
+                  </Link>
+                </>
+              )}
+              <Link to={"/settings"} className="btn btn-sm gap-2 transition-colors">
+                <Settings className="w-4 h-4" />
+                <span className="hidden sm:inline">Settings</span>
+              </Link>
+              {authUser && (
                 <button className="flex gap-2 items-center" onClick={logout}>
                   <LogOut className="size-5" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
-              </>
-            )}
+              )}
+            </>
           </div>
         </div>
       </div>
