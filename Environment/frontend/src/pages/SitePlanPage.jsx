@@ -1,8 +1,11 @@
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2 } from 'lucide-react';
+import { useState } from 'react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, ImportIcon } from 'lucide-react';
 import TileMapButton from '../components/TileMapButton';
 import Map from '../components/Map';
+import EditPage from '../components/EditPage';
 
 const SitePlanPage = () => {
+    const [showEditPage, setEditPage] = useState(false);
 
     return (
         <div>
@@ -46,23 +49,26 @@ const SitePlanPage = () => {
                         </li>
 
                         {/* Objects here */}
-                        <li><TileMapButton name="Food and Beverage" Icon={Utensils} bgColor="bg-yellow-500" iconColor="text-white"/></li>
-                        <li><TileMapButton name="Vendors" Icon={Store} bgColor="bg-green-500" iconColor="text-white"/></li>
-                        <li><TileMapButton name="Restrooms" Icon={Toilet} bgColor="bg-blue-700" iconColor="text-white"/></li>
-                        <li><TileMapButton name="Medical" Icon={BriefcaseMedical} bgColor="bg-red-500" iconColor="text-white"/></li>
-                        <li><TileMapButton name="Information" Icon={Info} bgColor="bg-purple-600" iconColor="text-white"/></li>
+                        <li><TileMapButton name="Food and Beverage" Icon={Utensils} bgColor="bg-yellow-500" iconColor="text-white" onClick={() => setEditPage(true)} /></li>
+                        <li><TileMapButton name="Vendors" Icon={Store} bgColor="bg-green-500" iconColor="text-white" onClick={() => setEditPage(true)} /></li>
+                        <li><TileMapButton name="Restrooms" Icon={Toilet} bgColor="bg-blue-700" iconColor="text-white" onClick={() => setEditPage(true)} /></li>
+                        <li><TileMapButton name="Medical" Icon={BriefcaseMedical} bgColor="bg-red-500" iconColor="text-white" onClick={() => setEditPage(true)} /></li>
+                        <li><TileMapButton name="Information" Icon={Info} bgColor="bg-purple-600" iconColor="text-white" onClick={() => setEditPage(true)} /></li>
+
+                        { }
 
                         {/* Close button */}
                         <li className="mb-4">
                             <label htmlFor="add-objects-drawer" className="btn btn-md fixed left-4 bottom-4">
-                                <X size={18}/>
+                                <X size={18} />
                                 Close
                             </label>
                         </li>
                     </ul>
                 </div>
             </div>
-            
+            {/*Shows the edit page after clicking a tilemap button*/}
+            <EditPage open={showEditPage} onClose={() => setEditPage(false)} title={"Booth Information Initialization"} />
         </div>
     );
 };
