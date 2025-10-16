@@ -5,21 +5,21 @@ const messageSchema = new mongoose.Schema(
         senderId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            required: true
         },
         receiverId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            required: true
         },
         text: {
-            type: String,
+            type: String
         },
         image: {
-            type: String,
-        },
+            type: String
+        }
     },
-    {timestamps: true },
+    {timestamps: true }
 );
 
 

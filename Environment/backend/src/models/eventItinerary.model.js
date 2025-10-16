@@ -12,10 +12,14 @@ const eventItinerarySchema = new mongoose.Schema(
             required: true,
             default: ""  
         }, 
-        time: {
+        startTime: {
             type: String, 
             required: true,
             default: "" 
+        },
+        endTime: {
+            type: String,
+            default: ""
         },
         description: {
             type: String, //lookup value in itinerary table that has the itinerary data

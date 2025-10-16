@@ -5,21 +5,26 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String, 
             required: true,
-            unique: true,
+            unique: true
         },
         fullname: {
             type: String, 
-            required: true,
+            required: true
         }, 
         password: {
             type: String, 
             required: true,
-            minlength: 6,
+            minlength: 6
         },
         profilePic: {
             type: String,
-            default:"",
+            default:""
         },
+        role: {
+            type: String,
+            required: true,
+            default:"Coordinator"
+        }
     },
     { timestamps: true }
 );
