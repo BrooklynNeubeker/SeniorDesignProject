@@ -11,6 +11,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import SitePlanPage from "./pages/SitePlanPage";
 import ChatPage from "./pages/ChatPage";
+import CreateEventPage from "./pages/CreateEventPage";
 
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
@@ -60,7 +61,15 @@ const App = () => {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
 
-        <Route path="/event" element={<SitePlanPage />} />
+        <Route
+          path="/event"
+          element={authUser ? <SitePlanPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/create"
+          element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
+        />
 
         <Route path="/forget-password" element={<ForgetPass />}></Route>
         <Route path="/reset-password/:token" element={<ResetPass />}></Route>

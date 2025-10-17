@@ -13,7 +13,7 @@ const HomePage = () => {
                     <span>View Events</span>
                 </button>
 
-                <Link to={"/event"} className={`btn btn-neutral btn-outline`}>
+                <Link to={"/create"} className={`btn btn-neutral btn-outline`}>
                     <span>Create Event</span>
                 </Link>
             </div>
