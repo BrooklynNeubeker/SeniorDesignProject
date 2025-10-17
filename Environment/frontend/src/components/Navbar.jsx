@@ -29,12 +29,6 @@ const Navbar = () => {
 
           {/* right side */}
           <div className="flex items-center gap-2">
-            
-
-            <Link to={'/event'} className={`btn btn-sm gap-2 transition-colors`} >
-              <MapPin className="w-4 h-4" />
-              <span className="hidden sm:inline">Event</span>
-            </Link>
 
             <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
               <MessageSquareMore className="w-4 h-4" />
@@ -43,6 +37,11 @@ const Navbar = () => {
             <>
               {authUser && (
                 <>
+                  <Link to={'/'} className={`btn btn-sm gap-2 transition-colors`} >
+                    <MapPin className="w-4 h-4" />
+                    <span className="hidden sm:inline">My Events</span>
+                  </Link>
+
                   <Link to={"/profile"} className="btn btn-sm gap-2">
                     <User className="size-5" />
                     <span className="hidden sm:inline">Profile</span>
