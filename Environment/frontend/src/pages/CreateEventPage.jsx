@@ -16,10 +16,11 @@ const CreateEventPage = () => {
         login(formData);
       };
 
+  
   return (
     <div className="h-screen pt-20">
-        <div className="w-full flex flex-1 flex-col items-center justify-left p-16 bg-base-100/50">
-            <div className="max-w-md text-center space-y-6 gap-2">
+        <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
+            <div className="max-w-md justify-left space-y-6">
 
             <h1 className="text-2xl font-bold">Create Event</h1>
             
@@ -33,6 +34,7 @@ const CreateEventPage = () => {
                   className={`input input-bordered w-full`}
                   placeholder="placeholder"
                   value={formData.name}
+                  required={true}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
