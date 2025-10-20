@@ -14,7 +14,7 @@ const eventSchema = new mongoose.Schema(
         },
         eventId: {
             type: mongoose.ObjectID, //I believe to populate this :  const event = new eventSchema(); event.eventId = new mongoose.Types.ObjectId()
-            required: true,
+            // required: true, -> think this must be set after creating the object, so it cannot be required
             unique: true
         },
         // Start and end date so events can have ranges
@@ -22,11 +22,19 @@ const eventSchema = new mongoose.Schema(
             type: String, 
             required: true,
             default: new Date().toISOString().slice(0,10)  // Gets the current date as a default
-        }, 
+        },
+        startTime: {
+            type: String,
+            default: ""
+        },
         endDate: {
             type: String, 
             required: true,
             default: startDate //Defaults to the start date for one day events
+        },
+        endTime: {
+            type: String,
+            default: ""
         },
         eventItinerary: {
             type: [eventItinerarySchema], //array of itinerary events
@@ -37,10 +45,14 @@ const eventSchema = new mongoose.Schema(
             default: null,
             unique: true
         },
-        eventCoordinator: {
-            type: User,
-            required: true,
+        eventCoordinatorName: {
+            type: string,
             default: null
+        },
+        eventCoordinatorID: {
+            type: mongoose.ObjectID, // this should be the user id of the owner of the event
+            default: null
+
         },
         eventVendorList: {
             type: [eventVendorSchema],
