@@ -16,7 +16,7 @@ const Overlay = () => {
         <div>
 
             {/* Stall components when placed */}
-            <div className="fixed inset-0 z-10">
+            <div className="fixed z-10 pointer-events-none">
                 {stalls.map((stall, index) => (
                     <Stall key={index} stall={stall}/>
                 ))}
