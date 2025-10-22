@@ -13,7 +13,7 @@ const CreateEventPage = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const payload = { ...formData, vendors };// append vendors list to formData
+      const payload = { ...formData, vendors };
       login(payload);
     };
 
