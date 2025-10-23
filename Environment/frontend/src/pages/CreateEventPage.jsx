@@ -29,7 +29,7 @@ const CreateEventPage = () => {
       setVendors(v => v.map(row => (row.id === id ? { ...row, name: value } : row)));
       
     return (
-      <div className="h-screen pt-20">
+      <div className="h-full pt-20">
           <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
               <div className="max-w-md justify-left space-y-6">
 
