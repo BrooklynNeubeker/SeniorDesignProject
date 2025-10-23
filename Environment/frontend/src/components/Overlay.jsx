@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, ImportIcon } from 'lucide-react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2 } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import Stall from './Stall';
 
 const Overlay = () => {
 
     const [stalls, setStalls] = useState([]);
+    const [currentlyOpen, setCurrentlyOpen] = useState(null)
 
-    const addStall = (name, Icon, bgColor, iconColor) => {
-        const newStall = { name, Icon, bgColor, iconColor };
+    const addStall = (name, Icon, bgColor, iconColor, description, tagType) => {
+        const newStall = { name, Icon, bgColor, iconColor, description, tagType };
         setStalls(prev => [...prev, newStall]);
     };
     
@@ -18,17 +19,20 @@ const Overlay = () => {
             {/* Stall components when placed */}
             <div className="fixed inset-0 z-10">
                 {stalls.map((stall, index) => (
-                    <Stall key={index} stall={stall}/>
+                    <Stall key={index} index={index} stall={stall}
+                    isOpen={currentlyOpen === index}
+                    onOpen={() => setCurrentlyOpen(index)}
+                    onClose={() => setCurrentlyOpen(null)} />
                 ))}
             </div>
 
             {/* Undo and redo buttons */}
             <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 z-20">
-                <button class="btn btn-neutral btn-outline">
+                <button class="btn shadow-lg">
                     <Undo2 />
                     <span>Undo</span>
                 </button>
-                <button class="btn btn-neutral btn-outline">
+                <button class="btn shadow-lg">
                     <Redo2 />
                     <span>Redo</span>
                 </button>
@@ -44,7 +48,7 @@ const Overlay = () => {
                 </div>
 
                 <div className="drawer-side">
-                    <label htmlFor="add-objects-drawer" aria-label="close sidebar"></label>
+                    <label htmlFor="add-objects-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
 
                     <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-2">
                         {/* Sidebar content here */}
@@ -55,18 +59,21 @@ const Overlay = () => {
                         {/* TileMapButtons here */}
                         <li><TileMapButton 
                             name="Food and Beverage" 
+                            tagType="dietary"
                             Icon={Utensils} bgColor="bg-yellow-500" 
                             iconColor="text-white" 
                             onClick={addStall} />
                         </li>
                         <li><TileMapButton 
-                            name="Vendors" 
+                            name="Merchandise" 
+                            tagType="accessibility"
                             Icon={Store} bgColor="bg-green-500" 
                             iconColor="text-white" 
                             onClick={addStall} />
                         </li>
                         <li><TileMapButton 
                             name="Restrooms" 
+                            tagType="facility"
                             Icon={Toilet} 
                             bgColor="bg-blue-700" 
                             iconColor="text-white" 
@@ -74,6 +81,7 @@ const Overlay = () => {
                         </li>
                         <li><TileMapButton 
                             name="Medical" 
+                            tagType="medical"
                             Icon={BriefcaseMedical} 
                             bgColor="bg-red-500" 
                             iconColor="text-white" 
@@ -81,6 +89,7 @@ const Overlay = () => {
                         </li>
                         <li><TileMapButton 
                             name="Information" 
+                            tagType="accessibility"
                             Icon={Info} 
                             bgColor="bg-purple-600" 
                             iconColor="text-white" 
