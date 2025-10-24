@@ -1,7 +1,13 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer } from "react-leaflet"
+import { MapContainer, TileLayer, useMap } from "react-leaflet"
+import CanvasLayer from "./CanvasLayer";
 
 const Map = () => {
+    const MapWithGrid = () =>{
+        const map = useMap();
+
+        return <CanvasLayer map={map}/>
+    }
 
     return (
         <MapContainer center={[36.107319, -115.148686]} zoom={19}
@@ -14,6 +20,7 @@ const Map = () => {
             maxNativeZoom={19}
             maxZoom={22}
         />
+        <MapWithGrid />
         </MapContainer>
     );
 
