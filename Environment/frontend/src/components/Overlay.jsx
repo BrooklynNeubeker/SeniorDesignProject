@@ -1,33 +1,14 @@
-import { useState } from 'react';
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2 } from 'lucide-react';
 import TileMapButton from './TileMapButton';
-import Stall from './Stall';
 
-const Overlay = () => {
-
-    const [stalls, setStalls] = useState([]);
-    const [currentlyOpen, setCurrentlyOpen] = useState(null)
-
-    const addStall = (name, Icon, bgColor, iconColor, description, tagType) => {
-        const newStall = { name, Icon, bgColor, iconColor, description, tagType };
-        setStalls(prev => [...prev, newStall]);
-    };
+const Overlay = ({ addStructure }) => {
     
     return (
+
         <div>
 
-            {/* Stall components when placed */}
-            <div className="fixed inset-0 z-10">
-                {stalls.map((stall, index) => (
-                    <Stall key={index} index={index} stall={stall}
-                    isOpen={currentlyOpen === index}
-                    onOpen={() => setCurrentlyOpen(index)}
-                    onClose={() => setCurrentlyOpen(null)} />
-                ))}
-            </div>
-
             {/* Undo and redo buttons */}
-            <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 z-20">
+            <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 pointer-events-auto">
                 <button class="btn shadow-lg">
                     <Undo2 />
                     <span>Undo</span>
@@ -39,7 +20,7 @@ const Overlay = () => {
             </div>
 
             {/* Sidebar drawer */}
-            <div className="drawer drawer-end fixed z-20">
+            <div className="drawer drawer-end fixed pointer-events-auto">
 
                 <input id="add-objects-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content pt-20 fixed right-4">
@@ -62,14 +43,14 @@ const Overlay = () => {
                             tagType="dietary"
                             Icon={Utensils} bgColor="bg-yellow-500" 
                             iconColor="text-white" 
-                            onClick={addStall} />
+                            onClick={addStructure} />
                         </li>
                         <li><TileMapButton 
                             name="Merchandise" 
                             tagType="accessibility"
                             Icon={Store} bgColor="bg-green-500" 
                             iconColor="text-white" 
-                            onClick={addStall} />
+                            onClick={addStructure} />
                         </li>
                         <li><TileMapButton 
                             name="Restrooms" 
@@ -77,7 +58,7 @@ const Overlay = () => {
                             Icon={Toilet} 
                             bgColor="bg-blue-700" 
                             iconColor="text-white" 
-                            onClick={addStall} />
+                            onClick={addStructure} />
                         </li>
                         <li><TileMapButton 
                             name="Medical" 
@@ -85,7 +66,7 @@ const Overlay = () => {
                             Icon={BriefcaseMedical} 
                             bgColor="bg-red-500" 
                             iconColor="text-white" 
-                            onClick={addStall} />
+                            onClick={addStructure} />
                         </li>
                         <li><TileMapButton 
                             name="Information" 
@@ -93,7 +74,7 @@ const Overlay = () => {
                             Icon={Info} 
                             bgColor="bg-purple-600" 
                             iconColor="text-white" 
-                            onClick={addStall} />
+                            onClick={addStructure} />
                         </li>
 
                         { }
