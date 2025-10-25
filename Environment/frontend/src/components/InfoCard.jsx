@@ -1,7 +1,8 @@
 import { X } from 'lucide-react';
 
 const InfoCard = ({ structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
-                    structureTags, addTag, removeTag, selectedTag, setSelectedTag, onClose }) => {
+                    structureTags, addTag, removeTag, selectedTag, setSelectedTag, structureDimensions, setStructureDimensions,
+                    onClose }) => {
     
     return (
         <>
@@ -21,7 +22,7 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                         {structureTags.map((tag) => (
                             <div key={tag} className="badge bg-amber-200 relative group">
                                 {tag}
-                            <X onClick={() => removeTag(tag)} className="hidden group-hover:block w-3 cursor-pointer" />
+                                <X onClick={() => removeTag(tag)} className="hidden group-hover:block w-3 cursor-pointer" />
                             </div>
                         ))}
                     </div>
@@ -30,9 +31,10 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                     <div className="flex items-center">
                         <fieldset className="fieldset w-full">
                             <select 
-                            value={selectedTag}
-                            onChange={(e) => setSelectedTag(e.target.value)} 
-                            className="select">
+                                className="select"
+                                value={selectedTag} 
+                                onChange={(e) => setSelectedTag(e.target.value)}
+                            >
                                 <option disabled={true} value="">Add {tagType} details</option>
                                 {tagTypeList.map((tag) => (
                                     <option key={tag} value={tag}>
@@ -42,6 +44,30 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                             </select>
                         </fieldset>
                         <button className="btn" onClick={addTag}>+</button>
+                    </div>
+
+                    {/* Change dimensions of structure */}
+                    <div className='flex flex-col'>
+                        <div className='flex flex-row items-center justify-between'>
+                            <label className='w-70 font-bold'>Width:</label>
+                            <input
+                                type="text"
+                                value={structureDimensions[0]}
+                                onChange={(e) => setStructureDimensions([e.target.value, structureDimensions[1]])}
+                                className="input input-bordered w-full mb-2"
+                            />
+                            <span className="px-2 text-gray-500">meters</span>
+                        </div>
+                        <div className='flex flex-row items-center justify-between'>
+                            <label className='w-70 font-bold'>Length:</label>
+                            <input
+                                type="text"
+                                value={structureDimensions[1]}
+                                onChange={(e) => setStructureDimensions([structureDimensions[0], e.target.value])}
+                                className="input input-bordered w-full mb-2"
+                            />
+                            <span className="px-2 text-gray-500">meters</span>
+                        </div>
                     </div>
 
                     {/* Edit stall description */}
@@ -63,6 +89,7 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                             Close
                         </button>
                     </div>
+
                 </div>
             </div>
         </>

@@ -1,16 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { renderToString } from "react-dom/server";
-import { Marker, Popup } from "react-leaflet"
+import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
 
 const Structure = ({ structure, isOpen, onOpen, onClose }) => {
 
-    const [structureName, setStructureName] = useState(structure.name)
-    const [structureDescription, setStructureDescription] = useState(structure.description || "")
-    const [structureTags, setStructureTags] = useState([])
-    const [selectedTag, setSelectedTag] = useState("")
+    const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
+    const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
+    const [structureTags, setStructureTags] = useState([])  // State and setter for structure tags, default is nothing
+    const [structureDimensions, setStructureDimensions] = useState(structure.dimensions)    // State and setter for structure dimensions, default [20,20]
+    const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
 
+    const markerRef = useRef(); // Ref to instance of marker
+    const map = useMap();   // Hook to get the map being used
+
+    {/* 
+        Function for scaling marker for structure on zoom
+        Scales based on size of real-life meters
+    */}
+    const scaleMarkerIcon = () => {
+        if (!markerRef.current) return;
+
+        // Get currenly zoom level on map and latitude of marker
+        const zoom = map.getZoom();
+        const latitude = markerRef.current.getLatLng().lat;
+
+        // Calculate meters per pixel using formula by OpenStreetMap
+        const metersPerPx = (40075016.686 * Math.cos((latitude * Math.PI) / 180)) / Math.pow(2, zoom + 8);
+
+        // Get number of pixels for width and length of structure
+        const widthPx = structureDimensions[0] / metersPerPx;
+        const lengthPx = structureDimensions[1] / metersPerPx;
+
+        // Make new icon for each marker
+        const iconSvg = renderToString(<structure.Icon size={Math.min(widthPx, lengthPx) * 0.15} />);
+        const iconHtml = `
+            <div class="flex flex-col items-center justify-center w-full h-full
+                        text-center text-xs ${structure.iconColor}"
+                        style="background-color: ${structure.bgColor}; width: ${widthPx}px; height: ${lengthPx}px;">
+                ${iconSvg}
+                <span style="font-size:${Math.min(widthPx, lengthPx) * 0.15}px;">
+                    ${structureName}
+                </span>
+            </div>`;
+
+        const icon = new L.DivIcon({
+            html: iconHtml,
+            className: "structure-icon",
+            iconSize: [widthPx, lengthPx],
+            iconAnchor: [widthPx / 2, lengthPx / 2], // center properly
+        });
+
+        // Change marker icon
+        markerRef.current.setIcon(icon);
+    };
+
+    // On zoom, scale each "structure"/marker icon
+    // Listen for change in structureName or structureDimensions
+    useEffect(() => {
+        scaleMarkerIcon();
+        map.on("zoom", scaleMarkerIcon);
+        return () => map.off("zoom", scaleMarkerIcon);
+    }, [map, structureName, structureDimensions]);
+
+
+    // Tag lists for different types of structures
     const dietaryTags = [
         "Vegan",
         "Vegetarian",
@@ -47,6 +102,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
         "Interpreter Available",
     ]
 
+    // Return list of tags based on structure's type
     const getTagList = (structure) => {
         switch(structure.tagType) {
             case "dietary":
@@ -62,6 +118,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
         }
     }
 
+    // Add selectedTag to array of structureTags
     const addTag = () => {
         if (selectedTag && !structureTags.includes(selectedTag)) {
             setStructureTags([...structureTags, selectedTag])
@@ -69,47 +126,39 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
         }
     }
 
+    // Remove tag from array of structureTags
     const removeTag = (tagName) => {
         setStructureTags(structureTags.filter((tag) => tag !== tagName));
     }
 
-    const iconSvg = renderToString(<structure.Icon size={28} />);
-            
-    const icon = new L.DivIcon({
-        className: "structure-icon",
-        html: `<div class="flex flex-col items-center justify-center w-20 h-20 rounded-lg 
-                ${structure.bgColor} ${structure.iconColor} text-center text-xs">
-                ${iconSvg}
-                <span>${structureName}</span>
-            </div>`,
-        iconAnchor: [0, 0],
-    });
-
 
     return (
         <>
-            <Marker key={structure.index} position={structure.position} icon={icon} draggable={true} 
-            eventHandlers={{
-                dblclick: isOpen ? onClose : onOpen
-            }}>
-            </Marker>
+            {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
+            <Marker ref={markerRef} key={structure.index} position={structure.position} draggable={true} 
+                    eventHandlers={{
+                        dblclick: isOpen ? onClose : onOpen
+                    }}
+            />
 
             {/* Stall info card */}
             {isOpen && (
 
                 <InfoCard 
-                structureName={structureName} 
-                setStructureName={setStructureName} 
-                structureDescription={structureDescription}
-                setStructureDescription={setStructureDescription}
-                tagType={structure.tagType}
-                tagTypeList={getTagList(structure)}
-                structureTags={structureTags}
-                addTag={addTag}
-                removeTag={removeTag}
-                selectedTag={selectedTag}
-                setSelectedTag={setSelectedTag}
-                onClose={onClose}
+                    structureName={structureName} 
+                    setStructureName={setStructureName} 
+                    structureDescription={structureDescription}
+                    setStructureDescription={setStructureDescription}
+                    tagType={structure.tagType}
+                    tagTypeList={getTagList(structure)}
+                    structureTags={structureTags}
+                    addTag={addTag}
+                    removeTag={removeTag}
+                    selectedTag={selectedTag}
+                    setSelectedTag={setSelectedTag}
+                    structureDimensions={structureDimensions}
+                    setStructureDimensions={setStructureDimensions}
+                    onClose={onClose}
                 />
 
             )}
@@ -118,3 +167,5 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
 };
 
 export default Structure;
+
+
