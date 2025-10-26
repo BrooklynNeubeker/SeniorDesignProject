@@ -1,21 +1,50 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "../lib/axios";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const CreateEventPage = () => {
+    const { authUser } = useAuthStore();
     const [formData, setFormData] = useState({
-      name: "",
+      eventName: "",
       location: "",
       start_date: "",
       start_time: "",
       end_date: "",
       end_time: "",
+      eventCoordinatorName: "",
+      eventCoordinatorID: "",
     });
+    
+    const navigate = useNavigate();
+
+   
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const payload = { ...formData, vendors };
-      login(payload);
+      const payload = { 
+        ...formData, 
+        vendors,
+        eventCoordinatorName: authUser?.username,
+        eventCoordinatorID: authUser?._id,
+       };
+      
+
+      try {
+        const res = await axiosInstance.post("/events", payload);
+        const createdEventId = res.data._id;
+        setFormData
+        alert("event created");
+        navigate(`/event/${createdEventId}/dashboard`);
+        console.log("created event:", res.data);
+      } catch (err) {
+        alert("error");
+        console.error("create event failed:", err);
+        alert(err?.response?.data?.message || err?.message || "Failed to create event");
+      }
     };
+  
 
     const [vendors, setVendors] = useState([{ id: crypto.randomUUID(), name: "" }]);
 
@@ -34,6 +63,8 @@ const CreateEventPage = () => {
               <div className="max-w-md justify-left space-y-6">
 
               <h1 className="text-2xl font-bold">Create Event</h1>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Event name */}
               <div className="form-control">
@@ -44,10 +75,10 @@ const CreateEventPage = () => {
                   <input
                     className={`input input-bordered w-full`}
                     placeholder="placeholder"
-                    value={formData.name}
+                    value={formData.eventName}
                     required={true}
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                      setFormData({ ...formData, eventName: e.target.value })
                     }
                   />
                 </div>
@@ -131,7 +162,7 @@ const CreateEventPage = () => {
                     <span className="label-text font-medium">Vendors</span>
                   </label>
                   <button
-                    type="button"
+                    type="addVendor"
                     className="btn btn-sm btn-outline"
                     onClick={addVendor}
                   >
@@ -153,7 +184,7 @@ const CreateEventPage = () => {
                       />
                       <div className="text-right">
                         <button
-                          type="button"
+                          type="removeVendor"
                           className="btn btn-xs btn-error btn-outline"
                           onClick={() => removeVendor(v.id)}
                           disabled={vendors.length === 1}
@@ -165,9 +196,16 @@ const CreateEventPage = () => {
                   ))}
                 </div>
               </div>
-              <Link to={"/event"} className={`btn btn-neutral btn-outline`}>
+              <div className="flex justify-end">
+              <button type="submit" className="btn btn-primary btn-outline">
+                Submit Event
+              </button>
+              <Link to={"/event"} className={`btn btn-primary btn-outline`}>
                   <span>Create Event Layout</span>
               </Link>
+            </div>
+          </form>
+              
 
               </div>
           </div>
