@@ -41,9 +41,9 @@ const eventSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
-        vendors: [{ 
-            name: { type: String, required: true } 
-        }],
+        // vendors: [{ 
+        //     name: { type: String, required: true } 
+        // }],
         // eventItinerary: {
         //     type: [eventItinerarySchema], //array of itinerary events
         //     default: null

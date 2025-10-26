@@ -25,7 +25,7 @@ const CreateEventPage = () => {
       e.preventDefault();
       const payload = { 
         ...formData, 
-        vendors,
+        // vendors,
         eventCoordinatorName: authUser?.username,
         eventCoordinatorID: authUser?._id,
        };
@@ -34,28 +34,26 @@ const CreateEventPage = () => {
       try {
         const res = await axiosInstance.post("/events", payload);
         const createdEventId = res.data._id;
-        setFormData
         alert("event created");
         navigate(`/event/${createdEventId}/dashboard`);
         console.log("created event:", res.data);
       } catch (err) {
         alert("error");
         console.error("create event failed:", err);
-        alert(err?.response?.data?.message || err?.message || "Failed to create event");
       }
     };
   
 
-    const [vendors, setVendors] = useState([{ id: crypto.randomUUID(), name: "" }]);
+    // const [vendors, setVendors] = useState([{ id: crypto.randomUUID(), name: "" }]);
 
-    const addVendor = () =>
-      setVendors(v => [...v, { id: crypto.randomUUID(), name: "" }]);
+    // const addVendor = () =>
+    //   setVendors(v => [...v, { id: crypto.randomUUID(), name: "" }]);
 
-    const removeVendor = (id) =>
-      setVendors(v => v.filter(row => row.id !== id));
+    // const removeVendor = (id) =>
+    //   setVendors(v => v.filter(row => row.id !== id));
 
-    const updateVendor = (id, value) =>
-      setVendors(v => v.map(row => (row.id === id ? { ...row, name: value } : row)));
+    // const updateVendor = (id, value) =>
+    //   setVendors(v => v.map(row => (row.id === id ? { ...row, name: value } : row)));
       
     return (
       <div className="h-full pt-20">
@@ -155,7 +153,7 @@ const CreateEventPage = () => {
                 </div>
               </div>
               
-              {/* Vendors */}
+              {/* Vendors
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className="label">
@@ -195,14 +193,11 @@ const CreateEventPage = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
               <div className="flex justify-end">
               <button type="submit" className="btn btn-primary btn-outline">
                 Submit Event
               </button>
-              <Link to={"/event"} className={`btn btn-primary btn-outline`}>
-                  <span>Create Event Layout</span>
-              </Link>
             </div>
           </form>
               
