@@ -24,7 +24,7 @@ export const createEvent = async (req, res) => {
             //eventMap: eventMap,
             eventCoordinatorName: eventCoordinatorName,
             eventCoordinatorID: eventCoordinatorID,
-            vendors: vendors,
+            // vendors: vendors,
         });
         const savedEvent = await newEvent.save(); // save to database
         res.status(201).json(savedEvent); // pass back the new mongoose object in the data
