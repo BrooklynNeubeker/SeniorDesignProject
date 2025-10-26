@@ -1,4 +1,4 @@
-import Event from "../models/event.model.js";
+import event from "../models/event.model.js";
 import eventItinerary from "../models/eventItinerary.model.js";
 import eventMap from "../models/eventMap.model.js";
 import stall from "../models/stall.model.js";
@@ -8,12 +8,12 @@ import jwt from "jsonwebtoken"; // Don't think we need this
 //Make an event object and save it to the database. Must pass event name, location, start date, start time, end date, and end time.
 export const createEvent = async (req, res) => {
     //const {eventName, eventID, location, startDate, startTime, endDate, endTime, eventMap, eventCoordinatorName, eventCoordinatorID} = req.body; // get event stuff
-    const{eventName, location, startDate, startTime, endDate, endTime,vendors, eventCoordinatorName,eventCoordinatorID} = req.body
+    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID} = req.body
     try {
         // if (!eventName || !eventID || !location || !startDate || !startTime || !endDate || !endTime || !eventMap || !eventCoordinatorName || !eventCoordinatorID){
         //     return res.status(400).json({message: "All fields are required"}); // If any of these are empty, they must be filled
         // }
-        const newEvent = new Event ({ // Create the newEvent with the filled fields. Currently require all, may change this
+        const newEvent = new event ({ // Create the newEvent with the filled fields. Currently require all, may change this
             eventName: eventName,
             //eventID: eventID,
             location: location,
@@ -87,7 +87,7 @@ export const createStall = async (req, res) => {
     const{name, description, eventID} = req.body; // get the required stall information
     try {
 
-        const newStall = new stall ({ // Create the newEvent with the filled fields. Currently require all, may change this
+        const newStall = new stall ({ // Create the newStall 
             name: name,
             description: description,
             eventID: eventID
@@ -115,14 +115,14 @@ export const deleteStall = async (req, res) => {
         });
         }
         return res.status(200).json({
-        success: true,
-        message: "Stall deleted successfully",
+            success: true,
+            message: "Stall deleted successfully",
         });
     }catch(error){
         console.error("Error deleting stall:", error);
         return res.status(500).json({
-        success: false,
-        message: error.message,
+            success: false,
+            message: error.message,
         });
     }
 };
@@ -140,14 +140,65 @@ export const getMyStalls = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-// export const addEventItineraryItem = async (req,res) => {
-
-// };
 
 
-// export const removeEventItineraryItem = async (req,res) => {
+//Create itinerary takes name, location, startTime, and eventID
+export const createItineraryItem = async (req,res) => {
+      const{name, location, startTime, eventID} = req.body; // get the required itinerary
+    try {
 
-// };
+        const newItinerary = new eventItinerary ({ // Create the new itinerary with the filled fields
+            name: name,
+            location: location,
+            startTime: startTime,
+            eventID: eventID
+        });
+        const savedItinerary = await newItinerary.save(); // save to database
+        res.status(201).json(savedItinerary); // pass back the new mongoose object in the data
+        }
+    catch (error) {
+        console.log("Error in create itinerary controller", error.message);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+};
+
+//Deletes itinerary item using parameter id
+export const deleteItineraryItem = async (req,res) => {
+    try {
+        //console.log("DELETE /itinerary/:id", { params: req.params, req.body }); // debug
+        const { id } = req.params; 
+        const itinerary = await eventItinerary.findByIdAndDelete(id);
+        if (!itinerary) {
+            return res.status(404).json({
+                success: false,
+                message: "Event itinerary item not found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Event itinerary deleted successfully",
+        });
+    }catch(error){
+        console.error("Error deleting event itinerary:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+export const getMyItineraryItems = async (req,res) => {
+    try {
+        const eventId = req.event._id; 
+        const itineraries = await eventItinerary
+        .find({ eventID: eventId })
+        .sort({ createdAt: -1 }); // newest first
+        res.status(200).json(itineraries);
+    } catch (error) {
+        console.error("getMyItineraryItems error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 // export const setEventMap = async (req,res) => {
 //     const {map} = req.body;
