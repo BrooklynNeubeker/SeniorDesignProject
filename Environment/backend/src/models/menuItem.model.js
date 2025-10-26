@@ -21,11 +21,11 @@ const menuItemSchema = new mongoose.Schema(
             default: null
         },
         price: {
-            type: int,
+            type: Number,//int,
             default: null
         },
         stallID: {
-            type: mongoose.ObjectID,
+            type: mongoose.Schema.Types.ObjectId,
             required: true
         }
     },

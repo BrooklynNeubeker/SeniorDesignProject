@@ -18,6 +18,7 @@ import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import ForgetPass from "./pages/ForgetPass";
 import { ResetPass } from "./pages/ResetPass";
+import EventDashboardPage from "./pages/EventDashboardPage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -62,12 +63,17 @@ const App = () => {
         />
 
         <Route
-          path="/event"
+          path="/event/:id/dashboard/site-plan"
           element={authUser ? <SitePlanPage /> : <Navigate to="/login" />}
         />
 
         <Route
-          path="/create"
+          path="/event/:id/dashboard"
+          element={authUser ? <EventDashboardPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/event/create-event"
           element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
         />
 

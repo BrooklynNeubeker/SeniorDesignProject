@@ -4,12 +4,12 @@ import mongoose, { Schema } from "mongoose";
 const eventMapSchema = new mongoose.Schema(
     {
         eventLocation: {
-            type: [float],
+            type: [Number/*float*/],
             required: true,
             default: null
         },
         eventArea: {
-            type: [float],
+            type: [Number/*float*/],
             required: true,
             default: null
         },

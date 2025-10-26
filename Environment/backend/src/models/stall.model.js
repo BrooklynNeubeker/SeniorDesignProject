@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-const menuItemSchema = require('./menuItem.model.js')
+//const menuItemSchema = require('./menuItem.model.js')
 
 const stallSchema = new mongoose.Schema(
     {
@@ -19,18 +19,20 @@ const stallSchema = new mongoose.Schema(
             default: ""
         },
         stallId: {
-            type: mongoose.ObjectID
+            type: mongoose.Schema.Types.ObjectId
         },
         stallNumber: {
-            type: int,
+            type: Number,//int,
             default: null
         },
         foodSold: {
             type: Boolean,
-            default: False
+            default: false
         },
         menu: {
-            type: [menuItemSchema], //menu items will have an allergen field that can be added
+            //type: [menuItemSchema], //menu items will have an allergen field that can be added
+            type: [Schema.Types.ObjectId], 
+            ref: "MenuItem",
             default: null
         },
         dietaryComplianceList:{ //things like dairy-free, vegan, etc
@@ -38,7 +40,7 @@ const stallSchema = new mongoose.Schema(
             default: null
         },
         eventID: {
-            type: mongoose.ObjectID,
+            type: mongoose.Schema.Types.ObjectId,
             required: true
         }
     },

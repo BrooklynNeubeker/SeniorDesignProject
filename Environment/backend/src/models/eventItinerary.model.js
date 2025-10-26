@@ -26,7 +26,7 @@ const eventItinerarySchema = new mongoose.Schema(
             default: "",
         },
         eventId: { // The ID of the event tied to this itinerary object
-            type: mongoose.ObjectID,
+            type: mongoose.Schema.Types.ObjectId,
             required: true
         }
     },
