@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 const menuItemSchema = require('./menuItem.model.js')
 
-const eventVendorSchema = new mongoose.Schema(
+const stallSchema = new mongoose.Schema(
     {
         name: {
             type: String, // name of the stall
@@ -36,11 +36,15 @@ const eventVendorSchema = new mongoose.Schema(
         dietaryComplianceList:{ //things like dairy-free, vegan, etc
             type: [String],
             default: null
+        },
+        eventID: {
+            type: mongoose.ObjectID,
+            required: true
         }
     },
     { timestamps: true }
 );
 
-const eventVendor = mongoose.model("eventVendor", eventVendorSchema);
+const stall = mongoose.model("stall", stallSchema);
 
-export default eventVendor;
+export default stall;

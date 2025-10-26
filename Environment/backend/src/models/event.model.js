@@ -4,7 +4,7 @@ import User from "./user.model.js";
 
 const eventItinerarySchema = require('./eventItinerary.model.js') // a guide said to do this, I don't know for sure if it's implemented properly
 const eventMapSchema = require('./eventMap.model.js')
-const eventVendorSchema = require('./eventVendor.model.js')
+const stallSchema = require('./stall.model.js')
 
 const eventSchema = new mongoose.Schema(
     {
@@ -12,10 +12,15 @@ const eventSchema = new mongoose.Schema(
             type: String, 
             required: true
         },
-        eventId: {
+        eventID: {
             type: mongoose.ObjectID, //I believe to populate this :  const event = new eventSchema(); event.eventId = new mongoose.Types.ObjectId()
             // required: true, -> think this must be set after creating the object, so it cannot be required
             unique: true
+        },
+        location: {
+            type: String,
+            required:true,
+            default: ""
         },
         // Start and end date so events can have ranges
         startDate: {
@@ -36,10 +41,10 @@ const eventSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
-        eventItinerary: {
-            type: [eventItinerarySchema], //array of itinerary events
-            default: null
-        },
+        // eventItinerary: {
+        //     type: [eventItinerarySchema], //array of itinerary events
+        //     default: null
+        // },
         eventMap: {
             type: eventMapSchema, //grabbing the map schema 
             default: null,
@@ -54,10 +59,10 @@ const eventSchema = new mongoose.Schema(
             default: null
 
         },
-        eventVendorList: {
-            type: [eventVendorSchema],
-            default: null
-        }
+        // eventVendorList: {
+        //     type: [eventVendorSchema],
+        //     default: null
+        // }
     },
     { timestamps: true }
 );

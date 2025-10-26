@@ -23,6 +23,10 @@ const menuItemSchema = new mongoose.Schema(
         price: {
             type: int,
             default: null
+        },
+        stallID: {
+            type: mongoose.ObjectID,
+            required: true
         }
     },
     { timestamps: true }

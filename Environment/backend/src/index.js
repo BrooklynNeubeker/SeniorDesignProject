@@ -8,6 +8,7 @@ import cors from "cors";
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import eventRoutes from "./routes/event.route.js";
 import { app, server } from "./lib/socket.js";
 
 
@@ -27,6 +28,7 @@ app.use(cors({
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/events", eventRoutes); // add the event routes to the api usage for frontend
 
 server.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);

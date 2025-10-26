@@ -24,6 +24,10 @@ const eventItinerarySchema = new mongoose.Schema(
         description: {
             type: String, //lookup value in itinerary table that has the itinerary data
             default: "",
+        },
+        eventId: { // The ID of the event tied to this itinerary object
+            type: mongoose.ObjectID,
+            required: true
         }
     },
     { timestamps: true }
