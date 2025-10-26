@@ -10,5 +10,10 @@ router.get("/", protectRoute, getMyEvents); // gets events of current coordinato
 
 router.delete("/:id", protectRoute, deleteEvent); // deletes selected event
 
+router.post("/", protectRoute, createStall); //Creates a stall object for the database
+
+router.delete("/:id", protectRoute, deleteStall); // Deletes stalls by stallID
+
+router.get("/", protectRoute, getMyStalls); //
 
 export default router;

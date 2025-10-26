@@ -10,7 +10,7 @@ const stallSchema = new mongoose.Schema(
         },
         vendor: {
             type: String, //Which vendor owns the stall?
-            required: true,
+            // required: true,
             default: ""
         },
         description: {
@@ -18,24 +18,24 @@ const stallSchema = new mongoose.Schema(
             required: true,
             default: ""
         },
-        stallId: {
-            type: mongoose.Schema.Types.ObjectId
-        },
+        // stallId: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        // },
         stallNumber: {
             type: Number,//int,
             default: null
         },
-        foodSold: {
-            type: Boolean,
-            default: false
+        stallType: {
+            type: String,
+            default: ""
         },
-        menu: {
-            //type: [menuItemSchema], //menu items will have an allergen field that can be added
-            type: [Schema.Types.ObjectId], 
-            ref: "MenuItem",
-            default: null
-        },
-        dietaryComplianceList:{ //things like dairy-free, vegan, etc
+        // menu: {
+        //     //type: [menuItemSchema], //menu items will have an allergen field that can be added
+        //     type: [Schema.Types.ObjectId], 
+        //     ref: "MenuItem",
+        //     default: null
+        // },
+        tagList:{ //things like dairy-free, vegan, etc
             type: [String],
             default: null
         },

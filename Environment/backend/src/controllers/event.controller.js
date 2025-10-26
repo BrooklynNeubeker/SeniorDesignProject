@@ -24,7 +24,7 @@ export const createEvent = async (req, res) => {
             //eventMap: eventMap,
             eventCoordinatorName: eventCoordinatorName,
             eventCoordinatorID: eventCoordinatorID,
-            vendors: vendors,
+            // vendors: vendors,
         });
         const savedEvent = await newEvent.save(); // save to database
         res.status(201).json(savedEvent); // pass back the new mongoose object in the data
@@ -81,14 +81,65 @@ export const getMyEvents = async (req, res) => {
     
 // };
 
-// export const addStall = async (req, res) => {
+//Create stall, needs name, description, and the ID of the event that it is tied to
+export const createStall = async (req, res) => {
     
-// };
+    const{name, description, eventID} = req.body; // get the required stall information
+    try {
 
-// export const removeStall = async (req, res) => {
+        const newStall = new stall ({ // Create the newEvent with the filled fields. Currently require all, may change this
+            name: name,
+            description: description,
+            eventID: eventID
+        });
+        const savedStall = await newStall.save(); // save to database
+        res.status(201).json(savedStall); // pass back the new mongoose object in the data
+        }
+    catch (error) {
+        console.log("Error in create stall controller", error.message);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+};
 
-// };
+//Delete stall. Needs the stall object ID
+export const deleteStall = async (req, res) => {
+    try {
+        //console.log("DELETE /stall/:id", { params: req.params, req.body }); // debug
 
+        const { id } = req.params; 
+        const stall = await stall.findByIdAndDelete(id);
+        if (!stall) {
+        return res.status(404).json({
+            success: false,
+            message: "Stall not found",
+        });
+        }
+        return res.status(200).json({
+        success: true,
+        message: "Stall deleted successfully",
+        });
+    }catch(error){
+        console.error("Error deleting stall:", error);
+        return res.status(500).json({
+        success: false,
+        message: error.message,
+        });
+    }
+};
+
+//get stalls
+export const getMyStalls = async (req, res) => {
+  try {
+    const eventId = req.event._id; 
+    const stalls = await stall
+      .find({ eventID: eventId })
+      .sort({ createdAt: -1 }); // newest first
+    res.status(200).json(stalls);
+  } catch (error) {
+    console.error("getMyStalls error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 // export const addEventItineraryItem = async (req,res) => {
 
 // };
