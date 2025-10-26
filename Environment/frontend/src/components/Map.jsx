@@ -43,14 +43,14 @@ const Map = ({ structures }) => {
             style={{height: "100vh"}}
             zoomControl={false}
             doubleClickZoom={false}
-            maxZoom={20}
+            maxZoom={22}
             minZoom={18}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 maxNativeZoom={baseZoom}
-                maxZoom={20}
+                maxZoom={22}
                 minZoom={18}
             />
 

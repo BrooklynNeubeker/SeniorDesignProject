@@ -10,7 +10,6 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
     const [structureTags, setStructureTags] = useState([])  // State and setter for structure tags, default is nothing
     const [structureDimensions, setStructureDimensions] = useState(structure.dimensions)    // State and setter for structure dimensions, default [20,20]
-    const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
 
     const markerRef = useRef(); // Ref to instance of marker
     const map = useMap();   // Hook to get the map being used
@@ -34,13 +33,13 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
         const lengthPx = structureDimensions[1] / metersPerPx;
 
         // Make new icon for each marker
-        const iconSvg = renderToString(<structure.Icon size={Math.min(widthPx, lengthPx) * 0.15} />);
+        const iconSvg = renderToString(<structure.Icon size={Math.min(widthPx, lengthPx) * 0.2} />);
         const iconHtml = `
-            <div class="flex flex-col items-center justify-center w-full h-full
-                        text-center text-xs ${structure.iconColor}"
+            <div class="flex flex-col gap-2 items-center justify-center w-full h-full
+                        text-center text-xs ${structure.iconColor} ${structure.border}"
                         style="background-color: ${structure.bgColor}; width: ${widthPx}px; height: ${lengthPx}px;">
-                ${iconSvg}
-                <span style="font-size:${Math.min(widthPx, lengthPx) * 0.15}px;">
+                <span> ${iconSvg} </span>
+                <span style="font-size:${Math.min(widthPx, lengthPx) * 0.01}rem;">
                     ${structureName}
                 </span>
             </div>`;
@@ -118,20 +117,6 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
         }
     }
 
-    // Add selectedTag to array of structureTags
-    const addTag = () => {
-        if (selectedTag && !structureTags.includes(selectedTag)) {
-            setStructureTags([...structureTags, selectedTag])
-            setSelectedTag("")
-        }
-    }
-
-    // Remove tag from array of structureTags
-    const removeTag = (tagName) => {
-        setStructureTags(structureTags.filter((tag) => tag !== tagName));
-    }
-
-
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
@@ -152,10 +137,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
                     tagType={structure.tagType}
                     tagTypeList={getTagList(structure)}
                     structureTags={structureTags}
-                    addTag={addTag}
-                    removeTag={removeTag}
-                    selectedTag={selectedTag}
-                    setSelectedTag={setSelectedTag}
+                    setStructureTags={setStructureTags}
                     structureDimensions={structureDimensions}
                     setStructureDimensions={setStructureDimensions}
                     onClose={onClose}

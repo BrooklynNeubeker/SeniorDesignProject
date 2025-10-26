@@ -1,8 +1,25 @@
+import { useState } from 'react';
 import { X } from 'lucide-react';
 
 const InfoCard = ({ structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
-                    structureTags, addTag, removeTag, selectedTag, setSelectedTag, structureDimensions, setStructureDimensions,
+                    structureTags, setStructureTags, structureDimensions, setStructureDimensions,
                     onClose }) => {
+
+    const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
+    const [customTag, setCustomTag] = useState("")
+
+    // Add selectedTag to array of structureTags
+    const addTag = (value) => {
+        if (value && !structureTags.includes(value)) {
+            setStructureTags([...structureTags, value])
+            setCustomTag("")
+        }
+    }
+
+    // Remove tag from array of structureTags
+    const removeTag = (tagName) => {
+        setStructureTags(structureTags.filter((tag) => tag !== tagName));
+    }
     
     return (
         <>
@@ -27,23 +44,43 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                         ))}
                     </div>
 
-                    {/* Dropdown menu to add tags */}
-                    <div className="flex items-center">
-                        <fieldset className="fieldset w-full">
-                            <select 
-                                className="select"
-                                value={selectedTag} 
-                                onChange={(e) => setSelectedTag(e.target.value)}
-                            >
-                                <option disabled={true} value="">Add {tagType} details</option>
-                                {tagTypeList.map((tag) => (
-                                    <option key={tag} value={tag}>
-                                        {tag}
-                                    </option>
-                                ))}
-                            </select>
-                        </fieldset>
-                        <button className="btn" onClick={addTag}>+</button>
+                    {/* Dropdown menu to add tags, input for custom tags */}
+                    <div className='flex flex-col gap-3'>
+                        <label className='font-bold'>Tagging:</label>
+                        {tagTypeList.length > 0 && (
+                            <div className="flex items-center">
+                                <select 
+                                    className="select"
+                                    value={selectedTag} 
+                                    onChange={(e) => setSelectedTag(e.target.value)}
+                                >
+                                    <option disabled={true} value="">Add {tagType} details</option>
+                                    {tagTypeList.map((tag) => (
+                                        <option key={tag} value={tag}>
+                                            {tag}
+                                        </option>
+                                    ))}
+                                    <option value="custom_tag">Custom</option>
+                                </select>
+                                <button className="btn ml-2" onClick={() => {
+                                    if(selectedTag && selectedTag !== "custom_tag") addTag(selectedTag);
+                                }}>+</button>
+                            </div>
+                        )}
+
+                        {(tagTypeList.length === 0 || selectedTag === "custom_tag") && (
+                            <div className="flex items-center">
+                                <input
+                                    type="text"
+                                    className="input input-bordered w-full"
+                                    placeholder="Enter a custom tag..."
+                                    value={customTag}
+                                    onChange={(e) => setCustomTag(e.target.value)}
+                                    onKeyDown={(e) => e.key === "Enter" && addTag(customTag)}
+                                />
+                                <button className="btn ml-2" onClick={() => {addTag(customTag)}}>+</button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Change dimensions of structure */}

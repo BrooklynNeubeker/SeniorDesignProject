@@ -1,4 +1,4 @@
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2 } from 'lucide-react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 
 const Overlay = ({ addStructure }) => {
@@ -48,14 +48,16 @@ const Overlay = ({ addStructure }) => {
                             tagType="dietary"
                             Icon={Utensils} bgColor="#efb100" 
                             iconColor="text-white" 
+                            border=""
                             onClick={addStructure} />
                         </li>
                         <li>
                             <TileMapButton 
-                            name="Merchandise" 
+                            name="Retail" 
                             tagType="accessibility"
                             Icon={Store} bgColor="#00c951" 
                             iconColor="text-white" 
+                            border=""
                             onClick={addStructure} />
                         </li>
                         <li>
@@ -65,6 +67,7 @@ const Overlay = ({ addStructure }) => {
                             Icon={Toilet} 
                             bgColor="#1447e6" 
                             iconColor="text-white" 
+                            border=""
                             onClick={addStructure} />
                         </li>
                         <li>
@@ -74,6 +77,7 @@ const Overlay = ({ addStructure }) => {
                             Icon={BriefcaseMedical} 
                             bgColor="#fb2c36" 
                             iconColor="text-white" 
+                            border=""
                             onClick={addStructure} />
                         </li>
                         <li>
@@ -83,6 +87,16 @@ const Overlay = ({ addStructure }) => {
                             Icon={Info} 
                             bgColor="#9810fa" 
                             iconColor="text-white" 
+                            border=""
+                            onClick={addStructure} />
+                        </li>
+                        <li>
+                            <TileMapButton 
+                            name="Tent"
+                            Icon={MapPin} 
+                            bgColor="#ffffff" 
+                            iconColor="text-black"
+                            border="border border-neutral-400"
                             onClick={addStructure} />
                         </li>
 

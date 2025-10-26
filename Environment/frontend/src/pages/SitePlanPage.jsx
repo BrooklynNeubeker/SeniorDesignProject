@@ -16,12 +16,12 @@ const SitePlanPage = () => {
         iconColor: color of Icon and text attached to object
         description: description of the structure
         tagType: used to determine type of tags that can belong to structure
-        
+
         dimensions: width and length of structure in real-life meters, default 20 x 20
         position: position of structure on map, generates at center of map by default
     */}
-    const addStructure = (name, Icon, bgColor, iconColor, description, tagType) => {
-        const newStructure = {name, Icon, bgColor, iconColor, description, tagType, 
+    const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
+        const newStructure = {name, Icon, bgColor, iconColor, border, description, tagType, 
                                 dimensions: [20, 20], position: [36.107319, -115.148686]}
         setStructures(prev => [...prev, newStructure])
     }
