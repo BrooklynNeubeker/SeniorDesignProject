@@ -1,4 +1,4 @@
-import event from "../models/event.model.js";
+import Event from "../models/event.model.js";
 import eventItinerary from "../models/eventItinerary.model.js";
 import eventMap from "../models/eventMap.model.js";
 import stall from "../models/stall.model.js";
@@ -13,7 +13,7 @@ export const createEvent = async (req, res) => {
         // if (!eventName || !eventID || !location || !startDate || !startTime || !endDate || !endTime || !eventMap || !eventCoordinatorName || !eventCoordinatorID){
         //     return res.status(400).json({message: "All fields are required"}); // If any of these are empty, they must be filled
         // }
-        const newEvent = new event ({ // Create the newEvent with the filled fields. Currently require all, may change this
+        const newEvent = new Event ({ // Create the newEvent with the filled fields. Currently require all, may change this
             eventName: eventName,
             //eventID: eventID,
             location: location,
@@ -77,6 +77,28 @@ export const getMyEvents = async (req, res) => {
   }
 };
 
+// This is untested currently
+export const updateEvent = async (req, res) => {
+    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID} = req.body;
+    const {id} = req.params; // pass the event object ID
+    try {
+        const updatedEvent = await Event.updateOne({_id: id}, {$set: {
+        eventName: eventName,
+        location: location,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        eventCoordinatorName: eventCoordinatorName,
+        eventCoordinatorID: eventCoordinatorID
+        }
+        });// We can add a third argument for options if we want.
+        res.status(200).json(updatedEvent);
+    } catch(error){
+        console.error("updateEvent error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
 // export const updateEvent = async (req, res) => {
     
 // };
