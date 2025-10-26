@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
-import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
-    //const { authUser } = useAuthStore();
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
   

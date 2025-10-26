@@ -46,7 +46,7 @@ export const deleteEvent = async (req, res) => {
         if (!event) {
         return res.status(404).json({
             success: false,
-            message: "Event not found or unauthorized",
+            message: "Event not found",
         });
         }
 

@@ -29,7 +29,7 @@ const CreateEventPage = () => {
         eventCoordinatorName: authUser?.username,
         eventCoordinatorID: authUser?._id,
        };
-      //login(payload);
+      
 
       try {
         const res = await axiosInstance.post("/events", payload);
