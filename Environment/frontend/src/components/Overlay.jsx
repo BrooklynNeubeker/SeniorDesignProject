@@ -1,10 +1,20 @@
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
 import TileMapButton from './TileMapButton';
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Overlay = ({ addStructure }) => {
+    const { id } = useParams();
     
     return (
         <div>
+            {/* Back to dashboard */}
+            <div className="fixed top-21 left-4 pointer-events-auto">
+                <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
+                    <span>Back to Dashboard</span>
+                </Link>
+            </div>
+
             {/* Undo and redo buttons */}
             <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 pointer-events-auto">
                 <button class="btn shadow-lg">
