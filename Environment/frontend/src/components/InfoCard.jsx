@@ -23,7 +23,7 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
     
     return (
         <>
-            <div className="card bg-base-100 w-75 shadow-sm m-2 mt-20 z-9999">
+            <div className="card bg-base-100 w-75 shadow-sm m-2 z-9999">
                 <div className="card-body flex gap-6">
 
                     {/* Edit stall name */}

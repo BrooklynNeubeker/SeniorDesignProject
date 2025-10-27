@@ -129,6 +129,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
             {/* Stall info card */}
             {isOpen && (
 
+                <div className="flex h-screen items-center">
                 <InfoCard 
                     structureName={structureName} 
                     setStructureName={setStructureName} 
@@ -142,6 +143,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
                     setStructureDimensions={setStructureDimensions}
                     onClose={onClose}
                 />
+                </div>
 
             )}
         </>
