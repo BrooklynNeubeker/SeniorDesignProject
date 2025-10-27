@@ -9,7 +9,7 @@ const Overlay = ({ addStructure }) => {
     return (
         <div>
             {/* Back to dashboard */}
-            <div className="fixed top-21 left-4 pointer-events-auto">
+            <div className="fixed top-20 left-4 pointer-events-auto z-14">
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                     <span>Back to Dashboard</span>
                 </Link>
