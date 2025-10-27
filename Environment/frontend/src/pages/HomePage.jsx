@@ -69,14 +69,13 @@ const HomePage = () => {
             <div className="max-w-md text-center space-y-6 gap-2">
 
             <h1 className="text-2xl font-bold">My Events</h1>
-            
-            <div className="flex items-center gap-2">
 
-                <Link to={"/event/create-event"} className={`btn btn-primary btn-outline`}>
-                    <span>Create Event</span>
-                </Link>
-            </div>
+            <Link to={"/event/create-event"} className={`btn btn-primary btn-outline`}>
+                <span>Create Event</span>
+            </Link>
+
             {listEvents}
+
             </div>
         </div>
     </div>

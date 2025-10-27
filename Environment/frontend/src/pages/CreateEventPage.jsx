@@ -19,14 +19,12 @@ const CreateEventPage = () => {
     
     const navigate = useNavigate();
 
-   
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       const payload = { 
         ...formData, 
         // vendors,
-        eventCoordinatorName: authUser?.username,
+        eventCoordinatorName: authUser?.email,
         eventCoordinatorID: authUser?._id,
        };
       
@@ -72,7 +70,7 @@ const CreateEventPage = () => {
                 <div className="relative">
                   <input
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter event name"
                     value={formData.eventName}
                     required={true}
                     onChange={(e) =>
@@ -90,7 +88,7 @@ const CreateEventPage = () => {
                 <div className="relative">
                   <input
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter event location"
                     value={formData.location}
                     onChange={(e) =>
                       setFormData({ ...formData, location: e.target.value })
