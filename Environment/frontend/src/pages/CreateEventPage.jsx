@@ -106,7 +106,7 @@ const CreateEventPage = () => {
                   <input
                     type="date"
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter start date"
                     value={formData.start_date}
                     onChange={(e) =>
                       setFormData({ ...formData, start_date: e.target.value })
@@ -115,7 +115,7 @@ const CreateEventPage = () => {
                   <input
                     type="time"
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter start time"
                     value={formData.start_time}
                     onChange={(e) =>
                       setFormData({ ...formData, start_time: e.target.value })
@@ -133,7 +133,7 @@ const CreateEventPage = () => {
                   <input
                     type="date"
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter end date"
                     value={formData.end_date}
                     onChange={(e) =>
                       setFormData({ ...formData, end_date: e.target.value })
@@ -142,7 +142,7 @@ const CreateEventPage = () => {
                   <input
                     type="time"
                     className={`input input-bordered w-full`}
-                    placeholder="placeholder"
+                    placeholder="Enter end time"
                     value={formData.end_time}
                     onChange={(e) =>
                       setFormData({ ...formData, end_time: e.target.value })
