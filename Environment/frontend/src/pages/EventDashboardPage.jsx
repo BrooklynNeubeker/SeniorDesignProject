@@ -62,13 +62,19 @@ const EventDashboardPage = () => {
       <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
           <div className="max-w-md justify-left space-y-6">
 
-            <h1 className="text-2xl font-bold">Event Dashboard {id}</h1>
+            <h1 className="text-2xl font-bold">Event Dashboard </h1>
 
             {listEventInfo}
+            <div>
+                <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}>
+                    <span>View Event Layout</span>
+                </Link>
 
-            <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}>
-                <span>View Event Layout</span>
-            </Link>
+                <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
+                    <span>View Stalls</span>
+                </Link>
+            </div>
+          
           
           </div>
       </div>

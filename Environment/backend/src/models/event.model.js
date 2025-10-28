@@ -62,6 +62,7 @@ const eventSchema = new mongoose.Schema(
             default: null
 
         },
+        
         // eventVendorList: {
         //     type: [eventVendorSchema],
         //     default: null

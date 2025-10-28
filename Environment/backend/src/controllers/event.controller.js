@@ -123,14 +123,17 @@ export const createStall = async (req, res) => {
     }
 };
 
+
+
 //Delete stall. Needs the stall object ID
 export const deleteStall = async (req, res) => {
+    // console.log("in deleteStall")
     try {
         //console.log("DELETE /stall/:id", { params: req.params, req.body }); // debug
 
-        const { id } = req.params; 
-        const stall = await stall.findByIdAndDelete(id);
-        if (!stall) {
+        const { stallId } = req.params; 
+        const targetStall = await stall.findByIdAndDelete(stallId);
+        if (!targetStall) {
         return res.status(404).json({
             success: false,
             message: "Stall not found",
@@ -151,16 +154,16 @@ export const deleteStall = async (req, res) => {
 
 //get stalls
 export const getMyStalls = async (req, res) => {
-  try {
-    const eventId = req.event._id; 
-    const stalls = await stall
-      .find({ eventID: eventId })
-      .sort({ createdAt: -1 }); // newest first
-    res.status(200).json(stalls);
-  } catch (error) {
-    console.error("getMyStalls error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
+    try {
+        const eventId = req.params.id; 
+        const stalls = await stall
+        .find({ eventID: eventId })
+        .sort({ createdAt: -1 }); // newest first
+        res.status(200).json(stalls);
+    } catch (error) {
+        console.error("getMyStalls error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 };
 
 

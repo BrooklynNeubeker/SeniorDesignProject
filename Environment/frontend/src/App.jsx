@@ -19,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 import ForgetPass from "./pages/ForgetPass";
 import { ResetPass } from "./pages/ResetPass";
 import EventDashboardPage from "./pages/EventDashboardPage";
+import StallsPage from "./pages/StallsPage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -75,6 +76,11 @@ const App = () => {
         <Route
           path="/event/create-event"
           element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/event/:id/dashboard/stalls"
+          element={authUser ? <StallsPage /> : <Navigate to="/login" />}
         />
 
         <Route path="/forget-password" element={<ForgetPass />}></Route>
