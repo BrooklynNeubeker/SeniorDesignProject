@@ -42,7 +42,7 @@ const App = () => {
 
   return (
     <div data-theme={theme}>
-      <Navbar />
+      {/*<Navbar/>*/}
 
       <Routes>
         <Route
