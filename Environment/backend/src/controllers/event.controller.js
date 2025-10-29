@@ -158,7 +158,7 @@ export const getMyStalls = async (req, res) => {
         const eventId = req.params.id; 
         const stalls = await stall
         .find({ eventID: eventId })
-        .sort({ createdAt: -1 }); // newest first
+        .sort({ createdAt: 1}); // oldest first
         res.status(200).json(stalls);
     } catch (error) {
         console.error("getMyStalls error:", error);

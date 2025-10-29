@@ -85,8 +85,8 @@ const StallsPage = () => {
             }
             alert("Stalls created successfully");
             await fetchMyStalls();
-            // need to remove manually entered stalls from page
-            // call removeStall() ??  remamp payload to carry _tmp, pass as input?
+            setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+            toggleAddForm();
         } catch (err) {
             console.error("Failed to create stalls", err);
         }
@@ -120,22 +120,29 @@ const StallsPage = () => {
         ))}
         </ul>)
     }
+    const [showAddForm, setShowAddForm] = useState(false);
+
+    const toggleAddForm = () => {
+        setShowAddForm(!showAddForm);
+    };
+    
     let addStallsForm = (
-        <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-                    <div className="flex items-center justify-between mb-3">
-                    <label className="label">
-                        <span className="label-text font-medium"> Add Stalls</span>
-                    </label>
-                    
-                    <button
-                        type="button"
-                        className="btn btn-sm btn-outline"
-                        onClick={addStalls}
-                    >
-                        + Add Stall
-                    </button>
-                    </div>
+        <div id="addStallForm">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <div className="flex items-center justify-between mb-3">
+                        <label className="label">
+                            <span className="label-text font-medium"> Add Stalls</span>
+                        </label>
+                        
+                        <button
+                            type="button"
+                            className="btn btn-sm btn-outline"
+                            onClick={addStalls}
+                        >
+                            + Add Stall
+                        </button>
+                        </div>
 
                 <div className="space-y-4">
                   {stalls.map((s) => (
@@ -180,7 +187,18 @@ const StallsPage = () => {
                 </div>
               </div>
               </form>
+            </div>
 
+    )
+
+       let toggleButton = (
+        <button
+                type="button"
+                className="btn btn-xs btn-primary btn-outline"
+                onClick={toggleAddForm}
+              >
+                Add Stalls
+              </button>
     )
     return(
         <div className="h-full pt-20">
@@ -190,16 +208,20 @@ const StallsPage = () => {
                 <h1 className="text-2xl font-bold">{event?.eventName} </h1>   
                 <h1 className="text-2xl font-bold"> Stalls</h1>
               </div>
-              <div>
+              <div >
                 {listStalls}
               </div>
-              
-                {addStallsForm}
-
+              <div className="max-w-md justify-left space-y-6 mt-5">
+                {!showAddForm &&  toggleButton}
+              </div>
+              <div className="mt-5">
+                {showAddForm && addStallsForm}
+              </div>
           </div>
         </div>
 
     );
-}
+
+};
 
 export default StallsPage;
