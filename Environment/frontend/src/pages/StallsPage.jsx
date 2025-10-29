@@ -168,13 +168,14 @@ const StallsPage = () => {
                       </div>
                     </div>
                   ))}
-                <div className="flex justify-left">
-                    <button type="submit" className="btn btn-primary btn-outline">
-                        Submit
-                    </button>
-                    {/* <Link to={`/event/${id}/dashboard`} className="btn btn-sm btn-outline">
-                        Cancel
-                    </Link>  */}
+                <div className="flex justify-left gap-2">
+                  <Link to={`/event/${id}/dashboard`} className="btn btn-primary btn-outline">
+                    Back
+                  </Link> 
+
+                  <button type="submit" className="btn btn-primary btn-outline">
+                    Submit
+                  </button>
                 </div>
                 </div>
               </div>

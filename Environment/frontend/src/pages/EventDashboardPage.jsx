@@ -65,7 +65,7 @@ const EventDashboardPage = () => {
             <h1 className="text-2xl font-bold">Event Dashboard </h1>
 
             {listEventInfo}
-            <div>
+            <div className="flex items-center gap-2">
                 <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}>
                     <span>View Event Layout</span>
                 </Link>
