@@ -49,13 +49,13 @@ const StallsPage = () => {
 
 
     const addStalls = () =>
-      setStalls(s => [...s, { id: crypto.randomUUID(), name: "", description: "" }]);
+      setStalls(prevStallState => [...prevStallState, { id: crypto.randomUUID(), name: "", description: "" }]);
 
     const removeStalls = (id) =>
-      setStalls(s => s.filter(row => row.id !== id));
+      setStalls(prevStallState => prevStallState.filter(row => row.id !== id));
 
     const updateStalls = (id, field ,value) =>
-      setStalls(s => s.map(row => (row.id === id ? { ...row, [field]: value } : row)));
+      setStalls(prevStallState => prevStallState.map(row => (row.id === id ? { ...row, [field]: value } : row)));
     
     const deleteStall = async (stallId) => {
     if (!window.confirm("Confirm: delete this stall?")) return;
@@ -141,29 +141,29 @@ const StallsPage = () => {
                         </div>
 
                 <div className="space-y-4">
-                  {stalls.map((s) => (
+                  {stalls.map((stall) => (
                     <div
-                      key={s.id}
+                      key={stall.id}
                       className="rounded-lg border border-base-300 p-4 space-y-3"
                     >
                       <input
                         className="input input-bordered w-full"
                         placeholder="Stall name"
-                        value={s.name}
-                        onChange={(e) => updateStalls(s.id, "name",  e.target.value)}
+                        value={stall.name}
+                        onChange={(e) => updateStalls(stall.id, "name",  e.target.value)}
                       />
                       <input
                         className="input input-bordered w-full"
                         placeholder="Description"
-                        value={s.description}
-                        onChange={(e) => updateStalls(s.id, "description",  e.target.value)}
+                        value={stall.description}
+                        onChange={(e) => updateStalls(stall.id, "description",  e.target.value)}
                       />
                     
                       <div className="text-right">
                         <button
                           type="button"
                           className="btn btn-xs btn-error btn-outline"
-                          onClick={() => removeStalls(s.id)}
+                          onClick={() => removeStalls(stall.id)}
                           disabled={stalls.length === 1}
                         >
                           Remove
@@ -182,8 +182,7 @@ const StallsPage = () => {
                 </div>
               </div>
               </form>
-            </div>
-
+        </div>
     )
 
     let toggleButton = (
