@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, ZoomControl, useMap } from "react-leaflet"
 import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
-
+import Search from "./Search";
 
 const Map = ({ structures, removeStructure }) => {
 
@@ -46,6 +46,7 @@ const Map = ({ structures, removeStructure }) => {
             maxZoom={22}
             minZoom={18}
         >
+            <Search apiKey={"annregalab@gmail.com"}/>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

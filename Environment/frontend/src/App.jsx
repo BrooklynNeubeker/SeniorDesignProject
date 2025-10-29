@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Routes, Route, Navigate} from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
 import { useThemeStore } from "./store/useThemeStore";
 
@@ -12,7 +12,6 @@ import ProfilePage from "./pages/ProfilePage";
 import SitePlanPage from "./pages/SitePlanPage";
 import ChatPage from "./pages/ChatPage";
 import CreateEventPage from "./pages/CreateEventPage";
-
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -20,6 +19,7 @@ import ForgetPass from "./pages/ForgetPass";
 import { ResetPass } from "./pages/ResetPass";
 import EventDashboardPage from "./pages/EventDashboardPage";
 import StallsPage from "./pages/StallsPage";
+import CheckPaths from "./components/CheckPaths";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -32,7 +32,6 @@ const App = () => {
   }, [checkAuth]);
 
   console.log({ authUser });
-
   if (isCheckingAuth && !authUser)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -41,9 +40,8 @@ const App = () => {
     );
 
   return (
-    <div data-theme={theme}>
-      {/*<Navbar/>*/}
-
+    <div data-theme={theme} className="bg-transparent">
+      <CheckPaths className="bg-transparent"/>
       <Routes>
         <Route
           path="/"
