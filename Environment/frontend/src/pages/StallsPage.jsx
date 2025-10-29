@@ -6,9 +6,12 @@ import { useParams } from "react-router-dom";
 
 const StallsPage = () => {
     const { id } = useParams(); // id = :id in route
-   
+
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [allStalls, setAllStalls] = useState([]);
+    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]);
+    const [showAddForm, setShowAddForm] = useState(false);
 
     const fetchMyEvents = async () => {
         try {
@@ -29,8 +32,6 @@ const StallsPage = () => {
     ev._id === id
     );
 
-
-    const [allStalls, setAllStalls] = useState([]);
     const fetchMyStalls = async () => {
         try {
         const res = await axiosInstance.get(`/events/${id}/stalls`);
@@ -46,9 +47,6 @@ const StallsPage = () => {
         fetchMyStalls();
     }, [id]);
 
-    
-
-    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]);
 
     const addStalls = () =>
       setStalls(s => [...s, { id: crypto.randomUUID(), name: "", description: "" }]);
@@ -68,6 +66,10 @@ const StallsPage = () => {
             console.error("Failed to delete stall:", error);
             alert("Error: failed to delete stall");
         }
+    };
+
+    const toggleAddForm = () => {
+        setShowAddForm(!showAddForm);
     };
 
     const handleSubmit = async (e) => {
@@ -92,7 +94,6 @@ const StallsPage = () => {
         }
     };
 
-
     let listStalls;
     if(loading) {
         listStalls = <p className="text-base-content/60">Loading your Stalls…</p>;
@@ -107,25 +108,20 @@ const StallsPage = () => {
                 <div className="font-medium">{stall.name}</div>
                 <div className="text-sm text-base-content/60">{stall.description}</div>
             </div>
-
             <div>
                 <button 
                 type="delete"
                 className="btn btn-xs btn-primary"
                 onClick={() => deleteStall(stall._id)} 
-                >Delete
+                >
+                    Delete
                 </button>
             </div>
             </li>
         ))}
         </ul>)
     }
-    const [showAddForm, setShowAddForm] = useState(false);
-
-    const toggleAddForm = () => {
-        setShowAddForm(!showAddForm);
-    };
-    
+     
     let addStallsForm = (
         <div id="addStallForm">
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -179,7 +175,6 @@ const StallsPage = () => {
                   <Link to={`/event/${id}/dashboard`} className="btn btn-primary btn-outline">
                     Back
                   </Link> 
-
                   <button type="submit" className="btn btn-primary btn-outline">
                     Submit
                   </button>
@@ -191,14 +186,14 @@ const StallsPage = () => {
 
     )
 
-       let toggleButton = (
+    let toggleButton = (
         <button
-                type="button"
-                className="btn btn-xs btn-primary btn-outline"
-                onClick={toggleAddForm}
-              >
-                Add Stalls
-              </button>
+            type="button"
+            className="btn btn-xs btn-primary btn-outline"
+            onClick={toggleAddForm}
+        >
+            Add Stalls
+        </button>
     )
     return(
         <div className="h-full pt-20">
@@ -212,7 +207,7 @@ const StallsPage = () => {
                 {listStalls}
               </div>
               <div className="max-w-md justify-left space-y-6 mt-5">
-                {!showAddForm &&  toggleButton}
+                {!showAddForm && toggleButton}
               </div>
               <div className="mt-5">
                 {showAddForm && addStallsForm}
