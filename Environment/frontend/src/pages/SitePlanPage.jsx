@@ -21,19 +21,26 @@ const SitePlanPage = () => {
         position: position of structure on map, generates at center of map by default
     */}
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
-        const newStructure = {name, Icon, bgColor, iconColor, border, description, tagType, 
-                                dimensions: [20, 20], position: [36.107319, -115.148686]}
+        const newStructure = { id: crypto.randomUUID(),
+            name, Icon, bgColor, iconColor, border, description, tagType, 
+            dimensions: [20, 20], position: [36.110013, -115.140546]}
         setStructures(prev => [...prev, newStructure])
+    }
+
+    const removeStructure = (id) => {
+        setStructures(prev => prev.filter(structure => structure.id !== id));
     }
 
     return (
         <div>
             <div className="fixed inset-0 -z-10">
-                <Map structures={structures}/>  {/* Render structures on Map component, pass in structures prop */}
+                <Map structures={structures} removeStructure={removeStructure}/>  
+                {/* Render structures on Map component, pass in structures prop */}
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure}/>  {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
+                <Overlay addStructure={addStructure}/>  
+                {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
         </div>
     );

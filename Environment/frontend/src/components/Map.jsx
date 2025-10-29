@@ -5,7 +5,7 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 
 
-const Map = ({ structures }) => {
+const Map = ({ structures, removeStructure }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
@@ -38,7 +38,7 @@ const Map = ({ structures }) => {
 
     return (
         <MapContainer 
-            center={[36.107319, -115.148686]} 
+            center={[36.110013, -115.140546]} 
             zoom={baseZoom}
             style={{height: "100vh"}}
             zoomControl={false}
@@ -60,12 +60,13 @@ const Map = ({ structures }) => {
             {/* Track which structures InfoCard is open through index and isOpen */}
             {structures.map((structure, index) => (
                 <Structure
-                    key={index} 
+                    key={structure.id}
                     index={index} 
                     structure={structure}
                     isOpen={currentlyOpen === index}
                     onOpen={() => setCurrentlyOpen(index)}
                     onClose={() => setCurrentlyOpen(null)}
+                    removeStructure={removeStructure}
                 />
             ))}
 

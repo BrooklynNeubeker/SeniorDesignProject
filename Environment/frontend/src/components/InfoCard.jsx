@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Trash2 } from 'lucide-react';
 
-const InfoCard = ({ structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
+const InfoCard = ({ structure, structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
                     structureTags, setStructureTags, structureDimensions, setStructureDimensions,
-                    onClose }) => {
+                    onClose, removeStructure }) => {
 
     const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
     const [customTag, setCustomTag] = useState("")
@@ -119,8 +119,12 @@ const InfoCard = ({ structureName, setStructureName, structureDescription, setSt
                         />
                     </div>
 
-                    {/* Close button for info card */}
-                    <div className="card-actions justify-end">
+                    {/* Close and delete button for info card */}
+                    <div className="card-actions justify-between">
+                        <button className="btn btn-sm btn-error" onClick={() => (removeStructure(structure.id))}>
+                            <Trash2 size={16}/>
+                            Delete
+                        </button>
                         <button className="btn btn-sm" onClick={onClose}>
                             <X size={16} />
                             Close

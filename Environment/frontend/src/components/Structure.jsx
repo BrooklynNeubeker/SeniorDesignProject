@@ -4,7 +4,7 @@ import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
 
-const Structure = ({ structure, isOpen, onOpen, onClose }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -120,7 +120,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
-            <Marker ref={markerRef} key={structure.index} position={structure.position} draggable={true} 
+            <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
                     eventHandlers={{
                         dblclick: isOpen ? onClose : onOpen
                     }}
@@ -142,6 +142,8 @@ const Structure = ({ structure, isOpen, onOpen, onClose }) => {
                     structureDimensions={structureDimensions}
                     setStructureDimensions={setStructureDimensions}
                     onClose={onClose}
+                    structure={structure}
+                    removeStructure={removeStructure}
                 />
                 </div>
 

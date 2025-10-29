@@ -15,7 +15,8 @@ const Overlay = ({ addStructure }) => {
                 </Link>
             </div>
 
-            {/* Undo and redo buttons */}
+            {/*
+            Undo and redo buttons
             <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 pointer-events-auto">
                 <button class="btn shadow-lg">
                     <Undo2 />
@@ -26,6 +27,7 @@ const Overlay = ({ addStructure }) => {
                     <span>Redo</span>
                 </button>
             </div>
+            */}
 
             {/* "Add Objects" sidebar drawer */}
             <div className="drawer drawer-end fixed pointer-events-auto">
