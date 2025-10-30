@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const StallsPage = () => {
-    const { id } = useParams(); // id = :id in route
-
+    // id = :id in route
+    const { id } = useParams(); 
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [allStalls, setAllStalls] = useState([]);
-    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]);
+    // for stalls saved in database
+    const [allStalls, setAllStalls] = useState([]); 
+    // for manually entered stalls
+    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]); 
     const [showAddForm, setShowAddForm] = useState(false);
 
     const fetchMyEvents = async () => {
@@ -127,17 +129,28 @@ const StallsPage = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <div className="flex items-center justify-between mb-3">
-                        <label className="label">
-                            <span className="label-text font-medium"> Add Stalls</span>
-                        </label>
-                        
-                        <button
-                            type="button"
-                            className="btn btn-sm btn-outline"
-                            onClick={addStalls}
-                        >
-                            + Add Stall
-                        </button>
+                          <label className="label">
+                              <span className="label-text font-medium"> Add Stalls</span>
+                          </label>
+                          <div className="flex items-center justify-between mb-3">
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-outline"
+                                onClick={addStalls}
+                            >
+                                + Add Stall
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-ghost text-error"
+                              onClick={() => {
+                                setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+                                toggleAddForm();
+                              }}
+                            >
+                              Cancel
+                          </button>
+                          </div>
                         </div>
 
                 <div className="space-y-4">
@@ -172,9 +185,6 @@ const StallsPage = () => {
                     </div>
                   ))}
                 <div className="flex justify-left gap-2">
-                  <Link to={`/event/${id}/dashboard`} className="btn btn-primary btn-outline">
-                    Back
-                  </Link> 
                   <button type="submit" className="btn btn-primary btn-outline">
                     Submit
                   </button>
@@ -185,13 +195,31 @@ const StallsPage = () => {
         </div>
     )
 
-    let toggleButton = (
+    let toggleAddStallsButton = (
         <button
             type="button"
-            className="btn btn-xs btn-primary btn-outline"
+            className="btn btn-primary btn-outline"
+            disabled= {showAddForm}
             onClick={toggleAddForm}
         >
             Add Stalls
+        </button>
+    )
+
+    let importStallsButton = (
+        <button
+          type="button"
+          className="btn  btn-primary btn-outline"
+        >
+          Import Stalls
+        </button>
+    )
+    let invitationButton = (
+        <button
+          type="button"
+          className="btn btn-primary btn-outline"
+        >
+          Vendor Registration
         </button>
     )
     return(
@@ -200,17 +228,30 @@ const StallsPage = () => {
               <div className="max-w-md justify-left space-y-6">
                 <h1 className="text-4xl font-bold">Event Dashboard</h1>
                 <h1 className="text-2xl font-bold">{event?.eventName} </h1>   
-                <h1 className="text-2xl font-bold"> Stalls</h1>
+                <div className="max-w-md justify-left  mt-5">
+                <div className="flex gap-2">
+                   { toggleAddStallsButton}
+                  { importStallsButton }
+                  { invitationButton }
+                </div> 
+                
+
+              </div>
+                <h1 className="text-2xl font-bold mb-5"> Stalls</h1>
               </div>
               <div >
                 {listStalls}
               </div>
-              <div className="max-w-md justify-left space-y-6 mt-5">
-                {!showAddForm && toggleButton}
-              </div>
+
               <div className="mt-5">
                 {showAddForm && addStallsForm}
               </div>
+              <div>
+                  <Link to={`/event/${id}/dashboard`} className="btn btn-primary mt-5 justify-left gap-2">
+                    Back
+                  </Link> 
+              </div>
+
           </div>
         </div>
 
