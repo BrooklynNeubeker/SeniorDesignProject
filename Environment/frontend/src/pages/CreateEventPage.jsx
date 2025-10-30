@@ -23,7 +23,6 @@ const CreateEventPage = () => {
       e.preventDefault();
       const payload = { 
         ...formData, 
-        // vendors,
         eventCoordinatorName: authUser?.email,
         eventCoordinatorID: authUser?._id,
        };
@@ -40,18 +39,6 @@ const CreateEventPage = () => {
         console.error("create event failed:", err);
       }
     };
-  
-
-    // const [vendors, setVendors] = useState([{ id: crypto.randomUUID(), name: "" }]);
-
-    // const addVendor = () =>
-    //   setVendors(v => [...v, { id: crypto.randomUUID(), name: "" }]);
-
-    // const removeVendor = (id) =>
-    //   setVendors(v => v.filter(row => row.id !== id));
-
-    // const updateVendor = (id, value) =>
-    //   setVendors(v => v.map(row => (row.id === id ? { ...row, name: value } : row)));
       
     return (
       <div className="h-screen pt-20">
@@ -150,48 +137,6 @@ const CreateEventPage = () => {
                   />
                 </div>
               </div>
-              
-              {/* Vendors
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="label">
-                    <span className="label-text font-medium">Vendors</span>
-                  </label>
-                  <button
-                    type="addVendor"
-                    className="btn btn-sm btn-outline"
-                    onClick={addVendor}
-                  >
-                    + Add Vendor
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  {vendors.map((v) => (
-                    <div
-                      key={v.id}
-                      className="rounded-lg border border-base-300 p-4 space-y-3"
-                    >
-                      <input
-                        className="input input-bordered w-full"
-                        placeholder="Vendor name"
-                        value={v.name}
-                        onChange={(e) => updateVendor(v.id, e.target.value)}
-                      />
-                      <div className="text-right">
-                        <button
-                          type="removeVendor"
-                          className="btn btn-xs btn-error btn-outline"
-                          onClick={() => removeVendor(v.id)}
-                          disabled={vendors.length === 1}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
               <div className="flex justify-end">
               <button type="submit" className="btn btn-primary btn-outline">
                 Submit Event
