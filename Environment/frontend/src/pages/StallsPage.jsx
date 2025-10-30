@@ -230,7 +230,7 @@ const StallsPage = () => {
                 <h1 className="text-2xl font-bold">{event?.eventName} </h1>   
                 <div className="max-w-md justify-left  mt-5">
                 <div className="flex gap-2">
-                   { toggleAddStallsButton}
+                  { toggleAddStallsButton }
                   { importStallsButton }
                   { invitationButton }
                 </div> 
