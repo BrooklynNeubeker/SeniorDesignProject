@@ -7,12 +7,14 @@ import { useParams } from "react-router-dom";
 const StallsPage = () => {
     // id = :id in route
     const { id } = useParams(); 
+    // Uses id to find current event
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     // for stalls saved in database
     const [allStalls, setAllStalls] = useState([]); 
     // for manually entered stalls
     const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]); 
+    // Enables/Disables the Add Stalls Form
     const [showAddForm, setShowAddForm] = useState(false);
 
     const fetchMyEvents = async () => {
@@ -125,33 +127,42 @@ const StallsPage = () => {
     }
      
     let addStallsForm = (
-        <div id="addStallForm">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <label className="label">
-                              <span className="label-text font-medium"> Add Stalls</span>
-                          </label>
-                          <div className="flex items-center justify-between mb-3">
-                            <button
-                                type="button"
-                                className="btn btn-sm btn-outline"
-                                onClick={addStalls}
-                            >
-                                + Add Stall
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-ghost text-error"
-                              onClick={() => {
-                                setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
-                                toggleAddForm();
-                              }}
-                            >
-                              Cancel
-                          </button>
-                          </div>
-                        </div>
+        <div id="addStallForm" className="rounded-lg border border-base-300 p-4 space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="label">
+                          <span className="label-text font-medium"> Add Stalls</span>
+                      </label>
+                      <div className="flex items-center justify-between mb-3">
+                        <button
+                            type="button"
+                            className="btn btn-sm btn-outline"
+                            onClick={addStalls}
+                        >
+                            + Add Stall
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-ghost text-error"
+                          onClick={() => {
+                            toggleAddForm();
+                          }}
+                        >
+                          Collapse
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-ghost text-error"
+                          onClick={() => {
+                            setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+                            toggleAddForm();
+                          }}
+                        >
+                          Cancel
+                      </button>
+                    </div>
+                  </div>
 
                 <div className="space-y-4">
                   {stalls.map((stall) => (
@@ -184,11 +195,11 @@ const StallsPage = () => {
                       </div>
                     </div>
                   ))}
-                <div className="flex justify-left gap-2">
-                  <button type="submit" className="btn btn-primary btn-outline">
-                    Submit
-                  </button>
-                </div>
+                  <div className="flex justify-left gap-2">
+                    <button type="submit" className="btn btn-primary btn-outline">
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
               </form>
@@ -206,14 +217,7 @@ const StallsPage = () => {
         </button>
     )
 
-    let importStallsButton = (
-        <button
-          type="button"
-          className="btn  btn-primary btn-outline"
-        >
-          Import Stalls
-        </button>
-    )
+
     let invitationButton = (
         <button
           type="button"
@@ -222,6 +226,23 @@ const StallsPage = () => {
           Vendor Registration
         </button>
     )
+    let importStallsButton = (
+        <button
+          type="button"
+          className="btn  btn-primary btn-outline"
+        >
+          Import Stalls
+        </button>
+    )
+    let exportStallsButton = (
+        <button
+          type="button"
+          className="btn  btn-primary btn-outline"
+        >
+          Export Stalls
+        </button>
+    )
+
     return(
         <div className="h-full pt-20">
           <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
@@ -231,18 +252,16 @@ const StallsPage = () => {
                 <div className="max-w-md justify-left  mt-5">
                 <div className="flex gap-2">
                   { toggleAddStallsButton }
-                  { importStallsButton }
                   { invitationButton }
+                  { importStallsButton }
+                  { exportStallsButton }
                 </div> 
-                
-
               </div>
                 <h1 className="text-2xl font-bold mb-5"> Stalls</h1>
               </div>
               <div >
                 {listStalls}
               </div>
-
               <div className="mt-5">
                 {showAddForm && addStallsForm}
               </div>
