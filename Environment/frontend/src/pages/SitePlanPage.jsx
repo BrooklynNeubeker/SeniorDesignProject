@@ -33,7 +33,7 @@ const SitePlanPage = () => {
 
     return (
         <div>
-            <div className="fixed inset-0 -z-10">
+            <div className="fixed inset-0 z-10">
                 <Map structures={structures} removeStructure={removeStructure}/>  
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
