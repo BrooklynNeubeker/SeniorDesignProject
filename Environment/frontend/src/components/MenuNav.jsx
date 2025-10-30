@@ -9,35 +9,23 @@ const MenuNav = () => {
     <div className="justify-items-end">
       <ul class="menu menu-horizontal rounded-box mt-8">
         <li>
-          <a class="tooltip" data-tip="Chat">
-            <Link
-              to="/chat">
+          <a className="tooltip" data-tip="Chat" href="/chat">
             <MessageCircle/>
-            </Link>
           </a>
         </li>
         <li>
-          <a class="tooltip" data-tip="My Events">
-             <Link
-              to="/">
+          <a className="tooltip" data-tip="My Events" href="/">
             <MapPin/>
-            </Link>
           </a>
         </li>
         <li>
-          <a class="tooltip" data-tip="Profile">
-             <Link
-              to="/profile">
+          <a className="tooltip" data-tip="Profile" href="/profile">
             <UserRound/>
-            </Link>
           </a>
         </li>
         <li>
-          <a className="tooltip" data-tip="Settings">
-             <Link
-              to="/settings">
+          <a className="tooltip" data-tip="Settings" href="/settings">
             <Settings/>
-            </Link>
           </a>
         </li>
          <li>
