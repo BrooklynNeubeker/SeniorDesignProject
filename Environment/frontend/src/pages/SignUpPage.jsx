@@ -163,10 +163,7 @@ const SignUpPage = () => {
         </div>
       </div>
       {/* right handside */}
-      <AuthImagePattern
-        title="Join our community"
-        subtitle="Connect with friends, share moments and stay in touch with your loved ones."
-      />
+      <AuthImagePattern />
     </div>
   );
 };

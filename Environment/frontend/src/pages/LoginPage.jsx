@@ -127,12 +127,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right hand side */}
-      <AuthImagePattern
-        title={"Welcome Back!"}
-        subtitle={
-          "Sign in to organize events"
-        }
-      />
+      <AuthImagePattern />
     </div>
   );
 };
