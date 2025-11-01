@@ -79,7 +79,10 @@ export const getMyEvents = async (req, res) => {
 
 // This is untested currently
 export const updateEvent = async (req, res) => {
-    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID} = req.body;
+    // console.log("We are trying to update the event!");
+    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID} = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item
+    // console.log(req.body[0].eventName);
+
     const {id} = req.params; // pass the event object ID
     try {
         const updatedEvent = await Event.updateOne({_id: id}, {$set: {
@@ -93,6 +96,7 @@ export const updateEvent = async (req, res) => {
         eventCoordinatorID: eventCoordinatorID
         }
         });// We can add a third argument for options if we want.
+        console.log("event updated");
         res.status(200).json(updatedEvent);
     } catch(error){
         console.error("updateEvent error:", error);
