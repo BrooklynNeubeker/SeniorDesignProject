@@ -205,7 +205,6 @@ const StallsPage = () => {
               </form>
         </div>
     )
-
     let toggleAddStallsButton = (
         <button
             type="button"
@@ -216,8 +215,6 @@ const StallsPage = () => {
             Add Stalls
         </button>
     )
-
-
     let invitationButton = (
         <button
           type="button"
