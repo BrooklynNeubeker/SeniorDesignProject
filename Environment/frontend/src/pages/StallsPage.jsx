@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import ParseExcel from "../components/ParseExcel.jsx";
 
 const StallsPage = () => {
     // id = :id in route
@@ -14,8 +15,14 @@ const StallsPage = () => {
     const [allStalls, setAllStalls] = useState([]); 
     // for manually entered stalls
     const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]); 
-    // Enables/Disables the Add Stalls Form
+    
+    // Booleans that enable/disable the various components
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showInvite, setInvite] = useState(false);
+    const [showImport, setImport] = useState(false);
+    const [showExport, setExport] = useState(false);
+    
+    
 
     const fetchMyEvents = async () => {
         try {
@@ -72,9 +79,6 @@ const StallsPage = () => {
         }
     };
 
-    const toggleAddForm = () => {
-        setShowAddForm(!showAddForm);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -206,6 +210,53 @@ const StallsPage = () => {
         </div>
     )
 
+    const toggleAddForm = () => {
+        setShowAddForm(!showAddForm);
+    };
+
+    const toggleImport = () => {
+        setImport(!showImport);
+    };
+
+    const toggleExport = () => {
+        setS(!showAddForm);
+    };
+
+    const toggleInvite = () => {
+        setInvite(!showInvite);
+    };
+
+    let importFileComponent = (
+        <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="label">
+                  <span className="label-text font-medium"> Add Stalls</span>
+              </label>
+              <div className="flex items-center justify-between mb-3">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-ghost text-error"
+                  onClick={() => {
+                    toggleImport();
+                  }}
+                >
+                  Collapse
+                </button>
+                {/* <button
+                  type="button"
+                  className="btn btn-sm btn-ghost text-error"
+                  onClick={() => {
+                    setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+                    toggleImport();
+                  }}
+                >
+                  Cancel
+              </button> */}
+            </div>
+          </div>
+          <ParseExcel></ParseExcel>
+        </div>
+    )
     let toggleAddStallsButton = (
         <button
             type="button"
@@ -216,12 +267,12 @@ const StallsPage = () => {
             Add Stalls
         </button>
     )
-
-
     let invitationButton = (
         <button
           type="button"
           className="btn btn-primary btn-outline"
+          disabled= {showInvite}
+          onClick={toggleInvite}
         >
           Vendor Registration
         </button>
@@ -230,6 +281,8 @@ const StallsPage = () => {
         <button
           type="button"
           className="btn  btn-primary btn-outline"
+          disabled= {showImport}
+          onClick={toggleImport}
         >
           Import Stalls
         </button>
@@ -238,6 +291,8 @@ const StallsPage = () => {
         <button
           type="button"
           className="btn  btn-primary btn-outline"
+          disabled= {showExport}
+          onClick={toggleExport}
         >
           Export Stalls
         </button>
@@ -265,7 +320,11 @@ const StallsPage = () => {
               <div className="mt-5">
                 {showAddForm && addStallsForm}
               </div>
+              <div className="mt-5">
+                {showImport && importFileComponent}
+              </div>
               <div>
+                
                   <Link to={`/event/${id}/dashboard`} className="btn btn-primary mt-5 justify-left gap-2">
                     Back
                   </Link> 
