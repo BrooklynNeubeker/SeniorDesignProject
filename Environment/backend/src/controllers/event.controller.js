@@ -110,12 +110,12 @@ export const updateEvent = async (req, res) => {
 //Create stall, needs name, description, and the ID of the event that it is tied to
 export const createStall = async (req, res) => {
     
-    const{name, description, eventID} = req.body; // get the required stall information
+    const{name, email, eventID} = req.body; // get the required stall information
     try {
 
         const newStall = new stall ({ // Create the newStall 
             name: name,
-            description: description,
+            email: email,
             eventID: eventID
         });
         const savedStall = await newStall.save(); // save to database

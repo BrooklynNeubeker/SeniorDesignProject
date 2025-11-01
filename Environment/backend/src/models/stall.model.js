@@ -7,27 +7,38 @@ const stallSchema = new mongoose.Schema(
             type: String, // name of the stall
             required: true,
             default: ""
+            // set by coordinator or vendor
         },
-        vendor: {
+        email: {
             type: String, //Which vendor owns the stall?
-            // required: true,
+            required: true, // will be required for production
             default: ""
         },
         description: {
             type: String,
-            required: true,
+            //required: true,
             default: ""
+            // set by vendor
         },
-        // stallId: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        // },
+        vendor: {
+            type: String, //Which vendor owns the stall?
+            default: ""
+            // set by vendor
+        },
+        initialInviteSent: {
+            type: Boolean,
+            default: false,
+            // triggered by coordinator
+        },
         stallNumber: {
             type: Number,//int,
             default: null
+            // set by coordinator
         },
         stallType: {
             type: String,
             default: ""
+            // set by Vendor
         },
         // menu: {
         //     //type: [menuItemSchema], //menu items will have an allergen field that can be added
@@ -42,7 +53,7 @@ const stallSchema = new mongoose.Schema(
         eventID: {
             type: mongoose.Schema.Types.ObjectId,
             required: true
-        }
+        },
     },
     { timestamps: true }
 );

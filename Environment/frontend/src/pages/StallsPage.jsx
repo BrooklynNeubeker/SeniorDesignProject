@@ -14,7 +14,7 @@ const StallsPage = () => {
     // for stalls saved in database
     const [allStalls, setAllStalls] = useState([]); 
     // for manually entered stalls
-    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , description: ""}]); 
+    const [stalls, setStalls] = useState([{ id: crypto.randomUUID(), name: "" , email: ""}]); 
     
     // Booleans that enable/disable the various components
     const [showAddForm, setShowAddForm] = useState(false);
@@ -60,7 +60,7 @@ const StallsPage = () => {
 
 
     const addStalls = () =>
-      setStalls(prevStallState => [...prevStallState, { id: crypto.randomUUID(), name: "", description: "" }]);
+      setStalls(prevStallState => [...prevStallState, { id: crypto.randomUUID(), name: "", email: "" }]);
 
     const removeStalls = (id) =>
       setStalls(prevStallState => prevStallState.filter(row => row.id !== id));
@@ -83,9 +83,9 @@ const StallsPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const payloads = stalls.map(({ id: _tmp, name, description }) => ({
+        const payloads = stalls.map(({ id: _tmp, name, email }) => ({
             name,
-            description,
+            email,
             eventID: id, 
         }));
 
@@ -95,7 +95,7 @@ const StallsPage = () => {
             }
             alert("Stalls created successfully");
             await fetchMyStalls();
-            setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+            setStalls([{ id: crypto.randomUUID(), name: "", email: "" }]);
             toggleAddForm();
         } catch (err) {
             console.error("Failed to create stalls", err);
@@ -114,7 +114,7 @@ const StallsPage = () => {
             <li key={stall._id} className="flex items-center justify-between gap-x-6 rounded border border-base-300 p-3">
             <div >
                 <div className="font-medium">{stall.name}</div>
-                <div className="text-sm text-base-content/60">{stall.description}</div>
+                <div className="text-sm text-base-content/60">{stall.email}</div>
             </div>
             <div>
                 <button 
@@ -159,7 +159,7 @@ const StallsPage = () => {
                           type="button"
                           className="btn btn-sm btn-ghost text-error"
                           onClick={() => {
-                            setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+                            setStalls([{ id: crypto.randomUUID(), name: "", email: "" }]);
                             toggleAddForm();
                           }}
                         >
@@ -182,9 +182,9 @@ const StallsPage = () => {
                       />
                       <input
                         className="input input-bordered w-full"
-                        placeholder="Description"
-                        value={stall.description}
-                        onChange={(e) => updateStalls(stall.id, "description",  e.target.value)}
+                        placeholder="e-mail"
+                        value={stall.email}
+                        onChange={(e) => updateStalls(stall.id, "email",  e.target.value)}
                       />
                     
                       <div className="text-right">
@@ -219,7 +219,7 @@ const StallsPage = () => {
     };
 
     const toggleExport = () => {
-        setS(!showAddForm);
+        setExport(!showAddForm);
     };
 
     const toggleInvite = () => {
@@ -227,10 +227,10 @@ const StallsPage = () => {
     };
 
     let importFileComponent = (
-        <div>
+        <div id="importStallComponent" className="rounded-lg border border-base-300 p-4 space-y-3">
             <div className="flex items-center justify-between mb-3">
               <label className="label">
-                  <span className="label-text font-medium"> Add Stalls</span>
+                  <span className="label-text font-medium"> Import Stalls</span>
               </label>
               <div className="flex items-center justify-between mb-3">
                 <button
@@ -246,15 +246,18 @@ const StallsPage = () => {
                   type="button"
                   className="btn btn-sm btn-ghost text-error"
                   onClick={() => {
-                    setStalls([{ id: crypto.randomUUID(), name: "", description: "" }]);
+                    setStalls([{ id: crypto.randomUUID(), name: "", email: "" }]);
                     toggleImport();
                   }}
                 >
                   Cancel
               </button> */}
             </div>
+          </div >
+          <div  id="importStallComponent" className="rounded-lg border border-base-300 p-4 space-y-3">
+            <ParseExcel></ParseExcel>
           </div>
-          <ParseExcel></ParseExcel>
+          
         </div>
     )
     let toggleAddStallsButton = (
