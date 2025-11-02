@@ -3,7 +3,7 @@ import { X, Trash2 } from 'lucide-react';
 
 const InfoCard = ({ structure, structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
                     structureTags, setStructureTags, structureDimensions, setStructureDimensions,
-                    onClose, removeStructure }) => {
+                    onClose, removeStructure, imperial }) => {
 
     const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
     const [customTag, setCustomTag] = useState("")
@@ -93,7 +93,9 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 onChange={(e) => setStructureDimensions([e.target.value, structureDimensions[1]])}
                                 className="input input-bordered w-full mb-2"
                             />
-                            <span className="px-2 text-gray-500">meters</span>
+                            {imperial ? 
+                                <span className="px-2 text-gray-500">feet</span> 
+                                : <span className="px-2 text-gray-500">meters</span> }
                         </div>
                         <div className='flex flex-row items-center justify-between'>
                             <label className='w-70 font-bold'>Length:</label>
@@ -103,7 +105,9 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 onChange={(e) => setStructureDimensions([structureDimensions[0], e.target.value])}
                                 className="input input-bordered w-full mb-2"
                             />
-                            <span className="px-2 text-gray-500">meters</span>
+                            {imperial ? 
+                                <span className="px-2 text-gray-500">feet</span> 
+                                : <span className="px-2 text-gray-500">meters</span> }
                         </div>
                     </div>
 

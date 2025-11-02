@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
+import { useUnit } from "../components/UnitContext";
 
 const SitePlanPage = () => {
-
+    const { imperial } = useUnit();
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
 
@@ -17,7 +18,7 @@ const SitePlanPage = () => {
         description: description of the structure
         tagType: used to determine type of tags that can belong to structure
 
-        dimensions: width and length of structure in real-life meters, default 20 x 20
+        dimensions: width and length of structure in real-life feet/meters, default 20 x 20
         position: position of structure on map, generates at center of map by default
     */}
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
@@ -34,7 +35,7 @@ const SitePlanPage = () => {
     return (
         <div>
             <div className="fixed inset-0 z-10">
-                <Map structures={structures} removeStructure={removeStructure}/>  
+                <Map imperial={imperial} structures={structures} removeStructure={removeStructure}/>  
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 

@@ -4,7 +4,7 @@ import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -25,8 +25,9 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure }) => {
         const zoom = map.getZoom();
         const latitude = markerRef.current.getLatLng().lat;
 
-        // Calculate meters per pixel using formula by OpenStreetMap
+        // Calculate feet/meters per pixel using formula by OpenStreetMap
         const metersPerPx = (40075016.686 * Math.cos((latitude * Math.PI) / 180)) / Math.pow(2, zoom + 8);
+        //const feetPerPx = metersPerPx * 3.280839895;
 
         // Get number of pixels for width and length of structure
         const widthPx = structureDimensions[0] / metersPerPx;
@@ -144,6 +145,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure }) => {
                     onClose={onClose}
                     structure={structure}
                     removeStructure={removeStructure}
+                    imperial={imperial}
                 />
                 </div>
 

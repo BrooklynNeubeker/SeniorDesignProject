@@ -5,7 +5,7 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 
-const Map = ({ structures, removeStructure }) => {
+const Map = ({ structures, removeStructure, imperial }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
@@ -19,8 +19,8 @@ const Map = ({ structures, removeStructure }) => {
         useEffect(() => {
             const scale = L.control.scale({
                 position: "bottomright",
-                metric: true,
-                imperial: false,
+                imperial: imperial,
+                metric: !imperial,
                 maxWidth: 200,
             });
             scale.addTo(map);
@@ -68,6 +68,7 @@ const Map = ({ structures, removeStructure }) => {
                     onOpen={() => setCurrentlyOpen(index)}
                     onClose={() => setCurrentlyOpen(null)}
                     removeStructure={removeStructure}
+                    imperial={imperial}
                 />
             ))}
 
