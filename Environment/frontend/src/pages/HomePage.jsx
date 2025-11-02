@@ -43,15 +43,10 @@ const HomePage = () => {
         listEvents = (
         <ul className="space-y-3">
         {events.map(ev => (
-            <li key={ev._id} className="justify-left gap-x-6 rounded border border-base-300 p-3 px-16">
-            <div className="justify-left">
+            <li key={ev._id} className="flex items-center justify-between gap-x-6 rounded border border-base-300 p-3">
+            <div >
                 <div className="font-medium">{ev.eventName}</div>
-                <div className="text-sm">{ev.location}</div>
-
-                {ev.startDate == ev.endDate ? 
-                    <div className="text-sm">On {ev.startDate}</div> 
-                    : <div className="text-sm">From {ev.startDate} to {ev.endDate}</div> }
-
+                <div className="text-sm text-base-content/60">{ev.location}</div>
             </div>
             <Link to={`/event/${ev._id}/dashboard`} className="btn btn-sm btn-outline">
                 Open Dashboard
@@ -69,7 +64,7 @@ const HomePage = () => {
         </ul>)
     }
   return (
-    <div className="h-full pt-20">
+    <div className="h-screen pt-20">
         <div className="w-full flex flex-1 flex-col items-center justify-left p-16 bg-base-100/50">
             <div className="max-w-md text-center space-y-6 gap-2">
 
