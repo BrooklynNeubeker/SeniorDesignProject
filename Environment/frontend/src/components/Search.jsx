@@ -38,6 +38,13 @@ const Search = ({ apiKey }) => {
   const map = useMap();
   useEffect(() => {
     map.addControl(searchControl);
+
+    // getting the results from the geosearch 
+    map.on('geosearch/showlocation', function(result) {
+      console.log('Result', result);
+      // getting the longitude and latitude
+      const {x: lng, y: lat} = result.location;
+    });
     return () => map.removeControl(searchControl);
   }, []);
 
