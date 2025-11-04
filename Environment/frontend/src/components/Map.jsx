@@ -7,6 +7,8 @@ import Search from "./Search";
 
 const Map = ({ structures, removeStructure, imperial }) => {
 
+    const{ lat, lng } = useState();
+
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
@@ -32,7 +34,6 @@ const Map = ({ structures, removeStructure, imperial }) => {
     // Grid lines on map
     const MapWithGrid = () =>{
         const map = useMap();
-
         return <CanvasLayer map={map}/>
     }
 
