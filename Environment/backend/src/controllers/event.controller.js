@@ -229,11 +229,91 @@ export const getMyItineraryItems = async (req,res) => {
   }
 };
 
-// export const setEventMap = async (req,res) => {
-//     const {map} = req.body;
+//EVENTMAP CONTROLLERS ARE UNTESTED!
+//Create a map object that saves center coordinates, zoom level, event ID, and an array of markers. See eventMap model to see fields of marker, all are optional with a default of null. 
+export const createEventMap = async (req,res) => {
+      const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body; // get the required itinerary
+    try {
+        //Markers should be optional for making a new map object, since they may want to save just where the event will be
+        if (!Array.isArray(mapMarkers) || !mapMarkers.length){
+            // res.sendStatus(401);
+            // res.json({message: 'There are no markers to save'});
+            console.log("No marker array to save.");
+        }
+        const newMap = new eventMap ({ // Create the new itinerary with the filled fields
+            mapCenter: mapCenter,
+            eventID: eventID,
+            zoomLevel: zoomLevel,
+            mapMarkers: mapMarkers //Should be fine here for array object as long as the fields all match
+        });
+        const savedMap = await newMap.save(); // save to database
+        res.status(201).json(savedMap); // pass back the new mongoose object in the data
+        }
+    catch (error) {
+        console.log("Error in create map controller", error.message);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+};
 
-// };
+// Get a map that matches eventID
+export const getMyEventMap = async (req,res) => {
+  try {
+    const eventId = req.params.id; 
+    const eventMap = await Event
+      .find({ eventID: eventId })
+      .sort({ createdAt: -1 }); // Should only be one, but newest first 
+    res.status(200).json(eventMap);
+  } catch (error) {
+    console.error("getMyEventMap error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 
-// export const deleteEventMap = async(req, res) => {
+};
 
-// };
+//Delete map object
+export const deleteEventMap = async (req,res) => {
+    try {
+        //console.log("DELETE /events/:id", { params: req.params, req.body }); // debug
+        const { id } = req.params; 
+        const map = await eventMap.findByIdAndDelete(id);
+        if (!map) {
+        return res.status(404).json({
+            success: false,
+            message: "Event not found",
+        });
+        }
+        return res.status(200).json({
+        success: true,
+        message: "Event deleted successfully",
+        });
+    }catch(error){
+        console.error("Error deleting event map:", error);
+        return res.status(500).json({
+        success: false,
+        message: error.message,
+        });
+    }
+};
+
+//Update an existing map object
+export const updateEventMap = async (req, res) => {
+    // console.log("We are trying to update the event!");
+    const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item (THIS WAS TRUE FOR EVENTS, MAY NOT BE TRUE FOR EVENT MAP SINCE IT'S ONLY ONE!!! CHECK HERE FOR ERROR)
+    // console.log(req.body[0].eventName);
+    const {id} = req.params; // pass the event object ID
+    try {
+        const updatedMap = await eventMap.updateOne({_id: id}, {$set: {
+        mapCenter: mapCenter,
+        eventID: eventID,
+        zoomLevel: zoomLevel,
+        mapMarkers: mapMarkers
+        }
+        });// We can add a third argument for options if we want.
+        console.log("event map updated");
+        res.status(200).json(updatedMap);
+    } catch(error){
+        console.error("updateEventMap error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+
+};

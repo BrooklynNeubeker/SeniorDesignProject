@@ -1,6 +1,7 @@
 import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
-import {createEvent, getMyEvents, deleteEvent, updateEvent, createStall, deleteStall, getMyStalls, createItineraryItem, deleteItineraryItem, getMyItineraryItems} from "../controllers/event.controller.js";
+import {createEvent, getMyEvents, deleteEvent, updateEvent, createStall, deleteStall, getMyStalls, 
+    createItineraryItem, deleteItineraryItem, getMyItineraryItems, createEventMap, deleteEventMap, getMyEventMap, updateEventMap} from "../controllers/event.controller.js";
 
 const router = express.Router();
 
@@ -25,10 +26,16 @@ router.post("/", protectRoute, createItineraryItem); //Creates a stall object fo
 
 router.delete("/:id", protectRoute, deleteItineraryItem); // Deletes stalls by stallID
 
-router.get("/", protectRoute, getMyItineraryItems); //Get the stalls that match the eventID
+router.get("/:id", protectRoute, getMyItineraryItems); //Get the stalls that match the eventID
 
+//eventMap
+router.post("/", protectRoute, createEventMap); //Create an event map
 
+router.delete("/:id", protectRoute, deleteEventMap); //Delete an event map
 
+router.get("/:id", protectRoute, getMyEventMap); //Get event maps
+
+router.put("/:id", protectRoute, updateEventMap); //Update an event map
 
 
 
