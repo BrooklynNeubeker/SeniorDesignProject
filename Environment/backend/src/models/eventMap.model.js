@@ -56,7 +56,14 @@ const eventMapSchema = new mongoose.Schema(
                         objectType: { //For labelling type for display i.e. stall, bathroom, etc
                             type: String,
                             default: null
-                        }
+                        },
+                        savedTags: [
+                                { tag: { //Array of tags which are strings
+                                    type: String,
+                                    default: null
+                                    }
+                                }
+                        ]
                     }
                 ]
     },
