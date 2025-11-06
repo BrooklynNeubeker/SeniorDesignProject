@@ -5,9 +5,7 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 
-const Map = ({ structures, removeStructure, imperial }) => {
-
-    const{ lat, lng } = useState();
+const Map = ({ structures, removeStructure, coordinates, imperial }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
@@ -39,7 +37,7 @@ const Map = ({ structures, removeStructure, imperial }) => {
 
     return (
         <MapContainer 
-            center={[36.110013, -115.140546]} 
+            center={coordinates} 
             zoom={baseZoom}
             style={{height: "100vh"}}
             zoomControl={false}

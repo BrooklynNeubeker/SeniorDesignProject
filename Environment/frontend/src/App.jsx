@@ -20,7 +20,7 @@ import { ResetPass } from "./pages/ResetPass";
 import EventDashboardPage from "./pages/EventDashboardPage";
 import StallsPage from "./pages/StallsPage";
 import CheckPaths from "./components/CheckPaths";
-import { UnitProvider } from "./components/UnitContext";
+import { GlobalProvider } from "./components/GlobalContext";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -41,7 +41,7 @@ const App = () => {
     );
 
   return (
-    <UnitProvider>
+    <GlobalProvider>
       <div data-theme={theme} className="bg-transparent">
         <CheckPaths className="bg-transparent"/>
         <Routes>
@@ -94,7 +94,7 @@ const App = () => {
 
         <Toaster />
       </div>
-    </UnitProvider>
+    </GlobalProvider>
   );
 };
 

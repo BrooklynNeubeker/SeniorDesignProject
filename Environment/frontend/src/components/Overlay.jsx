@@ -3,11 +3,11 @@ import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPi
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useUnit } from "./UnitContext";
+import { useGlobal } from "./GlobalContext";
 
 const Overlay = ({ addStructure }) => {
     const { id } = useParams();
-    const {imperial, setImperial} = useUnit();
+    const {imperial, setImperial} = useGlobal();
 
     return (
         <div>

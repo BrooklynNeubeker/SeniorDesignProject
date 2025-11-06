@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { useMap } from 'react-leaflet';
 import 'leaflet-geosearch/assets/css/leaflet.css';
+import { useGlobal } from "./GlobalContext";
 
 {/* Most of this code is given by the plugin's github
     More info here: https://github.com/smeijer/leaflet-geosearch
@@ -35,6 +36,8 @@ const Search = ({ apiKey }) => {
   updateMap: true, // optional: true|false  - default true
 });
 
+  const {location, setLocation} = useGlobal();
+
   const map = useMap();
   useEffect(() => {
     map.addControl(searchControl);
@@ -42,8 +45,10 @@ const Search = ({ apiKey }) => {
     // getting the results from the geosearch 
     map.on('geosearch/showlocation', function(result) {
       console.log('Result', result);
-      // getting the longitude and latitude
-      const {x: lng, y: lat} = result.location;
+
+      location.lng = result.location.x;
+      location.lat = result.location.y;
+      location.label = result.location.label;
     });
     return () => map.removeControl(searchControl);
   }, []);

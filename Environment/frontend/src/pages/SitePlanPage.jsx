@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
-import { useUnit } from "../components/UnitContext";
+import { useGlobal } from "../components/GlobalContext";
 
 const SitePlanPage = () => {
-    const { imperial } = useUnit();
+    const { imperial, location } = useGlobal();
+
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
 
@@ -24,7 +25,7 @@ const SitePlanPage = () => {
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
         const newStructure = { id: crypto.randomUUID(),
             name, Icon, bgColor, iconColor, border, description, tagType, 
-            dimensions: [20, 20], position: [36.110013, -115.140546]}
+            dimensions: [20, 20], position: [location.lat, location.lng]}
         setStructures(prev => [...prev, newStructure])
     }
 
@@ -35,7 +36,7 @@ const SitePlanPage = () => {
     return (
         <div>
             <div className="fixed inset-0 z-10">
-                <Map imperial={imperial} structures={structures} removeStructure={removeStructure}/>  
+                <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lat, location.lng]} imperial={imperial}/>  
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
