@@ -5,12 +5,12 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 
-const Map = ({ structures, removeStructure, coordinates, imperial }) => {
+const Map = ({ structures, removeStructure, center, imperial }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
-    const defaultCoords = [36.109998, -115.141759];
+
     // ScaleBar component, shows scale at bottom of map in meters
     const ScaleBar = () => {
         const map = useMap();
@@ -37,7 +37,7 @@ const Map = ({ structures, removeStructure, coordinates, imperial }) => {
 
     return (
         <MapContainer 
-            center={coordinates} 
+            center={center} 
             zoom={baseZoom}
             style={{height: "100vh"}}
             zoomControl={false}
@@ -45,7 +45,7 @@ const Map = ({ structures, removeStructure, coordinates, imperial }) => {
             maxZoom={22}
             minZoom={18}
         >
-            <Search apiKey={"annregalab@gmail.com"}/>
+            <Search apiKey={"annregalab@gmail.com"} baseZoom={baseZoom}/>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

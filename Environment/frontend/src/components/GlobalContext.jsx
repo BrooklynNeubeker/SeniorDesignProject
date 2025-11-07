@@ -5,8 +5,8 @@ const GlobalContext = createContext();
 export function GlobalProvider({ children }) {
   const [imperial, setImperial] = useState(true);
   const [location, setLocation] = useState({
-      lng: 36.110013,
-      lat: -115.140546,
+      lat: 36.110013,
+      lng: -115.140546,
       label: "",
     });
 

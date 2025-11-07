@@ -11,7 +11,7 @@ const SitePlanPage = () => {
     const [structures, setStructures] = useState([]);
     
     //checking if there is a saved map
-    const isThereSavedMap = useState(false);
+    //const isThereSavedMap = useState(false);
 
     {/* 
         Function to add structures to 'structures' array
@@ -29,7 +29,7 @@ const SitePlanPage = () => {
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
         const newStructure = { id: crypto.randomUUID(),
             name, Icon, bgColor, iconColor, border, description, tagType, 
-            dimensions: [20, 20], position: [location.lng, location.lat]}
+            dimensions: [20, 20], position: [location.lat, location.lng]}
         setStructures(prev => [...prev, newStructure])
     }
 
@@ -37,12 +37,12 @@ const SitePlanPage = () => {
         setStructures(prev => prev.filter(structure => structure.id !== id));
     }
 
-
     return (
         <div>
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
-                <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lng, location.lat]} imperial={imperial}/>   
+                <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} imperial={imperial}/> 
+               
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
