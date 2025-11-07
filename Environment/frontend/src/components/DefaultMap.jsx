@@ -8,6 +8,7 @@ import Search from "./Search";
 const DefaultMap = ({ structures, removeStructure, imperial }) => {
   const defaultCoords = [36.109998, -115.141759];
   const baseZoom = 19;
+  const [currentlyOpen, setCurrentlyOpen] = useState(null) 
 
   const ScaleBar = () => {
     const map = useMap();
