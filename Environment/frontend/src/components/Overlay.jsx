@@ -12,7 +12,7 @@ const Overlay = ({ addStructure }) => {
     return (
         <div>
             {/* Back to dashboard */}
-            <div className="fixed top-5 left-4 pointer-events-auto z-14">
+            <div className="fixed top-20 left-4 pointer-events-auto z-14">
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                     <span>Back to Dashboard</span>
                 </Link>
@@ -36,7 +36,7 @@ const Overlay = ({ addStructure }) => {
             <div className="drawer drawer-end fixed pointer-events-auto">
 
                 <input id="add-objects-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content pt-5 fixed right-4">
+                <div className="drawer-content top-20 fixed right-4">
                     {/* "Add Objects" button */}
                     <label htmlFor="add-objects-drawer" className="drawer-button btn btn-primary">Add Objects</label>
 

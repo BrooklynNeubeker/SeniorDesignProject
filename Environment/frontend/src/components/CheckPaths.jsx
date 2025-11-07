@@ -9,7 +9,7 @@ const CheckPaths = () => {
     const match = matchPath('/event/:id/dashboard/site-plan', location.pathname);
 
     if(match) {
-        return <MenuNav/>
+        return <Navbar/>
     }
     else {
         return <Navbar/>

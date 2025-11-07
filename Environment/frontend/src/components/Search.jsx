@@ -33,7 +33,7 @@ const Search = ({ baseZoom }) => {
     autoClose: false, // optional: true|false  - default false
     searchLabel: 'Enter address', // optional: string      - default 'Enter address'
     keepResult: false, // optional: true|false  - default false
-    updateMap: true, // optional: true|false  - default true
+    updateMap: false, // optional: true|false  - default true
   });
 
   const {setLocation} = useGlobal();

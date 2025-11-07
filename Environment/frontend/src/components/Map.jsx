@@ -45,7 +45,6 @@ const Map = ({ structures, removeStructure, center, imperial }) => {
             maxZoom={22}
             minZoom={18}
         >
-            <Search apiKey={"annregalab@gmail.com"} baseZoom={baseZoom}/>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -53,6 +52,8 @@ const Map = ({ structures, removeStructure, center, imperial }) => {
                 maxZoom={22}
                 minZoom={18}
             />
+
+            <Search apiKey={"annregalab@gmail.com"} baseZoom={baseZoom}/>
 
             <ZoomControl position="bottomleft" />   {/* + and - to zoom in and out */}
             
