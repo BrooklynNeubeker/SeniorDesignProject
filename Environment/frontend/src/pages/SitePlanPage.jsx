@@ -2,12 +2,16 @@ import { useState } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
 import { useGlobal } from "../components/GlobalContext";
+import DefaultMap from '../components/DefaultMap';
 
 const SitePlanPage = () => {
     const { imperial, location } = useGlobal();
 
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
+    
+    //checking if there is a saved map
+    const isThereSavedMap = useState(false);
 
     {/* 
         Function to add structures to 'structures' array
@@ -36,7 +40,13 @@ const SitePlanPage = () => {
     return (
         <div>
             <div className="fixed inset-0 z-10">
-                <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lat, location.lng]} imperial={imperial}/>  
+                {/* Some function checking if there is a function to check */}
+                {isThereSavedMap ? (
+                  <DefaultMap structures={structures} removeStructure={removeStructure} imperial={imperial}/>
+                ) : 
+                ( <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lat, location.lng]} imperial={imperial}/>    
+                )}
+               
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 

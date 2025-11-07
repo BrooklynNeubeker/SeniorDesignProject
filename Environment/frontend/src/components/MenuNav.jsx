@@ -7,7 +7,7 @@ const MenuNav = () => {
 
   return (
     <div >
-      <ul class="menu menu-horizontal rounded-box mt-13">
+      <ul className="menu menu-horizontal rounded-box mt-13">
         <li>
           <a className="tooltip z-50" data-tip="Chat" href="/chat">
             <MessageCircle/>
