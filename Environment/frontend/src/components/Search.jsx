@@ -29,7 +29,7 @@ const Search = ({ apiKey }) => {
   style: 'bar',
   maxMarkers: 1, // optional: number      - default 1
   retainZoomLevel: false, // optional: true|false  - default false
-  animateZoom: true, // optional: true|false  - default true
+  animateZoom: false, // optional: true|false  - default true
   autoClose: false, // optional: true|false  - default false
   searchLabel: 'Enter address', // optional: string      - default 'Enter address'
   keepResult: false, // optional: true|false  - default false

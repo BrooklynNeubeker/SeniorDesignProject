@@ -29,7 +29,7 @@ const SitePlanPage = () => {
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
         const newStructure = { id: crypto.randomUUID(),
             name, Icon, bgColor, iconColor, border, description, tagType, 
-            dimensions: [20, 20], position: [location.lat, location.lng]}
+            dimensions: [20, 20], position: [location.lng, location.lat]}
         setStructures(prev => [...prev, newStructure])
     }
 
@@ -37,16 +37,12 @@ const SitePlanPage = () => {
         setStructures(prev => prev.filter(structure => structure.id !== id));
     }
 
+
     return (
         <div>
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
-                {isThereSavedMap ? (
-                  <DefaultMap structures={structures} removeStructure={removeStructure} imperial={imperial}/>
-                ) : 
-                ( <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lat, location.lng]} imperial={imperial}/>    
-                )}
-               
+                <Map structures={structures} removeStructure={removeStructure} coordinates={[location.lng, location.lat]} imperial={imperial}/>   
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
