@@ -18,23 +18,23 @@ const Search = ({ baseZoom }) => {
 
   // @ts-ignore
   const searchControl = new GeoSearchControl({
-  provider: provider, // required
-  showMarker: false, // optional: true|false  - default true
-  showPopup: false, // optional: true|false  - default false
-  marker: {
-    // optional: L.Marker    - default L.Icon.Default
-    icon: new L.Icon.Default(),
-    draggable: false,
-  },
-  style: 'bar',
-  maxMarkers: 1, // optional: number      - default 1
-  retainZoomLevel: false, // optional: true|false  - default false
-  animateZoom: false, // optional: true|false  - default true
-  autoClose: false, // optional: true|false  - default false
-  searchLabel: 'Enter address', // optional: string      - default 'Enter address'
-  keepResult: false, // optional: true|false  - default false
-  updateMap: false, // optional: true|false  - default true
-});
+    provider: provider, // required
+    showMarker: false, // optional: true|false  - default true
+    showPopup: false, // optional: true|false  - default false
+    marker: {
+      // optional: L.Marker    - default L.Icon.Default
+      icon: new L.Icon.Default(),
+      draggable: false,
+    },
+    style: 'bar',
+    maxMarkers: 1, // optional: number      - default 1
+    retainZoomLevel: false, // optional: true|false  - default false
+    animateZoom: false, // optional: true|false  - default true
+    autoClose: false, // optional: true|false  - default false
+    searchLabel: 'Enter address', // optional: string      - default 'Enter address'
+    keepResult: false, // optional: true|false  - default false
+    updateMap: true, // optional: true|false  - default true
+  });
 
   const {setLocation} = useGlobal();
 

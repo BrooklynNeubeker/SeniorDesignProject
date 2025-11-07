@@ -28,7 +28,7 @@ const SitePlanPage = () => {
     */}
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
         const newStructure = { id: crypto.randomUUID(),
-            name, Icon, bgColor, iconColor, border, description, tagType, 
+            name, Icon, bgColor, iconColor, border, description, tagType, orientation: 0,
             dimensions: [20, 20], position: [location.lat, location.lng]}
         setStructures(prev => [...prev, newStructure])
     }
