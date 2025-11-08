@@ -232,7 +232,7 @@ export const getMyItineraryItems = async (req,res) => {
 //EVENTMAP CONTROLLERS ARE UNTESTED!
 //Create a map object that saves center coordinates, zoom level, event ID, and an array of markers. See eventMap model to see fields of marker, all are optional with a default of null. 
 export const createEventMap = async (req,res) => {
-      const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body; // get the required itinerary
+      const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body[0]; // get the required itinerary
     try {
         //Markers should be optional for making a new map object, since they may want to save just where the event will be
         if (!Array.isArray(mapMarkers) || !mapMarkers.length){
@@ -259,10 +259,10 @@ export const createEventMap = async (req,res) => {
 export const getMyEventMap = async (req,res) => {
   try {
     const eventId = req.params.id; 
-    const eventMap = await Event
+    const myMap = await eventMap
       .find({ eventID: eventId })
       .sort({ createdAt: -1 }); // Should only be one, but newest first 
-    res.status(200).json(eventMap);
+    res.status(200).json(myMap);
   } catch (error) {
     console.error("getMyEventMap error:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -275,7 +275,8 @@ export const deleteEventMap = async (req,res) => {
     try {
         //console.log("DELETE /events/:id", { params: req.params, req.body }); // debug
         const { id } = req.params; 
-        const map = await eventMap.findByIdAndDelete(id);
+        console.log(id);
+        const map = await eventMap.deleteOne({eventID: id}); // Delete by event ID
         if (!map) {
         return res.status(404).json({
             success: false,

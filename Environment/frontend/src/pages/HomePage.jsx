@@ -26,7 +26,7 @@ const HomePage = () => {
 
         try {
             await axiosInstance.delete(`/events/${id}`);
-
+            await axiosInstance.delete(`/events/${id}/site-plan`);
             await fetchMyEvents();
         } catch (error) {
             console.error("failed to delete event:", error);
