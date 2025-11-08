@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
 import { useGlobal } from "../components/GlobalContext";
@@ -6,10 +6,10 @@ import DefaultMap from '../components/DefaultMap';
 import {useParams} from "react-router-dom";
 import {axiosInstance} from "../lib/axios";
 import { map } from 'leaflet';
-import { useMap } from 'react-leaflet';
 
 const SitePlanPage = () => {
     const { imperial, location, zoom } = useGlobal();
+    const saveBtnRef = useRef();
     const {setLocation} = useGlobal();
     const{ id } = useParams();
     // console.log(location);
@@ -73,7 +73,6 @@ const SitePlanPage = () => {
                 mapMarkers,
             }));
         }
-
         // console.log(payload);
 
         //If new map, create new, if old map, update
@@ -131,13 +130,13 @@ const SitePlanPage = () => {
         <div>
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
-                <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} imperial={imperial}/> 
+                <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} saveBtnRef={saveBtnRef} imperial={imperial}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure}/>  
+                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
             
