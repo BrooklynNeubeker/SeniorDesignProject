@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
 import { useGlobal } from "../components/GlobalContext";
@@ -6,6 +6,8 @@ import DefaultMap from '../components/DefaultMap';
 
 const SitePlanPage = () => {
     const { imperial, location } = useGlobal();
+
+    const saveBtnRef = useRef();
 
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
@@ -41,13 +43,14 @@ const SitePlanPage = () => {
         <div>
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
-                <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} imperial={imperial}/> 
+                <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} 
+                saveBtnRef={saveBtnRef} imperial={imperial}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure}/>  
+                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
         </div>

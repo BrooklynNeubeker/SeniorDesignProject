@@ -4,7 +4,7 @@ import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -67,6 +67,25 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         map.on("zoom", scaleMarkerIcon);
         return () => map.off("zoom", scaleMarkerIcon);
     }, [map, structureName, structureDimensions, structureOrientation]);
+
+    
+    useEffect(() => {
+        const handleSave = () => {
+            structure.name = structureName;
+            structure.description = structureDescription;
+            structure.tags = structureTags;
+            structure.dimensions = structureDimensions;
+            structure.position = structureLocation;
+            structure.orientation = structureOrientation;
+
+            alert(`Saved: ${structure.name}`);
+        };
+
+        saveBtnRef.current.addEventListener("click", handleSave);
+        return () => saveBtnRef.current?.removeEventListener("click", handleSave);
+    }, [saveBtnRef, structureName, structureDescription, structureTags, 
+        structureDimensions, structureLocation, structureOrientation]);
+
 
 
     // Tag lists for different types of structures

@@ -5,7 +5,7 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 
-const Map = ({ structures, removeStructure, center, imperial }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
@@ -69,6 +69,7 @@ const Map = ({ structures, removeStructure, center, imperial }) => {
                     onClose={() => setCurrentlyOpen(null)}
                     removeStructure={removeStructure}
                     imperial={imperial}
+                    saveBtnRef={saveBtnRef}
                 />
             ))}
 

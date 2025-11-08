@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useGlobal } from "./GlobalContext";
 
-const Overlay = ({ addStructure }) => {
+const Overlay = ({ addStructure, saveBtnRef }) => {
     const { id } = useParams();
     const {imperial, setImperial} = useGlobal();
 
     return (
         <div>
             {/* Back to dashboard */}
-            <div className="fixed top-20 left-4 pointer-events-auto z-14">
+            <div className="fixed top-20 left-4 pointer-events-auto z-14 flex gap-4">
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                     <span>Back to Dashboard</span>
                 </Link>
+                <button ref={saveBtnRef} class="btn btn-secondary">Save Changes</button>
             </div>
 
             {/*
