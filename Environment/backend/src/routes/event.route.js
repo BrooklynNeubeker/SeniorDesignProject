@@ -22,20 +22,20 @@ router.delete("/:eventId/stalls/:stallId", protectRoute, deleteStall);// Deletes
 router.get("/:id/stalls", protectRoute, getMyStalls); //Get the stalls that match the eventID
 
 // itinerary
-router.post("/", protectRoute, createItineraryItem); //Creates a stall object for the database
+router.post("/", protectRoute, createItineraryItem); //Creates a stall object for the database THESE ROUTE LINKS WILL HAVE TO CHANGE
 
 router.delete("/:id", protectRoute, deleteItineraryItem); // Deletes stalls by stallID
 
 router.get("/:id", protectRoute, getMyItineraryItems); //Get the stalls that match the eventID
 
 //eventMap
-router.post("/", protectRoute, createEventMap); //Create an event map
+router.post("/:id/site-plan", protectRoute, createEventMap); //Create an event map
 
-router.delete("/:id", protectRoute, deleteEventMap); //Delete an event map
+router.delete("/:id/site-plan/", protectRoute, deleteEventMap); //Delete an event map
 
-router.get("/:id", protectRoute, getMyEventMap); //Get event maps
+router.get("/:id/site-plan", protectRoute, getMyEventMap); //Get event maps
 
-router.put("/:id", protectRoute, updateEventMap); //Update an event map
+router.put("/:id/site-plan/:mapId", protectRoute, updateEventMap); //Update an event map
 
 
 
