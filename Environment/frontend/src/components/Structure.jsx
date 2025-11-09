@@ -37,17 +37,16 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         const lengthPx = structureDimensions[1] / metersPerPx;
 
         // Make new icon for each marker
-        const iconSvg = renderToString(<structure.Icon size={Math.min(widthPx, lengthPx) * 0.2} />);
         const iconHtml = `
             <div class="flex flex-col gap-2 items-center justify-center w-full h-full
                         text-center text-xs ${structure.iconColor} ${structure.border}"
                         style="background-color: ${structure.bgColor}; width: ${widthPx}px; height: ${lengthPx}px;
                         transform: rotate(${structureOrientation}deg); transform-origin: center;">
-                <span> ${iconSvg} </span>
                 <span style="font-size:${Math.min(widthPx, lengthPx) * 0.01}rem;">
                     ${structureName}
                 </span>
-            </div>`;
+            </div>
+            `;
 
         const icon = new L.DivIcon({
             html: iconHtml,

@@ -17,24 +17,79 @@ const SitePlanPage = () => {
     const [loading, setLoading] = useState(true);
 
     const [myMap, setMap] = useState([]);
-    const [newMap, setNewMap] = useState([{mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
+    // const [newMap, setNewMap] = useState([{mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
+
+    /* useEffect(() => {
+        if (myMap && myMap.length > 0) {
+            console.log("Map updated:", myMap);
+            console.log("Map ID:", myMap[0]._id);
+        }
+    }, [myMap]); */
 
     const fetchMyMap = async () => {
-          try {
-          const res = await axiosInstance.get(`/events/${id}/site-plan`);
-          setMap(res.data || []);
-          } catch (error) {
-          console.error("Failed to load map:", error);
-          } finally {
-          setLoading(false);
-          }
-      };
+        const payload = {
+            mapCenter: { x: location.lng, y: location.lat },
+            eventID: id,
+            zoomLevel: zoom,
+            mapMarkers: structures
+        }
+
+        try {
+            let res = await axiosInstance.get(`/events/${id}/site-plan`);
+            if (res.data.length === 0) {
+                res = await axiosInstance.post(`/events/${id}/site-plan`, [payload]);
+                console.log("Created new map:", res.data);
+                fetchMyMap();
+            }
+            else {
+                console.log("Fetched existing map:", res.data);
+            }
+            setMap(res.data || []);
+
+            if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
+        } catch (error) {
+            console.error("Failed to load map:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    let hasFetched = false;
 
     useEffect(() => {
-        fetchMyMap();
-      }, []);
+        if (!hasFetched) {
+            fetchMyMap();
+            hasFetched = true;
+        }
+    }, []);
 
-    var currMap = myMap;
+
+    const saveEventMap = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            mapCenter: { x: location.lng, y: location.lat },
+            eventID: id,
+            zoomLevel: zoom,
+            mapMarkers: structures
+        }
+
+        setMap(prev => [...prev, payload])
+
+        try {
+            axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
+            alert("Map updated successfully");
+            //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
+        } catch(error){
+            console.error("Failed to update map", error);
+        }
+
+        let res = await axiosInstance.get(`/events/${id}/site-plan`);
+        setMap(res.data)
+    }
+
+    
+    /* var currMap = myMap;
 
     const updateCurr = async() => {
         currMap = myMap;
@@ -97,6 +152,8 @@ const SitePlanPage = () => {
         await fetchMyMap();
         updateCurr;
     };
+
+    */
     
     //checking if there is a saved map
     //const isThereSavedMap = useState(false);
@@ -136,17 +193,17 @@ const SitePlanPage = () => {
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef}/>  
+                <Overlay addStructure={addStructure}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
             
             {/* Save EventMap*/}
             <div className="fixed top-32 left-4 pointer-events-auto z-14">
-                <button type="button" onClick = {saveEventMap} className={'btn btn-primary'}>
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-primary'}>
                     <span>Save</span>
                 </button>
-
             </div>
+
         </div>
     );
 };

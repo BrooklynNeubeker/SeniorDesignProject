@@ -27,7 +27,12 @@ const eventMapSchema = new mongoose.Schema(
             type: Number, // This is the zoom level of the map
             default: 19
         },
-        mapMarkers: [ //Array of markers that have an x, y, stallID (optional), and string objectType for displaying the right of objectType
+        mapMarkers: {
+            type: Array,
+            default: []
+        }
+        
+        /* [ //Array of markers that have an x, y, stallID (optional), and string objectType for displaying the right of objectType
                     {
                         markerCoordinatesx: { //Already an array so I wanted to keep this simple vs how center was done, separate x and y
                             type: mongoose.Types.Decimal128, //x is long
@@ -65,7 +70,7 @@ const eventMapSchema = new mongoose.Schema(
                                 }
                         ]
                     }
-                ]
+                ] */
     },
     { timestamps: true }
 );
