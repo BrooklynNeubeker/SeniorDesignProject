@@ -31,7 +31,7 @@ export const createEvent = async (req, res) => {
         }
     catch (error) {
         console.log("Error in create event controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -46,13 +46,13 @@ export const deleteEvent = async (req, res) => {
         if (!event) {
         return res.status(404).json({
             success: false,
-            message: "Event not found",
+            message: "Event not found.",
         });
         }
 
         return res.status(200).json({
         success: true,
-        message: "Event deleted successfully",
+        message: "Event deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting event:", error);
@@ -73,7 +73,7 @@ export const getMyEvents = async (req, res) => {
     res.status(200).json(events);
   } catch (error) {
     console.error("getMyEvents error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal server error." });
   }
 };
 
@@ -100,7 +100,7 @@ export const updateEvent = async (req, res) => {
         res.status(200).json(updatedEvent);
     } catch(error){
         console.error("updateEvent error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
     }
 };
 // export const updateEvent = async (req, res) => {
@@ -123,7 +123,7 @@ export const createStall = async (req, res) => {
         }
     catch (error) {
         console.log("Error in create stall controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -140,12 +140,12 @@ export const deleteStall = async (req, res) => {
         if (!targetStall) {
         return res.status(404).json({
             success: false,
-            message: "Stall not found",
+            message: "Stall not found.",
         });
         }
         return res.status(200).json({
             success: true,
-            message: "Stall deleted successfully",
+            message: "Stall deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting stall:", error);
@@ -166,7 +166,7 @@ export const getMyStalls = async (req, res) => {
         res.status(200).json(stalls);
     } catch (error) {
         console.error("getMyStalls error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
     }
 };
 
@@ -187,7 +187,7 @@ export const createItineraryItem = async (req,res) => {
         }
     catch (error) {
         console.log("Error in create itinerary controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -200,12 +200,12 @@ export const deleteItineraryItem = async (req,res) => {
         if (!itinerary) {
             return res.status(404).json({
                 success: false,
-                message: "Event itinerary item not found",
+                message: "Event itinerary item not found.",
             });
         }
         return res.status(200).json({
             success: true,
-            message: "Event itinerary deleted successfully",
+            message: "Event itinerary deleted successfull.",
         });
     }catch(error){
         console.error("Error deleting event itinerary:", error);
@@ -225,7 +225,7 @@ export const getMyItineraryItems = async (req,res) => {
         res.status(200).json(itineraries);
     } catch (error) {
         console.error("getMyItineraryItems error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
   }
 };
 
@@ -251,7 +251,7 @@ export const createEventMap = async (req,res) => {
         }
     catch (error) {
         console.log("Error in create map controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -265,7 +265,7 @@ export const getMyEventMap = async (req,res) => {
     res.status(200).json(myMap);
   } catch (error) {
     console.error("getMyEventMap error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal server error." });
   }
 
 };
@@ -280,12 +280,12 @@ export const deleteEventMap = async (req,res) => {
         if (!map) {
         return res.status(404).json({
             success: false,
-            message: "Event not found",
+            message: "Event not found.",
         });
         }
         return res.status(200).json({
         success: true,
-        message: "Event deleted successfully",
+        message: "Event deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting event map:", error);
@@ -314,7 +314,7 @@ export const updateEventMap = async (req, res) => {
         res.status(200).json(updatedMap);
     } catch(error){
         console.error("updateEventMap error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
     }
 
 };
