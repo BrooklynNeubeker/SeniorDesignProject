@@ -23,8 +23,11 @@ const Navbar = () => {
                   src="/logo3t.png" alt="a tent with a map in inside"
                 ></img>
               </div>
-              <h1 className="text-lg font-bold">AccessMap</h1>
-              <h1>{authUser?.role}</h1>
+              <div>
+                <h1 className="text-lg font-bold">AccessMap</h1>
+                <p className="text-md text-base-content/70"> {authUser?.role}</p>
+              </div>
+             
             </Link>
           </div>
 

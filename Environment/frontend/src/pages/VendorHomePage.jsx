@@ -15,7 +15,7 @@ const VendorHomePage = () => {
     console.log(authUser);
     const [stalls, setStalls] = useState([]);
     const [loadingStalls, setLoadingStalls] = useState(true);
-    const [ loading, setLoading]= useState(true);
+    const [loading, setLoading]= useState(true);
     const [events, setEvents] = useState({}); // key:eventID value:Event
     const [eventIdToStalls, setEventIdToStalls] = useState ({}); // key: eventID value: stalls for event[]
 
