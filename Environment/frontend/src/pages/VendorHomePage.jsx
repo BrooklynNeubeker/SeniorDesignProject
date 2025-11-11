@@ -15,14 +15,16 @@ const VendorHomePage = () => {
     console.log(authUser);
     const [stalls, setStalls] = useState([]);
     const [loadingStalls, setLoadingStalls] = useState(true);
-    const [events, setEvents] = useState({});
+    const [ loading, setLoading]= useState(true);
+    const [events, setEvents] = useState({}); // key:eventID value:Event
+    const [eventIdToStalls, setEventIdToStalls] = useState ({}); // key: eventID value: stalls for event[]
 
     //authUser?.stalls holds an array of all stallId's assigned to the User
     //We use the following to do a search for each stall in parallel
     //(backend call does one search at a time)
     useEffect(() => {
         if (!authUser?.stalls?.length) return; // if user has no assigned stalls 
-
+        
         const fetchStalls = async () => {
         try {
             const stallObjects = await Promise.all(
@@ -43,35 +45,28 @@ const VendorHomePage = () => {
     }, [authUser?.stalls]);
 
     // Once we have the stalls returned from fetchStalls we use each stall.eventID
-    // to define an events map
+    // to define an events map(access event info) and the 
+    // eventIdToStalls map(group stalls by eventID)
     const fetchEvents = async () => {
+        
         const map = {};
+        const eidToStalls = {}
         for (const stall of stalls) {
-        if (stall.eventID) {
-            const res = await axiosInstance.get(`/events/${stall.eventID}`);
-            map[stall.eventID] = res.data;
+            if (stall.eventID) {
+                const res = await axiosInstance.get(`/events/${stall.eventID}`);
+                map[stall.eventID] = res.data; 
+                if(!eidToStalls[stall.eventID]){
+                    eidToStalls[stall.eventID] = []
+                }
+                eidToStalls[stall.eventID].push(stall)  
+            }
         }
-        }
-        setEvents(map);
+        setEvents(map); // for accessing event model information
+        setEventIdToStalls(eidToStalls); // for grouping stalls by events
+        setLoading(false);
         
     };
     useEffect(() => { fetchEvents(); }, [stalls]);
-
-    // The console in the web inspector shows that the console.log on line 14
-    // attempt to run a couple of times before useAuthStore funcs actually finish,
-    // returning a null value for authUser
-    // there is probably a better/more conventional way of dealing with this but
-    // this seems to work for now
-    if (isCheckingAuth) {
-        return (
-        <div className="min-h-screen grid place-items-center">
-            <span className="loading loading-spinner loading-lg" />
-        </div>
-        );
-    }
-    if (!authUser) {
-        return null;
-    }
     
     let listStalls;
 
@@ -88,66 +83,88 @@ const VendorHomePage = () => {
             </div>
         )
     }else {
+        // Original logic only mapped the eventID to a single stall
+        // Object.entries converts the eventIdToStalls into an array of 
+        // [key:eventID, value:stallsForEvent[]] the map() call then iterates
+        // through each index in the array: 
+        //    passes the eventID to the events map, getting our event info for header
+        //    then add a row to the table per index in the stallsForEvent
         listStalls = (
-        <div className="overflow-auto max-h-80 max-w-lg rounded-md">
-            <table className="table table-sm w-full">
-                <thead className="bg-base-200 sticky top-0">
-                <tr>
-                    <th className="text-left">Event</th>
-                    <th className="text-left">Stall</th>
-                </tr>
-                </thead>
-                <tbody>
-                {stalls.map((stall) => {
-                    const event = events[stall.eventID];
-                    return (
-                    <tr key={stall._id} className="align-top hover:bg-base-100/50">
-                        {/* Event Column */}
-                        <td className="py-3">
-                        <div className="flex flex-col">
-                            <span className="font-semibold text-base">
-                                {event?.eventName}
-                            </span>
-                            <span className="text-sm text-base-content/70">
-                                {event?.location}
-                            </span>
-                            <span className="text-xs text-base-content/60">
-                                {new Date(event?.startDate).toLocaleDateString()}
-                            </span>
+        <div className="space-y-10">
+            {Object.entries(eventIdToStalls).map(([eventID, stallsForEvent]) => {
+                const event = events[eventID];
+                return (
+                    <div key={eventID} className="max-w-xl mx-auto rounded">
+                        {/* Event Header */}
+                        <div className="mb-3 border-b pb-1">
+                            <h2 className="text-xl font-bold text-center">{event.eventName}</h2>
+                            <p className="text-lg text-center text-base-content/70">
+                                {event.location}
+                                {" "}
+                                {new Date(event.startDate).toLocaleDateString()}
+                            </p>
                         </div>
-                        </td>
-                        {/* Stall Column */}
-                        <td className="py-3">
-                            <div className="flex items-center justify-between gap-4">
-                                <span className="font-medium">{stall.name}</span>
-                                <Link to={`/vendor/register-stall/${stall._id}`} className="btn btn-outline btn-primary">
-                                    View
-                                </Link>
-                            </div>
-                        </td>
-                    </tr>
-                    );
-                })}
-                </tbody>
-            </table>
-        </div>
-        )
-    }
- 
-  return (
-       <div className="h-screen pt-20">
-            <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-              <div className="max-w-md justify-left space-y-6">
-                    <div className="text-center mb-8">
-                        <h1 className="text-2xl font-bold mt-2">
-                        Welcome back, {authUser?.fullname}!
-                        </h1>           
+
+                        {/* Table for stalls in this event */}
+                        <div className="overflow-auto rounded-md border border-base-300">
+                            <table className="table table-sm w-full">
+                                <thead className="bg-base-200 sticky top-0">
+                                <tr>
+                                    <th className="text-left">Stall</th>
+                                    <th className="text-left">Email</th>
+                                    <th className="text-right">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {stallsForEvent.map((stall) => (
+                                    <tr key={stall._id} className="hover:bg-base-100/50">
+                                        <td className="py-2 whitespace-nowrap">{stall.name}</td>
+                                        <td className="py-2 whitespace-nowrap">{stall.email}</td>
+                                        <td className="py-2 whitespace-nowrap text-right">
+                                            <Link
+                                                to={`/vendor/register-stall/${stall._id}`}
+                                                className="btn btn-xs btn-outline btn-primary"
+                                            >
+                                                View
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                {listStalls}
-            </div>
+                );
+            })}
         </div>
-    );
+        );
+    }
+    
+    if(loading){ 
+        <div className="min-h-[200px] flex items-center justify-center">
+                <span className="loading loading-spinner loading-lg text-primary" />
+        </div>
+    }else{
+        return (
+            <div className="h-screen pt-20">
+                    <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
+                        <div className="max-w-xl justify-left space-y-6">
+                            <div className="mb-8">
+                                <h1 className="text-3xl font-bold mt-2">
+                                    Welcome back, {authUser?.fullname}!
+                                </h1>
+                                <h1 className="text-2xl font-bold mt-5">
+                                    Events:
+                                </h1>
+                                <div className="mt-5">
+                                    {listStalls}  
+                                </div>          
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        );
+    }
 };
 
 export default VendorHomePage

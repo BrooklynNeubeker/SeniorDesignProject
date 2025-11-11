@@ -6,30 +6,30 @@ const MenuNav = () => {
   const {logout, authUser} = useAuthStore();
 
   return (
-    <div className="justify-items-end">
-      <ul class="menu menu-horizontal rounded-box mt-8">
+    <div >
+      <ul className="menu menu-horizontal rounded-box mt-13">
         <li>
-          <a className="tooltip" data-tip="Chat" href="/chat">
+          <a className="tooltip z-50" data-tip="Chat" href="/chat">
             <MessageCircle/>
           </a>
         </li>
         <li>
-          <a className="tooltip" data-tip="My Events" href="/">
+          <a className="tooltip z-50" data-tip="My Events" href="/">
             <MapPin/>
           </a>
         </li>
         <li>
-          <a className="tooltip" data-tip="Profile" href="/profile">
+          <a className="tooltip z-50" data-tip="Profile" href="/profile">
             <UserRound/>
           </a>
         </li>
         <li>
-          <a className="tooltip" data-tip="Settings" href="/settings">
+          <a className="tooltip z-50" data-tip="Settings" href="/settings">
             <Settings/>
           </a>
         </li>
          <li>
-          <a className="tooltip" data-tip="Logout">
+          <a className="tooltip z-50" data-tip="Logout">
           {authUser && (
                 <button className="flex gap-2 items-center" onClick={logout}>
                   <LogOut/>
