@@ -17,6 +17,8 @@ import ProfilePage from "./pages/ProfilePage";
 import SitePlanPage from "./pages/SitePlanPage";
 import ChatPage from "./pages/ChatPage";
 import CreateEventPage from "./pages/CreateEventPage";
+import PreviewPage from "./pages/PreviewPage";
+import PublishedPage from "./pages/PublishedPage";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -76,6 +78,16 @@ const App = () => {
           <Route
             path="/event/:id/dashboard"
             element={authUser ? <EventDashboardPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="/event/:id/dashboard/preview"
+            element={authUser ? <PreviewPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="/event/:id/viewmap"
+            element={authUser ? <PublishedPage /> : <Navigate to="/login" />}
           />
 
           <Route
