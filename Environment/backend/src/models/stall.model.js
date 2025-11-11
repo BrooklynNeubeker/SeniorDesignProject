@@ -25,19 +25,22 @@ const stallSchema = new mongoose.Schema(
             default: ""
             // set by vendor
         },
-        initialInviteSent: {
-            type: Boolean,
-            default: false,
-            // triggered by coordinator
+        onboardingStatus: {
+            type: String,
+            enum: ["noInvite", "inviteSent", "vendorRegistered"],
+            default: "noInvite",
+            // inviteSent triggered by coordinator 
+            // vendorRegistered triggered by vendor
         },
         stallNumber: {
             type: Number,//int,
             default: null
-            // set by coordinator
+            // set by coordinator in map mode 
         },
         stallType: {
             type: String,
-            default: ""
+            enum: ["food","nonFood"],
+            default: "food"
             // set by Vendor
         },
         // menu: {

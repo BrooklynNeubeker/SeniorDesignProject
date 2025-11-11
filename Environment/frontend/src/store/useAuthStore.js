@@ -18,6 +18,8 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
+      // in useAuthStore after setting authUser
+      console.log('set from checkAuth:', res.data) // in checkAuth()
       // connecting to the socket
       get().connectSocket();
     } catch (error) {
@@ -42,15 +44,18 @@ export const useAuthStore = create((set, get) => ({
       set({ isSigningUp: false });
     }
   },
+  
+
 
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data });
+      await get().checkAuth(); // helps with rendering pages without refreshing
       toast.success("Logged in successfully");
       // connecting to socket
       get().connectSocket();
+      return res.data // return something for the await call
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -105,4 +110,42 @@ export const useAuthStore = create((set, get) => ({
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
-}));
+
+
+
+//
+// Vendor Only
+//
+
+  signupVendor: async (data,stallId) => {
+    set({ isSigningUp: true });
+    try {
+      const res = await axiosInstance.post(`/auth/vendor-signup/${stallId}`, data);
+      set({ authUser: res.data });
+      toast.success("Account created successfully");
+      // connecting to the socket
+      get().connectSocket();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isSigningUp: false });
+    }
+  },
+  
+  loginVendor: async (data , stallId) => {
+    set({ isLoggingIn: true });
+    try {
+      const res = await axiosInstance.post("/auth/login", {...data, stallId});
+      set({ authUser: res.data });
+      toast.success("Logged in successfully");
+      // connecting to socket
+      get().connectSocket();
+      return res.data; // return something for the await call
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isLoggingIn: false });
+    }
+  },
+
+  }));

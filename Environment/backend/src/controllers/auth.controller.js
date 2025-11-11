@@ -1,9 +1,12 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
+import Stall from "../models/stall.model.js";
+import Event from "../models/event.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 import transporter from "./nodemailer.controller.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -51,18 +54,40 @@ export const signup = async (req, res) => {
   }
 };
 
+
+
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, stallId } = req.body;
 
     const user = await User.findOne({ email });
+    
     if (!user) {
-      return res.status(400).json({ message: "Invalid creditentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid creditentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // if Vendor logged in from email link, the following appends 
+    // non duplicates to the User's stalls array and vendorEvents array
+    if (stallId){
+      if (!mongoose.Types.ObjectId.isValid(stallId)) {
+        return res.status(400).json({ message: "Invalid stallId" });
+      }
+
+      // the commented out lines are one possibility 
+      const stall = await Stall.findById({stallId}) // testing
+      const event_id = stall.eventID; //testing
+      
+      await User.findByIdAndUpdate(
+        user._id,
+        { $addToSet: { stalls: stallId, vendorEvents: event_id }},//
+        { new: true }
+      );
+      if(stallId){console.log( "in auth.controller::login", stallId);}
     }
 
     generateToken(user._id, res);
@@ -186,4 +211,138 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error." });
   } 
+};
+
+
+export const inviteNewVendor = async (req, res) => {
+  console.log("in inviteNewVendor");
+  try {
+    const {name: stallName , email: stallEmail, eventID} = req.body;
+    // Verifies that target is not an existing user
+    const user = await User.findOne({ email: stallEmail});
+    if (user) {
+      return inviteExistingVendor(req,res)
+    }
+    
+    // Setting eventName for the email
+    const currentEvent = await Event.findById(eventID);
+    if (!currentEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const eventName = currentEvent.eventName;
+    const eventStartDate = currentEvent.startDate;
+    const {stallId} = req.params;
+   
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: stallEmail,
+      subject: `${eventName} registration for ${stallName}`,
+      html: `<p>Hey there!</p>
+      <p>You've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
+      <p> Click on the link to register: </p>
+      <a href="http://localhost:5173/vendor/${stallId}/signup">Register Your Stall</a>`,
+    };
+    // send the email
+    await transporter.sendMail(mailOptions)
+    await Stall.findByIdAndUpdate(stallId, { onboardingStatus: "inviteSent" });
+    res.status(200).json({ message: "Email sent successfully and onboardingStatus changed" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error." });
+  }
+};
+
+export const inviteExistingVendor = async (req, res) => {
+  console.log("in ExistingVendor");
+  try {
+    const {name: stallName , email: stallEmail, eventID} = req.body;
+    console.log(`Printout status:${stallName} ${stallEmail} ${eventID}`);
+    // Verifies that target IS an existing user
+    const user = await User.findOne({ email: stallEmail});
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Setting eventName for the email
+    const currentEvent = await Event.findById(eventID);
+    if (!currentEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const eventName = currentEvent.eventName;
+    const eventStartDate = currentEvent.startDate;
+    const {stallId} = req.params;
+   
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: stallEmail,
+      subject: `${eventName} registration for ${stallName}`,
+      html: `<p>Hey ${user.fullname}!</p>
+      <p>You've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
+      <p> Click on the link to register: </p>
+      <a href="http://localhost:5173/vendor/${stallId}/login">Register Your Stall</a>`,
+    };
+
+    // send the email
+    await transporter.sendMail(mailOptions)
+    await Stall.findByIdAndUpdate(stallId, { onboardingStatus: "inviteSent" });
+    res.status(200).json({ message: "Email sent successfully and onboardingStatus changed" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error." });
+  }
+}
+
+
+//
+// For Vendors
+//
+//signupVendor
+export const signupVendor = async (req, res) => {
+  const { fullName, email, password } = req.body;
+  const {stallId} = req.params;
+
+  try {
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    //hash passwords
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
+    }
+    //checking there's already a user with same email
+    const user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: "Email already in use." });
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      fullname: fullName,
+      email: email,
+      password: hashedPassword,
+      role: "Vendor", // <--- main differences from regular signup--vv
+      stalls: [stallId]  // <-- since they are signing up, setting the stalls array to stallId
+
+    });
+
+    if (newUser) {
+      //generate jwt token
+      generateToken(newUser._id, res);
+      await newUser.save();
+
+      res.status(201).json({
+        _id: newUser._id,
+        fullName: newUser.fullname,
+        email: newUser.email,
+        profilePic: newUser.profilePic,
+      });
+    } else {
+      res.status(400).json({ message: "Invalid user data." });
+    }
+  } catch (error) {
+    console.log("Error in signup controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };

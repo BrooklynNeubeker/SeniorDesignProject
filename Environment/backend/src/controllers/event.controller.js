@@ -4,6 +4,7 @@ import eventMap from "../models/eventMap.model.js";
 import stall from "../models/stall.model.js";
 import menuItem from "../models/menuItem.model.js";
 import jwt from "jsonwebtoken"; // Don't think we need this
+import mongoose from "mongoose";
 
 //Make an event object and save it to the database. Must pass event name, location, start date, start time, end date, and end time.
 export const createEvent = async (req, res) => {
@@ -76,6 +77,19 @@ export const getMyEvents = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const getEventById = async (req, res) => {
+    console.log("in getEventById");
+    try{
+        const {eventId} = req.params
+        const event = await Event.findById( eventId) ;
+        res.status(200).json(event);
+    } catch (error) {
+        console.error("getEventById error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+
+}
 
 // This is untested currently
 export const updateEvent = async (req, res) => {
@@ -156,6 +170,29 @@ export const deleteStall = async (req, res) => {
     }
 };
 
+export const updateStall = async (req,res) => {
+    const {description, vendor, stallType, tagList} = req.body;
+    const {stallId} = req.params;
+    try {
+        const updatedStall = await stall.updateOne(
+            {_id: stallId},
+            {$set: {
+                description: description,
+                vendor: vendor,
+                onboardingStatus: "vendorRegistered",
+                stallType: stallType,
+                tagList: tagList,
+                //menu: menu
+            }}
+        );
+        console.log("Stall updated");
+        res.status(200).json(updatedStall)
+    }catch (error) {
+        console.error("updateStall error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 //get stalls
 export const getMyStalls = async (req, res) => {
     try {
@@ -166,6 +203,18 @@ export const getMyStalls = async (req, res) => {
         res.status(200).json(stalls);
     } catch (error) {
         console.error("getMyStalls error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+export const getStall = async (req, res) => {
+    console.log("in getStall")
+        try {
+        const {stallId} = req.params 
+        const currentStall = await stall.findById(stallId);
+        res.status(200).json(currentStall);
+    } catch (error) {
+        console.error("getStall error:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
