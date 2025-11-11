@@ -5,12 +5,6 @@ import { LogOut, MapPin, Settings, User, MessageSquareMore } from "lucide-react"
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
   
-  // let userRole;
-  // if(authUser){
-  //   userRole=authUser.role
-  // }
-
-
   return (
     <header
       className="bg-base-100 borderb border-base-300 fixed w-full top-0 z-40 
