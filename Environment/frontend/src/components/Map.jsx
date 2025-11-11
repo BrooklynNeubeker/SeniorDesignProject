@@ -5,7 +5,7 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 
-const Map = ({ structures, removeStructure }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const baseZoom = 19
@@ -19,8 +19,8 @@ const Map = ({ structures, removeStructure }) => {
         useEffect(() => {
             const scale = L.control.scale({
                 position: "bottomright",
-                metric: true,
-                imperial: false,
+                imperial: imperial,
+                metric: !imperial,
                 maxWidth: 200,
             });
             scale.addTo(map);
@@ -32,13 +32,12 @@ const Map = ({ structures, removeStructure }) => {
     // Grid lines on map
     const MapWithGrid = () =>{
         const map = useMap();
-
         return <CanvasLayer map={map}/>
     }
 
     return (
         <MapContainer 
-            center={[36.110013, -115.140546]} 
+            center={center} 
             zoom={baseZoom}
             style={{height: "100vh"}}
             zoomControl={false}
@@ -46,7 +45,6 @@ const Map = ({ structures, removeStructure }) => {
             maxZoom={22}
             minZoom={18}
         >
-            <Search apiKey={"annregalab@gmail.com"}/>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -54,6 +52,8 @@ const Map = ({ structures, removeStructure }) => {
                 maxZoom={22}
                 minZoom={18}
             />
+
+            <Search apiKey={"annregalab@gmail.com"} baseZoom={baseZoom}/>
 
             <ZoomControl position="bottomleft" />   {/* + and - to zoom in and out */}
             
@@ -68,6 +68,8 @@ const Map = ({ structures, removeStructure }) => {
                     onOpen={() => setCurrentlyOpen(index)}
                     onClose={() => setCurrentlyOpen(null)}
                     removeStructure={removeStructure}
+                    imperial={imperial}
+                    saveBtnRef={saveBtnRef}
                 />
             ))}
 

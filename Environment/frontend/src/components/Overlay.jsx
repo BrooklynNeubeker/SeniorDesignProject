@@ -1,15 +1,18 @@
+import { useState, useRef } from "react";
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useGlobal } from "./GlobalContext";
 
 const Overlay = ({ addStructure }) => {
     const { id } = useParams();
-    
+    const {imperial, setImperial} = useGlobal();
+
     return (
         <div>
             {/* Back to dashboard */}
-            <div className="fixed top-20 left-4 pointer-events-auto z-14">
+            <div className="fixed top-20 left-4 pointer-events-auto z-14 flex gap-4">
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                     <span>Back to Dashboard</span>
                 </Link>
@@ -32,11 +35,19 @@ const Overlay = ({ addStructure }) => {
             {/* "Add Objects" sidebar drawer */}
             <div className="drawer drawer-end fixed pointer-events-auto">
 
-
                 <input id="add-objects-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content pt-20 fixed right-4">
+                <div className="drawer-content top-20 fixed right-4">
                     {/* "Add Objects" button */}
                     <label htmlFor="add-objects-drawer" className="drawer-button btn btn-primary">Add Objects</label>
+
+                    {/* Imperial/metric toggle */}
+                    <div className="fixed bottom-12 right-4 pointer-events-auto z-14 rounded border border-base-400 bg-base-100 p-1">
+                        <label className="label text-base-content">
+                            Imperial
+                            <input type="checkbox" className="toggle text-base-content bg-base-100/50" checked={!imperial} onChange={() => setImperial((prev) => !prev)} />
+                            Metric
+                        </label>
+                    </div>
                 </div>
 
 

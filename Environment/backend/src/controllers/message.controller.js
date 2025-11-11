@@ -15,7 +15,7 @@ export const getUsersForSideBar = async (req, res) => {
     res.status(200).json(filteredUsers);
   } catch (error) {
     console.log("Error in getUserForSideZBar: ", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -34,7 +34,7 @@ export const getMessages = async (req, res) => {
     res.status(200).json(messages);
   } catch (error) {
     console.log("Error in getMessages: ", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -69,6 +69,6 @@ export const sendMessages = async (req, res) => {
     res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessages: ", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal server error." });
   }
 };

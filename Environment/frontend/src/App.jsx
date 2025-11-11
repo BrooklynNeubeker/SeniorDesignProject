@@ -25,6 +25,7 @@ import { ResetPass } from "./pages/ResetPass";
 import EventDashboardPage from "./pages/EventDashboardPage";
 import StallsPage from "./pages/StallsPage";
 import CheckPaths from "./components/CheckPaths";
+import { GlobalProvider } from "./components/GlobalContext";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -45,46 +46,47 @@ const App = () => {
     );
 
   return (
-    <div data-theme={theme} className="bg-transparent">
-      <CheckPaths className="bg-transparent"/>
-      <Routes>
-        <Route
-          path="/"
-          element={authUser ? <HomePage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
-        />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route
-          path="/profile"
-          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
-        />
+    <GlobalProvider>
+      <div data-theme={theme} className="bg-transparent">
+        <CheckPaths className="bg-transparent"/>
+        <Routes>
+          <Route
+            path="/"
+            element={authUser ? <HomePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/signup"
+            element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route
+            path="/profile"
+            element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+          />
 
-        <Route
-          path="/event/:id/dashboard/site-plan"
-          element={authUser ? <SitePlanPage /> : <Navigate to="/login" />}
-        />
+          <Route
+            path="/event/:id/dashboard/site-plan"
+            element={authUser ? <SitePlanPage /> : <Navigate to="/login" />}
+          />
 
-        <Route
-          path="/event/:id/dashboard"
-          element={authUser ? <EventDashboardPage /> : <Navigate to="/login" />}
-        />
+          <Route
+            path="/event/:id/dashboard"
+            element={authUser ? <EventDashboardPage /> : <Navigate to="/login" />}
+          />
 
-        <Route
-          path="/event/create-event"
-          element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
-        />
+          <Route
+            path="/event/create-event"
+            element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
+          />
 
-        <Route
-          path="/event/:id/dashboard/stalls"
-          element={authUser ? <StallsPage /> : <Navigate to="/login" />}
-        />
+          <Route
+            path="/event/:id/dashboard/stalls"
+            element={authUser ? <StallsPage /> : <Navigate to="/login" />}
+          />
 
         <Route path="/forget-password" element={<ForgetPass />}></Route>
         <Route path="/reset-password/:token" element={<ResetPass />}></Route>
@@ -120,8 +122,9 @@ const App = () => {
         />
       </Routes>
 
-      <Toaster />
-    </div>
+        <Toaster />
+      </div>
+    </GlobalProvider>
   );
 };
 
