@@ -4,6 +4,7 @@ import eventMap from "../models/eventMap.model.js";
 import stall from "../models/stall.model.js";
 import menuItem from "../models/menuItem.model.js";
 import jwt from "jsonwebtoken"; // Don't think we need this
+import mongoose from "mongoose";
 
 //Make an event object and save it to the database. Must pass event name, location, start date, start time, end date, and end time.
 export const createEvent = async (req, res) => {
@@ -31,7 +32,7 @@ export const createEvent = async (req, res) => {
         }
     catch (error) {
         console.log("Error in create event controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -46,13 +47,13 @@ export const deleteEvent = async (req, res) => {
         if (!event) {
         return res.status(404).json({
             success: false,
-            message: "Event not found",
+            message: "Event not found.",
         });
         }
 
         return res.status(200).json({
         success: true,
-        message: "Event deleted successfully",
+        message: "Event deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting event:", error);
@@ -73,9 +74,22 @@ export const getMyEvents = async (req, res) => {
     res.status(200).json(events);
   } catch (error) {
     console.error("getMyEvents error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal server error." });
   }
 };
+
+export const getEventById = async (req, res) => {
+    console.log("in getEventById");
+    try{
+        const {eventId} = req.params
+        const event = await Event.findById( eventId) ;
+        res.status(200).json(event);
+    } catch (error) {
+        console.error("getEventById error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+
+}
 
 // This is untested currently
 export const updateEvent = async (req, res) => {
@@ -100,7 +114,7 @@ export const updateEvent = async (req, res) => {
         res.status(200).json(updatedEvent);
     } catch(error){
         console.error("updateEvent error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
     }
 };
 // export const updateEvent = async (req, res) => {
@@ -123,7 +137,7 @@ export const createStall = async (req, res) => {
         }
     catch (error) {
         console.log("Error in create stall controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -140,12 +154,12 @@ export const deleteStall = async (req, res) => {
         if (!targetStall) {
         return res.status(404).json({
             success: false,
-            message: "Stall not found",
+            message: "Stall not found.",
         });
         }
         return res.status(200).json({
             success: true,
-            message: "Stall deleted successfully",
+            message: "Stall deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting stall:", error);
@@ -155,6 +169,29 @@ export const deleteStall = async (req, res) => {
         });
     }
 };
+
+export const updateStall = async (req,res) => {
+    const {description, vendor, stallType, tagList} = req.body;
+    const {stallId} = req.params;
+    try {
+        const updatedStall = await stall.updateOne(
+            {_id: stallId},
+            {$set: {
+                description: description,
+                vendor: vendor,
+                onboardingStatus: "vendorRegistered",
+                stallType: stallType,
+                tagList: tagList,
+                //menu: menu
+            }}
+        );
+        console.log("Stall updated");
+        res.status(200).json(updatedStall)
+    }catch (error) {
+        console.error("updateStall error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
 
 //get stalls
 export const getMyStalls = async (req, res) => {
@@ -166,6 +203,18 @@ export const getMyStalls = async (req, res) => {
         res.status(200).json(stalls);
     } catch (error) {
         console.error("getMyStalls error:", error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+export const getStall = async (req, res) => {
+    console.log("in getStall")
+        try {
+        const {stallId} = req.params 
+        const currentStall = await stall.findById(stallId);
+        res.status(200).json(currentStall);
+    } catch (error) {
+        console.error("getStall error:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -187,7 +236,7 @@ export const createItineraryItem = async (req,res) => {
         }
     catch (error) {
         console.log("Error in create itinerary controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -200,12 +249,12 @@ export const deleteItineraryItem = async (req,res) => {
         if (!itinerary) {
             return res.status(404).json({
                 success: false,
-                message: "Event itinerary item not found",
+                message: "Event itinerary item not found.",
             });
         }
         return res.status(200).json({
             success: true,
-            message: "Event itinerary deleted successfully",
+            message: "Event itinerary deleted successfull.",
         });
     }catch(error){
         console.error("Error deleting event itinerary:", error);
@@ -225,14 +274,14 @@ export const getMyItineraryItems = async (req,res) => {
         res.status(200).json(itineraries);
     } catch (error) {
         console.error("getMyItineraryItems error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
   }
 };
 
 //EVENTMAP CONTROLLERS ARE UNTESTED!
 //Create a map object that saves center coordinates, zoom level, event ID, and an array of markers. See eventMap model to see fields of marker, all are optional with a default of null. 
 export const createEventMap = async (req,res) => {
-      const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body; // get the required itinerary
+      const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body[0]; // get the required itinerary
     try {
         //Markers should be optional for making a new map object, since they may want to save just where the event will be
         if (!Array.isArray(mapMarkers) || !mapMarkers.length){
@@ -251,7 +300,7 @@ export const createEventMap = async (req,res) => {
         }
     catch (error) {
         console.log("Error in create map controller", error.message);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({message: "Internal server error."});
     }
 };
 
@@ -259,13 +308,13 @@ export const createEventMap = async (req,res) => {
 export const getMyEventMap = async (req,res) => {
   try {
     const eventId = req.params.id; 
-    const eventMap = await Event
+    const myMap = await eventMap
       .find({ eventID: eventId })
       .sort({ createdAt: -1 }); // Should only be one, but newest first 
-    res.status(200).json(eventMap);
+    res.status(200).json(myMap);
   } catch (error) {
     console.error("getMyEventMap error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal server error." });
   }
 
 };
@@ -275,16 +324,17 @@ export const deleteEventMap = async (req,res) => {
     try {
         //console.log("DELETE /events/:id", { params: req.params, req.body }); // debug
         const { id } = req.params; 
-        const map = await eventMap.findByIdAndDelete(id);
+        console.log(id);
+        const map = await eventMap.deleteOne({eventID: id}); // Delete by event ID
         if (!map) {
         return res.status(404).json({
             success: false,
-            message: "Event not found",
+            message: "Event not found.",
         });
         }
         return res.status(200).json({
         success: true,
-        message: "Event deleted successfully",
+        message: "Event deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting event map:", error);
@@ -298,11 +348,11 @@ export const deleteEventMap = async (req,res) => {
 //Update an existing map object
 export const updateEventMap = async (req, res) => {
     // console.log("We are trying to update the event!");
-    const{mapCenter, eventID, zoomLevel, mapMarkers} = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item (THIS WAS TRUE FOR EVENTS, MAY NOT BE TRUE FOR EVENT MAP SINCE IT'S ONLY ONE!!! CHECK HERE FOR ERROR)
+    const{ mapCenter, eventID, zoomLevel, mapMarkers } = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item (THIS WAS TRUE FOR EVENTS, MAY NOT BE TRUE FOR EVENT MAP SINCE IT'S ONLY ONE!!! CHECK HERE FOR ERROR)
     // console.log(req.body[0].eventName);
-    const {id} = req.params; // pass the event object ID
+    const { mapId } = req.params; // pass the event object ID
     try {
-        const updatedMap = await eventMap.updateOne({_id: id}, {$set: {
+        const updatedMap = await eventMap.updateOne({_id: mapId}, {$set: {
         mapCenter: mapCenter,
         eventID: eventID,
         zoomLevel: zoomLevel,
@@ -313,7 +363,7 @@ export const updateEventMap = async (req, res) => {
         res.status(200).json(updatedMap);
     } catch(error){
         console.error("updateEventMap error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal server error." });
     }
 
 };

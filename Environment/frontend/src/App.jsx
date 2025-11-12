@@ -8,10 +8,17 @@ import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
+import VendorLoginPage from "./pages/VendorLoginPage";
+import VendorSignupPage from "./pages/VendorSignupPage";
+import VendorRegisterStallPage from "./pages/VendorRegisterStallPage";
+import VendorStallPage from "./pages/VendorStallPage";
+import VendorHomePage from "./pages/VendorHomePage";
 import ProfilePage from "./pages/ProfilePage";
 import SitePlanPage from "./pages/SitePlanPage";
 import ChatPage from "./pages/ChatPage";
 import CreateEventPage from "./pages/CreateEventPage";
+import PreviewPage from "./pages/PreviewPage";
+import PublishedPage from "./pages/PublishedPage";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -74,6 +81,16 @@ const App = () => {
           />
 
           <Route
+            path="/event/:id/dashboard/preview"
+            element={authUser ? <PreviewPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="/event/:id/viewmap"
+            element={authUser ? <PublishedPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
             path="/event/create-event"
             element={authUser ? <CreateEventPage /> : <Navigate to="/login" />}
           />
@@ -83,14 +100,39 @@ const App = () => {
             element={authUser ? <StallsPage /> : <Navigate to="/login" />}
           />
 
-          <Route path="/forget-password" element={<ForgetPass />}></Route>
-          <Route path="/reset-password/:token" element={<ResetPass />}></Route>
-
-          <Route
-            path="/chat"
-            element={authUser ? <ChatPage /> : <Navigate to="/login" />}
-          />
-        </Routes>
+        <Route path="/forget-password" element={<ForgetPass />}></Route>
+        <Route path="/reset-password/:token" element={<ResetPass />}></Route>
+        
+        {/* Vendors only  */}
+        <Route 
+          path="/vendor/:stallId/signup" 
+          element={<VendorSignupPage />}
+        />{/* ^^^ Email link signup ^^^ */}
+        <Route 
+          path="/vendor/:stallId/login" 
+          element={<VendorLoginPage/>}
+        />{/* ^^^ Email link login ^^^ */}
+        <Route
+          path="/vendor/login"
+          element={<VendorLoginPage/>}
+        /> {/* ^^^ General Vendor login ^^^ */}
+        <Route
+          path="/vendor/register-stall/:stallId"
+          element= {authUser ? <VendorRegisterStallPage/> : <Navigate to= "/vendor/login" />}
+        />
+        <Route
+          path="/vendor/:stallId"
+          element= {authUser ? <VendorStallPage/> : <Navigate to= "/vendor/login" />}
+        />
+        <Route
+          path="/vendor"
+          element= {authUser ? <VendorHomePage/> : <Navigate to= "/vendor/login" />}
+        />
+        <Route
+          path="/chat"
+          element={authUser ? <ChatPage /> : <Navigate to="/login" />}
+        />
+      </Routes>
 
         <Toaster />
       </div>

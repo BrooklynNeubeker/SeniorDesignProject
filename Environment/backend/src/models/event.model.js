@@ -12,11 +12,6 @@ const eventSchema = new mongoose.Schema(
             type: String, 
             required: true
         },
-        // eventID: { // we can use mongoDB's generated id
-        //     type: mongoose.Schema.Types.ObjectId,//mongoose.ObjectID, //I believe to populate this :  const event = new eventSchema(); event.eventId = new mongoose.Types.ObjectId()
-        //     // required: true, -> think this must be set after creating the object, so it cannot be required
-        //     unique: true
-        // },
         location: {
             type: String,
             required:true,

@@ -4,7 +4,7 @@ import { LogOut, MapPin, Settings, User, MessageSquareMore } from "lucide-react"
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
-
+  
   return (
     <header
       className="bg-base-100 borderb border-base-300 fixed w-full top-0 z-40 
@@ -23,7 +23,11 @@ const Navbar = () => {
                   src="/logo3t.png" alt="a tent with a map in inside"
                 ></img>
               </div>
-              <h1 className="text-lg font-bold">AccessMap</h1>
+              <div>
+                <h1 className="text-lg font-bold">AccessMap</h1>
+                <p className="text-md text-base-content/70"> {authUser?.role}</p>
+              </div>
+             
             </Link>
           </div>
 
@@ -37,7 +41,10 @@ const Navbar = () => {
             <>
               {authUser && (
                 <>
-                  <Link to={'/'} className={`btn btn-sm gap-2 transition-colors`} >
+
+                  <Link 
+                    to={authUser?.role === "Coordinator" ? "/" : "/vendor"}
+                    className={`btn btn-sm gap-2 transition-colors`} >
                     <MapPin className="w-4 h-4" />
                     <span className="hidden sm:inline">My Events</span>
                   </Link>

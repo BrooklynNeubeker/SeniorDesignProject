@@ -1,16 +1,159 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Map from '../components/Map';
 import Overlay from '../components/Overlay';
 import { useGlobal } from "../components/GlobalContext";
 import DefaultMap from '../components/DefaultMap';
+import {useParams} from "react-router-dom";
+import {axiosInstance} from "../lib/axios";
+import { map } from 'leaflet';
 
 const SitePlanPage = () => {
-    const { imperial, location } = useGlobal();
-
+    const { imperial, location, zoom } = useGlobal();
     const saveBtnRef = useRef();
-
+    const{ id } = useParams();
+    // console.log(location);
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const [myMap, setMap] = useState([]);
+    // const [newMap, setNewMap] = useState([{mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
+
+    /* useEffect(() => {
+        if (myMap && myMap.length > 0) {
+            console.log("Map updated:", myMap);
+            console.log("Map ID:", myMap[0]._id);
+        }
+    }, [myMap]); */
+
+    const fetchMyMap = async () => {
+        const payload = {
+            mapCenter: { x: location.lng, y: location.lat },
+            eventID: id,
+            zoomLevel: zoom,
+            mapMarkers: structures
+        }
+
+        try {
+            let res = await axiosInstance.get(`/events/${id}/site-plan`);
+            if (res.data.length === 0) {
+                res = await axiosInstance.post(`/events/${id}/site-plan`, [payload]);
+                console.log("Created new map:", res.data);
+                fetchMyMap();
+            }
+            else {
+                console.log("Fetched existing map:", res.data);
+            }
+            setMap(res.data || []);
+
+            if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
+        } catch (error) {
+            console.error("Failed to load map:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    let hasFetched = false;
+
+    useEffect(() => {
+        if (!hasFetched) {
+            fetchMyMap();
+            hasFetched = true;
+        }
+    }, []);
+
+
+    const saveEventMap = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            mapCenter: { x: location.lng, y: location.lat },
+            eventID: id,
+            zoomLevel: zoom,
+            mapMarkers: structures
+        }
+
+        setMap(prev => [...prev, payload])
+
+        try {
+            axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
+            alert("Map updated successfully");
+            //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
+        } catch(error){
+            console.error("Failed to update map", error);
+        }
+
+        let res = await axiosInstance.get(`/events/${id}/site-plan`);
+        setMap(res.data)
+    }
+
+    
+    /* var currMap = myMap;
+
+    const updateCurr = async() => {
+        currMap = myMap;
+    }
+
+    // Gets the updated event, changes the data on the database
+    const saveEventMap = async (e) => {
+        e.preventDefault();
+        //If no current map, set new map
+        // console.log(currMap);
+        var makeNew = false;
+        if(currMap.length === 0){
+            setNewMap(prevMapState => [...prevMapState, {mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
+            console.log("Trying to make new map!");
+            makeNew = true;
+        } else {
+            setMap(prevMapState => [...prevMapState, {mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: [] }]);
+            console.log("Trying to use existing map!");
+
+        }
+        var payload = null;
+        //If new, make one out of newmap, if not use old map
+        if (makeNew){
+            payload = newMap.map(({mapCenter, eventID, zoomLevel, mapMarkers}) => ({ 
+                mapCenter,
+                eventID,
+                zoomLevel,
+                mapMarkers,
+            }));
+        } else {
+            payload = currMap.map(({mapCenter, eventID, zoomLevel, mapMarkers}) => ({ 
+                mapCenter,
+                eventID,
+                zoomLevel,
+                mapMarkers,
+            }));
+        }
+        // console.log(payload);
+
+        //If new map, create new, if old map, update
+        if (makeNew){
+            try {
+                await axiosInstance.post(`/events/${id}/site-plan/`, payload);
+                alert("Map created successfully");
+                //Anything else?
+                } catch(error){
+                    console.error("Failed to create map", error);
+            }
+        } else {
+            try {
+                await axiosInstance.put(`/events/${id}/site-plan/${currMap._id}`, payload);
+                alert("Map updated successfully");
+                //Anything else?
+                } catch(error){
+                    console.error("Failed to update map", error);
+            }
+
+        }
+        //If we made a new one or updated, fetch map and update currMap
+        await fetchMyMap();
+        updateCurr;
+    };
+
+    */
     
     //checking if there is a saved map
     //const isThereSavedMap = useState(false);
@@ -50,9 +193,17 @@ const SitePlanPage = () => {
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef}/>  
+                <Overlay addStructure={addStructure}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
+            
+            {/* Save EventMap*/}
+            <div className="fixed top-32 left-4 pointer-events-auto z-14">
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-primary'}>
+                    <span>Save</span>
+                </button>
+            </div>
+
         </div>
     );
 };

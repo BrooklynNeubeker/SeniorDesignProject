@@ -9,9 +9,9 @@ export function GlobalProvider({ children }) {
       lng: -115.140546,
       label: "",
     });
-
+  const [zoom, setZoom] = useState(19);
   return (
-    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation }}>
+    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation, zoom, setZoom }}>
       {children}
     </GlobalContext.Provider>
   );

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useGlobal } from "./GlobalContext";
 
-const Overlay = ({ addStructure, saveBtnRef }) => {
+const Overlay = ({ addStructure }) => {
     const { id } = useParams();
     const {imperial, setImperial} = useGlobal();
 
@@ -16,7 +16,6 @@ const Overlay = ({ addStructure, saveBtnRef }) => {
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                     <span>Back to Dashboard</span>
                 </Link>
-                <button ref={saveBtnRef} class="btn btn-secondary">Save Changes</button>
             </div>
 
             {/*
