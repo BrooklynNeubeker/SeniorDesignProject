@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -41,9 +41,11 @@ const EventDashboardPage = () => {
       const event = events.filter(eve => 
         eve._id === id
       );
-      const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID }) => ({ 
+      const payload = event.map(({eventName, location, lat, lng, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID }) => ({ 
         eventName,
         location,
+        lat,
+        lng,
         startDate,
         startTime,
         endDate,
