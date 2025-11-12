@@ -18,8 +18,6 @@ const CreateEventPage = () => {
   const [formData, setFormData] = useState({
     eventName: "",
     location: "",
-    lat: "",
-    lng: "",
     startDate: "",
     startTime: "",
     endDate: "",
@@ -27,10 +25,17 @@ const CreateEventPage = () => {
     eventCoordinatorName: "",
     eventCoordinatorID: "",
   });
+
+  //searches is the users search, setSearches is the list of items that match
   const [searches, setSearches] = useState([]);
 
   const navigate = useNavigate();
 
+  /*
+    This function awaits for the user's query to be checked with OSM
+    searching provider and it returns a list of results
+    ie. UNL could be UNLV or University of Nebraska etc
+  */
   const handleSearch = async (query) => {
     //error checking 
     try {
@@ -41,15 +46,19 @@ const CreateEventPage = () => {
     }
   };
 
+  /*
+    This function takes the search from useState and saves it into the 
+    formdata
+  */
   const handleSelect = (search) => {
-    //setting the data for lat/lng for formdata
+    //setting the data for lat/lng to the form
     setFormData({
       ...formData,
-      location: search.label,
-      lat: search.y,
-      lng: search.x,
-    
+      //saving the location data
+      location: search.label,    
     });
+    //this is to make the dropdown/ results to be null/ hide when
+    // the user finds the location that they want.
     setSearches([]);
   };
 
