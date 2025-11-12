@@ -3,195 +3,265 @@ import { Link, useLocation } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useGlobal } from "../components/GlobalContext";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
 
 const EventDashboardPage = () => {
+  const { setLocation } = useGlobal();
+
+  const provider = new OpenStreetMapProvider({
+    params: {
+      email: "annregalab@gmail.com",
+    },
+  });
+
   const { id } = useParams(); // id = :id in route
   console.log("Loaded event ID:", id);
   const navigate = useNavigate();
 
+  const [searches, setSearches] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMyEvents = async () => {
-      try {
+    try {
       const res = await axiosInstance.get("/events");
       setEvents(res.data || []);
-      } catch (error) {
+    } catch (error) {
       console.error("Failed to load events:", error);
-      } finally {
+    } finally {
       setLoading(false);
-      }
+    }
   };
 
   useEffect(() => {
-      fetchMyEvents();
+    fetchMyEvents();
   }, []);
 
   // Updates the event if fields are changed
-  const updateEvents = (id, field, value) => 
-    setEvents(prevEventState => prevEventState.map(row => (row.id === id ? {...row, [field]:value } : row)));
+  const updateEvents = (id, field, value) =>
+    setEvents((prevEventState) =>
+      prevEventState.map((row) =>
+        row.id === id ? { ...row, [field]: value } : row
+      )
+    );
 
-  const event = events.filter(ev =>
-    ev._id === id
-  );
+  const event = events.filter((ev) => ev._id === id);
 
-// Gets the updated event, changes the data on the database
+  const handleSearch = async (query) => {
+    //error checking
+    try {
+      const results = await provider.search({ query });
+      setSearches(results);
+    } catch (err) {
+      console.error("OSM search error:", err);
+    }
+  };
+
+  /*
+    This function takes the search from useState and saves it into the 
+    formdata
+  */
+  const handleSelect = (search) => {
+    //setting the data for lat/lng to the form
+    setLocation({
+      lat: search.y,
+      lng: search.x,
+      label: search.label,
+    });
+    //this is to make the dropdown/ results to be null/ hide when
+    // the user finds the location that they want.
+    setSearches([]);
+  };
+  // Gets the updated event, changes the data on the database
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      const event = events.filter(eve => 
-        eve._id === id
-      );
-      const payload = event.map(({eventName, location, lat, lng, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID }) => ({ 
+    e.preventDefault();
+    const event = events.filter((eve) => eve._id === id);
+    const payload = event.map(
+      ({
         eventName,
         location,
-        lat,
-        lng,
         startDate,
         startTime,
         endDate,
         endTime,
         eventCoordinatorName,
-        eventCoordinatorID
-      }));
-      // console.log(payload);
-      try {
-        await axiosInstance.put(`/events/${id}`, payload);
-        alert("Event updated successfully");
-        //Anything else?
-      } catch(error){
-        console.error("Failed to update event", err);
-      }
+        eventCoordinatorID,
+      }) => ({
+        eventName,
+        location,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        eventCoordinatorName,
+        eventCoordinatorID,
+      })
+    );
+    // console.log(payload);
+    try {
+      await axiosInstance.put(`/events/${id}`, payload);
+      alert("Event updated successfully");
+      //Anything else?
+    } catch (error) {
+      console.error("Failed to update event", err);
+    }
   };
   let listEventInfo = (
     <ul className="space-y-3">
-    {event.map(ev => (
+      {event.map((ev) => (
         <li key={ev._id} className="flex flex-col justify-left gap-x-6 p-3">
-            <form onSubmit = {handleSubmit} className = "space-y-6">
-              {/* Event name */}
-              
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Name</span>
-                </label>
-                <div className="relative">
-                  <input
-                    className={`input input-bordered w-full`}
-                    placeholder={ev.eventName} //Show the existing event instead of an "enter"
-                    value={ev.eventName}
-                    required={true}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "eventName", e.target.value)
-                    }
-                  />
-                </div>
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Event name */}
 
-              {/* Event Location */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Location</span>
-                </label>
-                <div className="relative">
-                  <input
-                    className={`input input-bordered w-full`}
-                    placeholder={ev.location}
-                    value={ev.location}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "location", e.target.value)
-                    }
-                  />
-                </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Event Name</span>
+              </label>
+              <div className="relative">
+                <input
+                  className={`input input-bordered w-full`}
+                  placeholder={ev.eventName} //Show the existing event instead of an "enter"
+                  value={ev.eventName}
+                  required={true}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "eventName", e.target.value)
+                  }
+                />
               </div>
+            </div>
 
-              {/* Start date & time */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Start Date</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    className={`input input-bordered w-full`}
-                    placeholder={ev.startDate}
-                    value={ev.startDate}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "startDate", e.target.value)
-                    }
-                  />
-                  <input
-                    type="time"
-                    className={`input input-bordered w-full`}
-                    placeholder={ev.startTime}
-                    value={ev.startTime}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "startTime", e.target.value)
-                    }
-                  />
-                </div>
+            {/* Event Location */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Event Location</span>
+              </label>
+              <div className="relative">
+                <input
+                  className={`input input-bordered w-full`}
+                  placeholder={ev.location}
+                  value={ev.location}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "location", e.target.value)
+                  }
+                />
+                {/* Searching */}
+                {searches.length > 0 && (
+                  <ul className="absolute bg-white border border-gray-300 w-full mt-1 rounded-md shadow-lg z-10">
+                    {searches.map((result, idx) => (
+                      <li
+                        key={idx}
+                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleSelect(result)}
+                      >
+                        {result.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
+            </div>
 
-              {/* End date & time */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">End Date</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    className={`input input-bordered w-full`}
-                    placeholder="Enter end date"
-                    value={ev.endDate}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "endDate", e.target.value)
-                    }
-                  />
-                  <input
-                    type="time"
-                    className={`input input-bordered w-full`}
-                    placeholder="Enter end time"
-                    value={ev.endTime}
-                    onChange={(e) =>
-                      updateEvents(ev.id, "endTime", e.target.value)
-                    }
-                  />
-                </div>
+            {/* Start date & time */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Start Date</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="date"
+                  className={`input input-bordered w-full`}
+                  placeholder={ev.startDate}
+                  value={ev.startDate}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "startDate", e.target.value)
+                  }
+                />
+                <input
+                  type="time"
+                  className={`input input-bordered w-full`}
+                  placeholder={ev.startTime}
+                  value={ev.startTime}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "startTime", e.target.value)
+                  }
+                />
               </div>
+            </div>
 
-            </form>
+            {/* End date & time */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">End Date</span>
+              </label>
+              <div className="relative">
+                <input
+                  type="date"
+                  className={`input input-bordered w-full`}
+                  placeholder="Enter end date"
+                  value={ev.endDate}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "endDate", e.target.value)
+                  }
+                />
+                <input
+                  type="time"
+                  className={`input input-bordered w-full`}
+                  placeholder="Enter end time"
+                  value={ev.endTime}
+                  onChange={(e) =>
+                    updateEvents(ev.id, "endTime", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          </form>
         </li>
-    ))}
-    </ul>)
+      ))}
+    </ul>
+  );
 
-  return(
+  return (
     <div className="h-screen pt-20">
       <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-          <div className="max-w-md justify-left space-y-6">
-            <h1 className="text-2xl font-bold">Event Dashboard </h1>
-            
-            {listEventInfo}   
-            
-            <div className="flex items-center gap-2">
-              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}> 
-                    <span>View Event Layout</span>
-              </Link>
-              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
-                    <span>View Stalls</span>
-              </Link>
-              <button type="submit" className="btn btn-primary btn-outline">
-                Save Changes
-              </button>
-            </div>
+        <div className="max-w-md justify-left space-y-6">
+          <h1 className="text-2xl font-bold">Event Dashboard </h1>
 
-            <div className="flex items-center gap-2">
-              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary btn-outline`}> 
-                    <span>Preview</span>
-              </Link>
-              <Link to={`/event/${id}/viewmap`} className={`btn btn-primary btn-outline`}>
-                    <span>View Published Map</span>
-              </Link>
-            </div>
+          {listEventInfo}
 
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/event/${id}/dashboard/site-plan`}
+              className={`btn btn-primary btn-outline`}
+            >
+              <span>View Event Layout</span>
+            </Link>
+            <Link
+              to={`/event/${id}/dashboard/stalls`}
+              className={`btn btn-primary btn-outline`}
+            >
+              <span>View Stalls</span>
+            </Link>
+            <button type="submit" className="btn btn-primary btn-outline">
+              Save Changes
+            </button>
           </div>
+
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/event/${id}/dashboard/preview`}
+              className={`btn btn-primary btn-outline`}
+            >
+              <span>Preview</span>
+            </Link>
+            <Link
+              to={`/event/${id}/viewmap`}
+              className={`btn btn-primary btn-outline`}
+            >
+              <span>View Published Map</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

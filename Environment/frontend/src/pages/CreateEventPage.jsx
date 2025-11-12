@@ -4,16 +4,18 @@ import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
-
+import { useGlobal } from "../components/GlobalContext";
 
 const CreateEventPage = () => {
+  // creating global context
+  const {setLocation}= useGlobal();
   const provider = new OpenStreetMapProvider({
     params: {
       email: "annregalab@gmail.com",
     },
   });
 
-  const {authUser} = useAuthStore();
+  const { authUser } = useAuthStore();
 
   const [formData, setFormData] = useState({
     eventName: "",
@@ -37,7 +39,7 @@ const CreateEventPage = () => {
     ie. UNL could be UNLV or University of Nebraska etc
   */
   const handleSearch = async (query) => {
-    //error checking 
+    //error checking
     try {
       const results = await provider.search({ query });
       setSearches(results);
@@ -52,23 +54,23 @@ const CreateEventPage = () => {
   */
   const handleSelect = (search) => {
     //setting the data for lat/lng to the form
-    setFormData({
-      ...formData,
-      //saving the location data
-      location: search.label,    
+    setLocation({
+      lat: search.y,
+      lng: search.x,
+      label: search.label,
     });
+    
     //this is to make the dropdown/ results to be null/ hide when
     // the user finds the location that they want.
     setSearches([]);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-     const payload = { 
-        ...formData, 
-        eventCoordinatorName: authUser?.email,
-        eventCoordinatorID: authUser?._id,
-       };
+    const payload = {
+      ...formData,
+      eventCoordinatorName: authUser?.email,
+      eventCoordinatorID: authUser?._id,
+    };
     try {
       const res = await axiosInstance.post("/events", payload);
       const createdEventId = res.data._id;
@@ -121,9 +123,9 @@ const CreateEventPage = () => {
                     setFormData({ ...formData, location: e.target.value });
                   }}
                 />
-                {/* Seearching */}
+                {/* Searching */}
                 {searches.length > 0 && (
-                  <ul className="absolute bg-white border border-gray-300 w-full mt-1 rounded shadow-lg z-10">
+                  <ul className="absolute bg-white border border-gray-300 w-full mt-1 rounded-md shadow-lg z-10">
                     {searches.map((result, idx) => (
                       <li
                         key={idx}
@@ -136,9 +138,7 @@ const CreateEventPage = () => {
                   </ul>
                 )}
               </div>
-              {/*saving the longitude and latitude*/}
-              <input type="hidden" name="lat" value={formData.lat} />
-              <input type="hidden" name="lng" value={formData.lng} />
+              
             </div>
 
             {/* Start date & time */}
@@ -206,6 +206,5 @@ const CreateEventPage = () => {
     </div>
   );
 };
-
 
 export default CreateEventPage;
