@@ -29,8 +29,10 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         const latitude = markerRef.current.getLatLng().lat;
 
         // Calculate feet/meters per pixel using formula by OpenStreetMap
-        const metersPerPx = (40075016.686 * Math.cos((latitude * Math.PI) / 180)) / Math.pow(2, zoom + 8);
+        let metersPerPx = (40075016.686 * Math.cos((latitude * Math.PI) / 180)) / Math.pow(2, zoom + 8);
         //const feetPerPx = metersPerPx * 3.280839895;
+
+        if (imperial) { metersPerPx = metersPerPx * 3.280839895 }
 
         // Get number of pixels for width and length of structure
         const widthPx = structureDimensions[0] / metersPerPx;
@@ -65,7 +67,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         scaleMarkerIcon();
         map.on("zoom", scaleMarkerIcon);
         return () => map.off("zoom", scaleMarkerIcon);
-    }, [map, structureName, structureDimensions, structureOrientation]);
+    }, [map, structureName, structureDimensions, structureOrientation, imperial]);
 
     
     useEffect(() => {
@@ -77,7 +79,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             structure.position = structureLocation;
             structure.orientation = structureOrientation;
 
-            alert(`Saved: ${structure.name}`);
+            //alert(`Saved: ${structure.name}`);
         };
 
         saveBtnRef.current.addEventListener("click", handleSave);
@@ -100,7 +102,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
 
     const accessibilityTags = [
         "Wheelchair Accessible",
-        "Mobility Assistence Available",
+        "Mobility Assistance Available",
         "Sign Language Support",
         "Interpreter Available",
     ]
@@ -156,7 +158,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             {/* Stall info card */}
             {isOpen && (
 
-                <div className="flex h-screen items-center">
+                <div className="flex h-screen items-start">
                 <InfoCard 
                     structureName={structureName} 
                     setStructureName={setStructureName} 

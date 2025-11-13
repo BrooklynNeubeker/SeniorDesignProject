@@ -30,6 +30,10 @@ const eventMapSchema = new mongoose.Schema(
         mapMarkers: {
             type: Array,
             default: []
+        },
+        imperial: {
+            type: Boolean,
+            default: true
         }
         
         /* [ //Array of markers that have an x, y, stallID (optional), and string objectType for displaying the right of objectType

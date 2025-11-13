@@ -23,7 +23,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
     
     return (
         <>
-            <div className="card bg-base-100 w-75 shadow-sm m-2 z-9999">
+            <div className="card bg-base-100 w-90 shadow-sm m-2 mt-30 z-9999">
                 <div className="card-body flex gap-6">
 
                     {/* Edit stall name */}
@@ -64,7 +64,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 </select>
                                 <button className="btn ml-2" onClick={() => {
                                     if(selectedTag && selectedTag !== "custom_tag") addTag(selectedTag);
-                                }}>+</button>
+                                }}>Add Tag</button>
                             </div>
                         )}
 
@@ -139,7 +139,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                             <Trash2 size={16}/>
                             Delete
                         </button>
-                        <button className="btn btn-sm" onClick={onClose}>
+                        <button className="btn btn-sm border border-neutral-600" onClick={onClose}>
                             <X size={16} />
                             Close
                         </button>

@@ -4,11 +4,11 @@ import { MapContainer, TileLayer, ZoomControl, useMap } from "react-leaflet"
 import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
+import { useGlobal } from "./GlobalContext";
 
-const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
-    const baseZoom = 19
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
 
     // ScaleBar component, shows scale at bottom of map in meters
@@ -18,7 +18,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
         // When map is scrolled, create a new scale and add that to map
         useEffect(() => {
             const scale = L.control.scale({
-                position: "bottomright",
+                position: "bottomleft",
                 imperial: imperial,
                 metric: !imperial,
                 maxWidth: 200,
@@ -38,7 +38,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
     return (
         <MapContainer 
             center={center} 
-            zoom={baseZoom}
+            zoom={zoom}
             style={{height: "100vh"}}
             zoomControl={false}
             doubleClickZoom={false}
@@ -48,14 +48,14 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial }) => {
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxNativeZoom={baseZoom}
+                maxNativeZoom={zoom}
                 maxZoom={22}
                 minZoom={18}
             />
 
-            <Search apiKey={"annregalab@gmail.com"} baseZoom={baseZoom}/>
+            <Search apiKey={"annregalab@gmail.com"} baseZoom={zoom}/>
 
-            <ZoomControl position="bottomleft" />   {/* + and - to zoom in and out */}
+            <ZoomControl position="bottomright" />   {/* + and - to zoom in and out */}
             
             {/* Map structures prop as Structure components */}
             {/* Track which structures InfoCard is open through index and isOpen */}

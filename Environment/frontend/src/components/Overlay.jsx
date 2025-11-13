@@ -36,18 +36,19 @@ const Overlay = ({ addStructure }) => {
             <div className="drawer drawer-end fixed pointer-events-auto">
 
                 <input id="add-objects-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content top-20 fixed right-4">
-                    {/* "Add Objects" button */}
-                    <label htmlFor="add-objects-drawer" className="drawer-button btn btn-primary">Add Objects</label>
-
+                <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
                     {/* Imperial/metric toggle */}
-                    <div className="fixed bottom-12 right-4 pointer-events-auto z-14 rounded border border-base-400 bg-base-100 p-1">
+                    <div className="pointer-events-auto z-14 bg-white p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                         <label className="label text-base-content">
                             Imperial
-                            <input type="checkbox" className="toggle text-base-content bg-base-100/50" checked={!imperial} onChange={() => setImperial((prev) => !prev)} />
+                            <input type="checkbox" className="toggle checked:toggle-success"
+                            checked={!imperial} onChange={() => setImperial((prev) => !prev)} />
                             Metric
                         </label>
                     </div>
+
+                    {/* "Add Objects" button */}
+                    <label htmlFor="add-objects-drawer" className="drawer-button btn btn-primary">Add Objects</label>
                 </div>
 
 
@@ -69,18 +70,18 @@ const Overlay = ({ addStructure }) => {
                             <TileMapButton 
                             name="Food and Beverage" 
                             tagType="dietary"
-                            Icon={Utensils} bgColor="#efb100" 
-                            iconColor="text-white" 
-                            border=""
+                            Icon={Utensils} bgColor="#FFCB3D" 
+                            iconColor="text-black" 
+                            border="border border-neutral-800"
                             onClick={addStructure} />
                         </li>
                         <li>
                             <TileMapButton 
                             name="Retail" 
                             tagType="accessibility"
-                            Icon={Store} bgColor="#00c951" 
-                            iconColor="text-white" 
-                            border=""
+                            Icon={Store} bgColor="#00D390" 
+                            iconColor="text-black" 
+                            border="border border-neutral-800"
                             onClick={addStructure} />
                         </li>
                         <li>
@@ -88,7 +89,7 @@ const Overlay = ({ addStructure }) => {
                             name="Restrooms" 
                             tagType="facility"
                             Icon={Toilet} 
-                            bgColor="#1447e6" 
+                            bgColor="#1346DD" 
                             iconColor="text-white" 
                             border=""
                             onClick={addStructure} />
@@ -98,7 +99,7 @@ const Overlay = ({ addStructure }) => {
                             name="Medical" 
                             tagType="medical"
                             Icon={BriefcaseMedical} 
-                            bgColor="#fb2c36" 
+                            bgColor="#E02229" 
                             iconColor="text-white" 
                             border=""
                             onClick={addStructure} />
@@ -108,7 +109,7 @@ const Overlay = ({ addStructure }) => {
                             name="Information" 
                             tagType="accessibility"
                             Icon={Info} 
-                            bgColor="#9810fa" 
+                            bgColor="#8204DC" 
                             iconColor="text-white" 
                             border=""
                             onClick={addStructure} />
@@ -119,13 +120,13 @@ const Overlay = ({ addStructure }) => {
                             Icon={MapPin} 
                             bgColor="#ffffff" 
                             iconColor="text-black"
-                            border="border border-neutral-400"
+                            border="border border-neutral-800"
                             onClick={addStructure} />
                         </li>
 
                         {/* Close button */}
                         <li className="mb-4">
-                            <label htmlFor="add-objects-drawer" className="btn btn-md fixed left-4 bottom-4">
+                            <label htmlFor="add-objects-drawer" className="btn btn-md fixed left-4 bottom-4 border-neutral-600">
                                 <X size={18} />
                                 Close
                             </label>

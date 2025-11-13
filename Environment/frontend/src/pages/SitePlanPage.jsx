@@ -9,7 +9,7 @@ import {axiosInstance} from "../lib/axios";
 import { map } from 'leaflet';
 
 const SitePlanPage = () => {
-    const { imperial, location, setLocation, zoom} = useGlobal();
+    const { imperial, setImperial, location, setLocation, zoom} = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
     // Keep track of structures added, these will be rendered on map
@@ -30,7 +30,8 @@ const SitePlanPage = () => {
             mapCenter: { x: location.lng, y: location.lat },
             eventID: id,
             zoomLevel: zoom,
-            mapMarkers: structures
+            mapMarkers: structures,
+            imperial: imperial
         }
 
         try {
@@ -55,6 +56,9 @@ const SitePlanPage = () => {
             // console.log(location.lat);
             // console.log(location.lng);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
+
+            setImperial(res.data[0].imperial)
+
         } catch (error) {
             console.error("Failed to load map:", error);
         } finally {
@@ -78,7 +82,8 @@ const SitePlanPage = () => {
             mapCenter: { x: location.lng, y: location.lat }, //IF there was a search, use the new location.lng/location.lat. Dont' ask me why, but setting centerX or Y state using these uses whatever they were when the page loaded, not hte search, so it has to be this way...
             eventID: id,
             zoomLevel: zoom,
-            mapMarkers: structures
+            mapMarkers: structures,
+            imperial: imperial
         }
         setMap(prev => [...prev, payload])
 
@@ -131,7 +136,7 @@ const SitePlanPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]}  //Map should display at center coordinates from db by default if a search has not happened. To make these place at the right spot immediately after a search, change it back to location.lat and location.lng, but be aware that that means that when the map loads in and no search has happened, 
-                saveBtnRef={saveBtnRef} imperial={imperial}/> 
+                saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
@@ -142,8 +147,8 @@ const SitePlanPage = () => {
             </div>
             
             {/* Save EventMap*/}
-            <div className="fixed top-32 left-4 pointer-events-auto z-14">
-                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-primary'}>
+            <div className="fixed top-20 left-48 pointer-events-auto z-14">
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-success text-black'}>
                     <span>Save</span>
                 </button>
             </div>

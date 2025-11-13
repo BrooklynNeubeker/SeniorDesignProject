@@ -348,7 +348,7 @@ export const deleteEventMap = async (req,res) => {
 //Update an existing map object
 export const updateEventMap = async (req, res) => {
     // console.log("We are trying to update the event!");
-    const{ mapCenter, eventID, zoomLevel, mapMarkers } = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item (THIS WAS TRUE FOR EVENTS, MAY NOT BE TRUE FOR EVENT MAP SINCE IT'S ONLY ONE!!! CHECK HERE FOR ERROR)
+    const{ mapCenter, eventID, zoomLevel, mapMarkers, imperial } = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item (THIS WAS TRUE FOR EVENTS, MAY NOT BE TRUE FOR EVENT MAP SINCE IT'S ONLY ONE!!! CHECK HERE FOR ERROR)
     // console.log(req.body[0].eventName);
     const { mapId } = req.params; // pass the event object ID
     try {
@@ -356,7 +356,8 @@ export const updateEventMap = async (req, res) => {
         mapCenter: mapCenter,
         eventID: eventID,
         zoomLevel: zoomLevel,
-        mapMarkers: mapMarkers
+        mapMarkers: mapMarkers,
+        imperial: imperial,
         }
         });// We can add a third argument for options if we want.
         console.log("event map updated");
