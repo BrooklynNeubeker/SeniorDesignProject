@@ -3,8 +3,10 @@ import { renderToString } from "react-dom/server";
 import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
+import { useGlobal } from "../components/GlobalContext";
 
 const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef }) => {
+    const { editing } = useGlobal();
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -67,7 +69,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         return () => map.off("zoom", scaleMarkerIcon);
     }, [map, structureName, structureDimensions, structureOrientation]);
 
-    
+    if(editing){
     useEffect(() => {
         const handleSave = () => {
             structure.name = structureName;
@@ -84,6 +86,8 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         return () => saveBtnRef.current?.removeEventListener("click", handleSave);
     }, [saveBtnRef, structureName, structureDescription, structureTags, 
         structureDimensions, structureLocation, structureOrientation]);
+    }
+
 
 
 
@@ -143,7 +147,8 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
-            <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
+            {editing && (
+                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
                         dragend: (e) => {
@@ -152,9 +157,22 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                         },
                     }}
             />
+            )}
+            {!editing && (
+                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={false} 
+                    eventHandlers={{
+                        click: isOpen ? onClose : onOpen,
+                        dragend: (e) => {
+                            const updatedPos = e.target.getLatLng();
+                            setStructureLocation([updatedPos.lat, updatedPos.lng]);
+                        },
+                    }}
+            />
+            )}
+   
 
             {/* Stall info card */}
-            {isOpen && (
+            {isOpen && editing && (
 
                 <div className="flex h-screen items-center">
                 <InfoCard 
@@ -176,7 +194,24 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                     imperial={imperial}
                 />
                 </div>
+                )}
 
+                {isOpen && !editing && (
+
+                <div className="flex h-screen items-center">
+                <InfoCard 
+                    structureName={structureName} 
+                    structureDescription={structureDescription}
+                    tagType={structure.tagType}
+                    tagTypeList={getTagList(structure)}
+                    structureTags={structureTags}
+                    structureDimensions={structureDimensions}
+                    structureOrientation={structureOrientation}
+                    onClose={onClose}
+                    structure={structure}
+                    imperial={imperial}
+                />
+                </div>
             )}
         </>
     );
