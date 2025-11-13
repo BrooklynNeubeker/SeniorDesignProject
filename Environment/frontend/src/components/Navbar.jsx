@@ -15,7 +15,7 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             {/* left side*/}
             <Link
-              to="/"
+              to={authUser?.role === "Coordinator" ? "/" : "/vendor"}
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
             >
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -27,7 +27,6 @@ const Navbar = () => {
                 <h1 className="text-lg font-bold">AccessMap</h1>
                 <p className="text-md text-base-content/70"> {authUser?.role}</p>
               </div>
-             
             </Link>
           </div>
 
