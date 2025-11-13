@@ -4,17 +4,22 @@ import Overlay from '../components/Overlay';
 import { useGlobal } from "../components/GlobalContext";
 import DefaultMap from '../components/DefaultMap';
 import {useParams} from "react-router-dom";
-import {Loader2} from "lucide-react";
 import {axiosInstance} from "../lib/axios";
 import { map } from 'leaflet';
+import {Loader2} from "lucide-react"
+import { Undo2, Redo2 } from 'lucide-react';
 
 const SitePlanPage = () => {
-    const { imperial, location, setLocation, zoom} = useGlobal();
+    const { imperial, location, setLocation, zoom } = useGlobal();
     const saveBtnRef = useRef();
+    const undoBtnRef = useRef();
+    const redoBtnRef = useRef();
     const{ id } = useParams();
+    // console.log(location);
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [myMap, setMap] = useState([]);
     // const [newMap, setNewMap] = useState([{mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
 
@@ -54,6 +59,7 @@ const SitePlanPage = () => {
             });
             // console.log(location.lat);
             // console.log(location.lng);
+
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
         } catch (error) {
             console.error("Failed to load map:", error);
@@ -71,20 +77,22 @@ const SitePlanPage = () => {
         }
     }, []);
 
+
     const saveEventMap = async (e) => {
         e.preventDefault();
-        // var payload = null;
+
         const payload = {
             mapCenter: { x: location.lng, y: location.lat }, //IF there was a search, use the new location.lng/location.lat. Dont' ask me why, but setting centerX or Y state using these uses whatever they were when the page loaded, not hte search, so it has to be this way...
             eventID: id,
             zoomLevel: zoom,
             mapMarkers: structures
         }
+
         setMap(prev => [...prev, payload])
 
         try {
             axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
-            alert("Map updated successfully");
+            //alert("Map updated successfully");
             //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
         } catch(error){
             console.error("Failed to update map", error);
@@ -93,8 +101,8 @@ const SitePlanPage = () => {
         let res = await axiosInstance.get(`/events/${id}/site-plan`);
         setMap(res.data)
     }
-    
 
+    
     {/* 
         Function to add structures to 'structures' array
 
@@ -121,8 +129,8 @@ const SitePlanPage = () => {
 
     while (loading) { //Load until db has been fetched and the global variables are updated
         return <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Loading...
                 </>;
     }
 
@@ -131,13 +139,13 @@ const SitePlanPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]}  //Map should display at center coordinates from db by default if a search has not happened. To make these place at the right spot immediately after a search, change it back to location.lat and location.lng, but be aware that that means that when the map loads in and no search has happened, 
-                saveBtnRef={saveBtnRef} imperial={imperial}/> 
+                saveBtnRef={saveBtnRef} undoBtnRef={undoBtnRef} redoBtnRef={redoBtnRef} fetchMap={fetchMyMap} imperial={imperial}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure}/>  
+                <Overlay undoBtnRef={undoBtnRef} redoBtnRef={redoBtnRef} addStructure={addStructure}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
             </div>
             
@@ -147,6 +155,20 @@ const SitePlanPage = () => {
                     <span>Save</span>
                 </button>
             </div>
+
+            {/*
+            Undo and redo buttons */}
+            <div className="fixed top-35 left-4 z-14 flex justify-center gap-2 pointer-events-auto">
+                <button ref={undoBtnRef} className="btn shadow-lg">
+                    <Undo2 />
+                    <span>Undo</span>
+                </button>
+                <button ref={redoBtnRef} className="btn shadow-lg">
+                    <Redo2 />
+                    <span>Redo</span>
+                </button>
+            </div>
+
         </div>
     );
 };

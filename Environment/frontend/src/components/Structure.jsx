@@ -3,8 +3,10 @@ import { renderToString } from "react-dom/server";
 import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
+import { useUndoRedo } from "./UndoRedo";
+import { useGlobal } from "./GlobalContext";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, undoBtnRef, redoBtnRef, fetchMap }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -13,9 +15,11 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     const [structureLocation, setStructureLocation] = useState(structure.position)
     const [structureOrientation, setStructureOrientation] = useState(structure.orientation)
     
-
     const markerRef = useRef(); // Ref to instance of marker
     const map = useMap();   // Hook to get the map being used
+
+    const { savedState, setSavedState } = useGlobal();
+    const { undo, redo, store } = useUndoRedo();
 
     {/* 
         Function for scaling marker for structure on zoom
@@ -77,7 +81,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             structure.position = structureLocation;
             structure.orientation = structureOrientation;
 
-            alert(`Saved: ${structure.name}`);
+            //alert(`Saved: ${structure.name}`);
         };
 
         saveBtnRef.current.addEventListener("click", handleSave);
@@ -140,22 +144,76 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         }
     }
 
+    useEffect(() => {
+        const handleUndo = () => {
+            // the current issue is that you need to press the undo button twice in order for it to render to the old coords.
+            // the first press updates the structureLocation, the second press is when it actually rerenders.
+
+            // undo() seems to work for now but requires double pressing. ONE STRUCTURE ONLY
+            // when you first load in, you have to move the structure i think thrice before trying to undo(). has to do with initial undoStack
+            // (to have it work for multiple structures, i definitely have to take out undoStack from GlobalContext.)
+            // i have setStructureLocation([36.110013,-115.140546]) for testing if you comment out undo().
+
+            // the goal is to have it setStructureLocation and rerender with one press. i'm not sure if this is actually possible
+            // because of the way react is -_-
+
+            // what i've tried: passing down fetchMap(). this does render in one press but to its original position of course;
+            // nothing to do with undo history at all. 
+            
+            const test = undo();
+            if(test != false) {
+                setStructureLocation(test);
+            }
+
+            //setStructureLocation([36.110013,-115.140546]);
+
+            structure.name = structureName;
+            structure.description = structureDescription;
+            structure.tags = structureTags;
+            structure.dimensions = structureDimensions;
+            structure.position = structureLocation;
+            structure.orientation = structureOrientation;
+
+            //fetchMap();
+
+        };
+        
+        undoBtnRef.current.addEventListener("click", handleUndo);
+        return () => undoBtnRef.current?.removeEventListener("click", handleUndo);
+    }, [undoBtnRef, structureName, structureDescription, structureTags, 
+        structureDimensions, structureLocation, structureOrientation]);
+
+    useEffect(() => {
+        const handleRedo = () => {
+
+        };
+
+        redoBtnRef.current.addEventListener("click", handleRedo);
+        return () => redoBtnRef.current?.removeEventListener("click", handleRedo);
+    }, [redoBtnRef, structureName, structureDescription, structureTags, 
+        structureDimensions, structureLocation, structureOrientation]);
+
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
             <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
+                        dragstart: (e) => {
+                            //setSavedState(structureLocation);
+                            store(structureLocation);
+                        },
                         dragend: (e) => {
                             const updatedPos = e.target.getLatLng();
                             setStructureLocation([updatedPos.lat, updatedPos.lng]);
+                            //setSavedState(structureLocation);
+                            store([updatedPos.lat, updatedPos.lng]);
                         },
                     }}
             />
 
             {/* Stall info card */}
             {isOpen && (
-
                 <div className="flex h-screen items-center">
                 <InfoCard 
                     structureName={structureName} 

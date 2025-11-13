@@ -4,10 +4,12 @@ import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useGlobal } from "./GlobalContext";
+import { useUndoRedo } from "./UndoRedo";
 
 const Overlay = ({ addStructure }) => {
     const { id } = useParams();
-    const {imperial, setImperial} = useGlobal();
+    const { imperial, setImperial } = useGlobal();
+    const { undo, redo } = useUndoRedo();
 
     return (
         <div>
@@ -18,19 +20,8 @@ const Overlay = ({ addStructure }) => {
                 </Link>
             </div>
 
-            {/*
-            Undo and redo buttons
-            <div className="fixed top-20 left-0 right-0 flex justify-center gap-2 pointer-events-auto">
-                <button class="btn shadow-lg">
-                    <Undo2 />
-                    <span>Undo</span>
-                </button>
-                <button class="btn shadow-lg">
-                    <Redo2 />
-                    <span>Redo</span>
-                </button>
-            </div>
-            */}
+            
+            
 
             {/* "Add Objects" sidebar drawer */}
             <div className="drawer drawer-end fixed pointer-events-auto">
