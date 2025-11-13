@@ -34,7 +34,7 @@ const stallSchema = new mongoose.Schema(
         },
         stallNumber: {
             type: Number,//int,
-            default: null
+            default: 0
             // set by coordinator in map mode 
         },
         stallType: {
@@ -51,7 +51,7 @@ const stallSchema = new mongoose.Schema(
         // },
         tagList:{ //things like dairy-free, vegan, etc
             type: [String],
-            default: null
+            default: []
         },
         eventID: {
             type: mongoose.Schema.Types.ObjectId,

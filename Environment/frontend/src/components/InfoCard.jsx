@@ -1,5 +1,6 @@
-import { use, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, Trash2 } from 'lucide-react';
+import StallDropdown from './StallDropdown';
 
 const InfoCard = ({ structure, structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
                     structureTags, setStructureTags, structureDimensions, setStructureDimensions, structureOrientation, setStructureOrientation,
@@ -7,6 +8,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
 
     const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
     const [customTag, setCustomTag] = useState("")
+    const [showSearch, setShowSearch] = useState(false) // Show the collapsable dropdown
 
     // Add selectedTag to array of structureTags
     const addTag = (value) => {
@@ -21,18 +23,46 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
         setStructureTags(structureTags.filter((tag) => tag !== tagName));
     }
     
+    useEffect(() => {
+        console.log("InfoCard updated:");
+        console.log("structureName:", structureName);
+        console.log("structureDescription:", structureDescription);
+        console.log("structureTags:", structureTags);
+    }, [structureName, structureDescription, structureTags]);
+    
     return (
         <>
             <div className="card bg-base-100 w-90 shadow-sm m-2 mt-30 z-9999">
                 <div className="card-body flex gap-6">
 
                     {/* Edit stall name */}
-                    <input
-                        type="text"
-                        value={structureName}
-                        onChange={(e) => setStructureName(e.target.value)}
-                        className="input input-bordered w-full mb-2 font-bold text-lg"
-                    />
+                    <div className="flex flex-col w-full">
+                        <div className="flex items-center gap-2 w-full mb-2">
+                            <input
+                                type="text"
+                                value={structureName}
+                                onChange={(e) => setStructureName(e.target.value)}
+                                className="input input-bordered w-full font-bold text-lg"
+                            />
+                            <button
+                                className="btn btn-sm btn-primary w-auto"
+                                onClick={() => setShowSearch(!showSearch)}
+                            >
+                                {showSearch ? "Collapse" : "Select"}
+                            </button>
+                        </div>
+                        {showSearch && (
+                            <StallDropdown
+                                onChange={(stall) => {
+                                    setStructureName(stall.name);
+                                    setStructureDescription(stall.description || "");
+                                    setStructureTags(stall.tagList || []);
+                                    setShowSearch(false);
+                                }}
+                            />
+                        )}
+                    </div>
+
 
                     {/* Accessibility tags */}
                     <div className="flex flex-wrap gap-2">
