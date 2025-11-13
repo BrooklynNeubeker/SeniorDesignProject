@@ -94,74 +94,6 @@ const SitePlanPage = () => {
         setMap(res.data)
     }
     
-    /* var currMap = myMap;
-
-    const updateCurr = async() => {
-        currMap = myMap;
-    }
-
-    // Gets the updated event, changes the data on the database
-    const saveEventMap = async (e) => {
-        e.preventDefault();
-        //If no current map, set new map
-        // console.log(currMap);
-        var makeNew = false;
-        if(currMap.length === 0){
-            setNewMap(prevMapState => [...prevMapState, {mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
-            console.log("Trying to make new map!");
-            makeNew = true;
-        } else {
-            setMap(prevMapState => [...prevMapState, {mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: [] }]);
-            console.log("Trying to use existing map!");
-
-        }
-        var payload = null;
-        //If new, make one out of newmap, if not use old map
-        if (makeNew){
-            payload = newMap.map(({mapCenter, eventID, zoomLevel, mapMarkers}) => ({ 
-                mapCenter,
-                eventID,
-                zoomLevel,
-                mapMarkers,
-            }));
-        } else {
-            payload = currMap.map(({mapCenter, eventID, zoomLevel, mapMarkers}) => ({ 
-                mapCenter,
-                eventID,
-                zoomLevel,
-                mapMarkers,
-            }));
-        }
-        // console.log(payload);
-
-        //If new map, create new, if old map, update
-        if (makeNew){
-            try {
-                await axiosInstance.post(`/events/${id}/site-plan/`, payload);
-                alert("Map created successfully");
-                //Anything else?
-                } catch(error){
-                    console.error("Failed to create map", error);
-            }
-        } else {
-            try {
-                await axiosInstance.put(`/events/${id}/site-plan/${currMap._id}`, payload);
-                alert("Map updated successfully");
-                //Anything else?
-                } catch(error){
-                    console.error("Failed to update map", error);
-            }
-
-        }
-        //If we made a new one or updated, fetch map and update currMap
-        await fetchMyMap();
-        updateCurr;
-    };
-
-    */
-    
-    //checking if there is a saved map
-    //const isThereSavedMap = useState(false);
 
     {/* 
         Function to add structures to 'structures' array
@@ -179,7 +111,7 @@ const SitePlanPage = () => {
     const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
         const newStructure = { id: crypto.randomUUID(),
             name, Icon, bgColor, iconColor, border, description, tagType, orientation: 0,
-            dimensions: [20, 20], position: [location.lat, location.lng]} //Show structures at the center from db
+            dimensions: [20, 20], position: [location.lat, location.lng], tags: []} //Show structures at the center from db
         setStructures(prev => [...prev, newStructure])
     }
 

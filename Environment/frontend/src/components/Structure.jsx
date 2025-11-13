@@ -8,7 +8,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
-    const [structureTags, setStructureTags] = useState([])  // State and setter for structure tags, default is nothing
+    const [structureTags, setStructureTags] = useState(structure.tags)  // State and setter for structure tags, default is nothing
     const [structureDimensions, setStructureDimensions] = useState(structure.dimensions)    // State and setter for structure dimensions, default [20,20]
     const [structureLocation, setStructureLocation] = useState(structure.position)
     const [structureOrientation, setStructureOrientation] = useState(structure.orientation)
@@ -69,7 +69,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
 
     
     useEffect(() => {
-        const handleSave = () => {
+        const handleSave = async () => {
             structure.name = structureName;
             structure.description = structureDescription;
             structure.tags = structureTags;
