@@ -157,7 +157,17 @@ const EventDashboardPage = () => {
                   />
                 </div>
               </div>
-
+            <div className="flex items-center gap-2">
+              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}> 
+                    <span>Edit Event Layout</span>
+              </Link>
+              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
+                    <span>View Stalls</span>
+              </Link>
+              <button type="submit" className="btn btn-primary btn-outline">
+                Save Changes
+              </button>
+            </div>
             </form>
         </li>
     ))}
@@ -170,18 +180,6 @@ const EventDashboardPage = () => {
             <h1 className="text-2xl font-bold">Event Dashboard </h1>
             
             {listEventInfo}   
-            
-            <div className="flex items-center gap-2">
-              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}> 
-                    <span>Edit Event Layout</span>
-              </Link>
-              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
-                    <span>View Stalls</span>
-              </Link>
-              <button type="submit" className="btn btn-primary btn-outline">
-                Save Changes
-              </button>
-            </div>
 
             <div className="flex items-center gap-2">
               <button 
