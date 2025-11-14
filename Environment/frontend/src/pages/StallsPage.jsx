@@ -149,7 +149,7 @@ const StallsPage = () => {
     try {
       // Only send to selected stalls that haven't been invited yet
       const targets = allStalls.filter(
-        (stall) => selectedIds.includes(stall._id) && s.onboardingStatus === "noInvite"
+        (stall) => selectedIds.includes(stall._id) && stall.onboardingStatus === "noInvite"
       );
 
       if (targets.length === 0) {
