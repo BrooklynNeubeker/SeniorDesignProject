@@ -41,7 +41,7 @@ const StallsPage = () => {
                 have all stalls for event able to view
         x-create a save template feature that will save a particular stallform
             for other events
-    - Change NavBar for Vendor view
+    x- Change NavBar for Vendor view
     - After finished with stall page, rework messages:
         coordinator can see all vendors of their events
         vendors can only see the coordinator they are assinged to 
@@ -121,21 +121,48 @@ const StallsPage = () => {
       alert("Error: failed to delete stall");
     }
   };
+  
+  const deleteStalls = async (stallIds) => {
+    if (!window.confirm(`Confirm: delete ${stallIds.length} stalls?`)) return;
+    try {
+      await Promise.all(
+        stallIds.map(stallId =>
+          axiosInstance.delete(`/events/${id}/stalls/${stallId}`)
+        )
+      );
+      await fetchMyStalls();
+    } catch (error) {
+      console.error("Failed to delete stall:", error);
+      alert("Error: failed to delete stall");
+    }
+  };
 
 
   // Sends invites to all stalls from the event that haven't received an invite yet
   const sendInvites = async () => {
-    if (!allStalls || allStalls.length === 0) return;
+    if (!selectedIds || selectedIds.length === 0) {
+      alert("No stalls selected.");
+      return;
+    }
     setSending(true);
 
     try {
-      const targets = allStalls.filter(s => s.onboardingStatus === "noInvite");
+      // Only send to selected stalls that haven't been invited yet
+      const targets = allStalls.filter(
+        (stall) => selectedIds.includes(stall._id) && s.onboardingStatus === "noInvite"
+      );
+
+      if (targets.length === 0) {
+        alert("No 'Uncontacted' stalls selected.");
+        return;
+      }
+
       for (const stall of targets) {
         const { _id: stallId, name, email, eventID } = stall;
         await axiosInstance.post(`/auth/${stallId}/signup-vendor-email`, {
-          name, email, eventID
+          name,email,eventID,
         });
-      }
+    }
       alert(`Invites sent to ${targets.length} stall(s).`);
     } catch (err) {
       console.error("Bulk invite error:", err);
@@ -245,7 +272,22 @@ const StallsPage = () => {
     XLSX.writeFile(wb, `${event.eventName}-Stalls.xlsx`);
   };
 
+  const [selectedIds, setSelectedIds] = useState([]); // 
+  const allSelected = selectedIds.length === allStalls.length;
+  const toggleSelectAll = () => {
+    if (allSelected) {
+      setSelectedIds([]);
+    } else {
+      // Select everything
+      setSelectedIds(allStalls.map(stall => stall._id));
+    }
+  };
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredStalls = allStalls.filter(stall =>
+    stall.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
   // Responsible for rendering the main table. Displays all stalls currently assigned to 
   // this event
   let listStalls;
@@ -256,6 +298,37 @@ const StallsPage = () => {
   } else {
     listStalls = (
       <div className="overflow-auto max-h-80 rounded-md ">
+        <div className="flex justify-end space-x-2 mb-2">
+          <div className="w-1/2">
+          <input
+            type="input"
+            className="input input-bordered w-full"
+            placeholder="Search..."
+            onChange={(e) => setSearchValue(e.target.value)}
+          >
+          </input>
+        </div>
+        <div className="flex space-x-2 ml-auto">
+          {selectedIds.length > 0 && (
+            <>
+              <button
+                type="button"
+                className="btn btn-primary btn-outline hover:btn-primary"
+                onClick={sendInvites}
+                disabled={sending}>
+                {allSelected ? "Invite All" : "Invite"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-error btn-outline"
+                onClick={() => {deleteStalls(selectedIds)}}
+                > {allSelected ? "Delete All":"Delete" }
+              </button>
+            </>  
+            )
+          }
+        </div>
+      </div>
 
         <table className="table table-sm w-full">
           <thead className="bg-base-200 sticky top-0">
@@ -264,15 +337,33 @@ const StallsPage = () => {
               <th>Email</th>
               <th>Onboarding Status</th>
               <th className="text-center">Actions</th>
+              <th>
+                <input 
+                  type="checkbox" 
+                  className="checkbox checkbox-primary ml-2"
+                  checked={allSelected}
+                  onChange={toggleSelectAll}
+                ></input>
+              </th>
+                
+              
             </tr>
           </thead>
           <tbody>
-            {allStalls.map((stall) => (
-              <tr key={stall._id} className="hover">
+            {filteredStalls.map((stall) => (
+              <tr key={stall._id} 
+                  className={`${selectedIds.includes(stall._id) ? "bg-primary/20" : ""} hover`}
+              >
                 <td className="whitespace-nowrap">{stall.name}</td>
                 <td className="whitespace-nowrap">{stall.email}</td>
                 <td className="whitespace-nowrap">{onboardingStatusComponent(stall.onboardingStatus)}</td>
                 <td className="text-center">
+                  <button 
+                    type="button"
+                    className="btn btn-xs btn-primary btn-outline mr-2"
+                  >
+                    Edit
+                  </button>
                   <button
                     type="button"
                     className="btn btn-xs btn-error btn-outline"
@@ -280,6 +371,21 @@ const StallsPage = () => {
                   >
                     Delete
                   </button>
+                </td>
+                <td>
+            
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-primary ml-2"
+                      checked={selectedIds.includes(stall._id)}
+                      onChange={() => {
+                        setSelectedIds(prev => prev.includes(stall._id)
+                            ? prev.filter(id => id !== stall._id)  // deselect
+                            : [...prev, stall._id]                 // select
+                        );
+                      }}
+                    />
+              
                 </td>
               </tr>
             ))}
@@ -419,12 +525,15 @@ const StallsPage = () => {
     </div>
   )
 
-  // dislays the vendor registration 
+  // dislays the vendor registration preview
+  // A list of currently selected stalls. If the Coordinator has 
+  // more than 10 events, they wont be able to see all of them at once
+  // in the table, this component provides a quick reference to that end.
   let inviteComponent = (
     <div className="rounded-lg border border-base-300 p-4 space-y-3">
       <div className="flex items-center justify-between mb-3">
         <label className="label">
-          <span className="label-text font-medium"> Invite Vendors</span>
+          <span className="label-text font-medium"> Preview Invites</span>
         </label>
         <div className="flex items-center justify-between mb-3">
           <button
@@ -438,6 +547,17 @@ const StallsPage = () => {
           </button>
         </div>
       </div>
+      <ul>
+        {selectedIds.map((stallId) => {
+          const stall = allStalls.find(stall => stall._id === stallId);  // lookup stalls
+          if (!stall) return null; 
+          return (
+            <li key={stall._id}>
+              <span className="font-medium">{stall.name}</span>
+            </li>
+          );
+        })}
+      </ul>
       <div>
         <button
           type="button"
@@ -498,7 +618,7 @@ const StallsPage = () => {
       disabled={showInvite}
       onClick={toggleInvite}
     >
-      Vendor Registration
+      Vendor Registration Preview
     </button>
   )
   let importStallsButton = (
@@ -528,30 +648,23 @@ const StallsPage = () => {
           <h1 className="text-4xl font-bold">Event Dashboard</h1>
           <h1 className="text-2xl font-bold">{event?.eventName} </h1>
           <div className="max-w-md justify-left  mt-5">
-            <div className="flex gap-2">
-              {toggleAddStallsButton}
-              {importStallsButton}
-              {exportStallsButton}
-              {invitationButton}
-            </div>
-          </div>
+            
+        </div>
           <h1 className="text-2xl font-bold mb-5"> Stalls:</h1>
         </div>
         <div >
           {listStalls}
         </div>
-        <div className="mt-5">
-          {showAddForm && addStallsForm}
+        <div className="flex gap-2 mt-5">
+              {toggleAddStallsButton}
+              {importStallsButton}
+              {exportStallsButton}
+              {invitationButton}
         </div>
-        <div className="mt-5">
-          {showImport && importFileComponent}
-        </div>
-        <div className="mt-5">
-          {showExport && exportStallsComponent}
-        </div>
-        <div className="mt-5">
-          {showInvite && inviteComponent}
-        </div>
+        {showAddForm && <div className="mt-5">{addStallsForm}</div>}
+        {showImport && <div className="mt-5">{importFileComponent}</div>}
+        {showExport && <div className="mt-5">{exportStallsComponent}</div>}
+        {showInvite && <div className="mt-5">{inviteComponent}</div>}
         <div>
           <Link to={`/event/${id}/dashboard`} className="btn btn-primary mt-5 justify-left gap-2">
             Back

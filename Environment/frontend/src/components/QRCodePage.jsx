@@ -30,7 +30,7 @@ const QRCodePage = ({ open, onClose, title, qrValue }) => {
                                 includeMargin={true}
                             />
                             <img 
-                                src="/public/logo3t.png"
+                                src="/logo3t.png"
                                 alt="Logo"
                                 className="absolute w-16 h-16 bg-white rounded-md p-1"
                                 onError={(e) => {

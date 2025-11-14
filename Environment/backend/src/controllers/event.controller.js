@@ -133,6 +133,9 @@ export const createStall = async (req, res) => {
             eventID: eventID
         });
         const savedStall = await newStall.save(); // save to database
+        const updatedEvent = await Event.updateOne({ _id: eventID },
+            { $addToSet: { stalls: savedStall._id }}
+        );
         res.status(201).json(savedStall); // pass back the new mongoose object in the data
         }
     catch (error) {
@@ -152,11 +155,18 @@ export const deleteStall = async (req, res) => {
         const { stallId } = req.params; 
         const targetStall = await stall.findByIdAndDelete(stallId);
         if (!targetStall) {
-        return res.status(404).json({
-            success: false,
-            message: "Stall not found.",
-        });
+            return res.status(404).json({
+                success: false,
+                message: "Stall not found.",
+            });
         }
+
+        //delete stall from parent Event.stalls
+        await Event.findByIdAndUpdate(targetStall.eventID,
+            { $pull: { stalls: stallId } },
+            { new: true }
+        );
+        
         return res.status(200).json({
             success: true,
             message: "Stall deleted successfully.",
@@ -196,11 +206,17 @@ export const updateStall = async (req,res) => {
 //get stalls
 export const getMyStalls = async (req, res) => {
     try {
-        const eventId = req.params.id; 
-        const stalls = await stall
-        .find({ eventID: eventId })
-        .sort({ createdAt: 1}); // oldest first
-        res.status(200).json(stalls);
+        const eventId = req.params.id;
+
+        const event = await Event.findById(eventId).populate({
+            path: "stalls",
+            options: { sort: { createdAt: 1 } }, 
+        });
+
+        if (!event) {
+            return res.status(404).json({ message: "event not found" });
+        }
+        res.status(200).json(event.stalls || []);
     } catch (error) {
         console.error("getMyStalls error:", error);
         res.status(500).json({ message: "Internal server error." });

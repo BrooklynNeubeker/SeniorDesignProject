@@ -36,9 +36,6 @@ const eventSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
-        // vendors: [{ 
-        //     name: { type: String, required: true } 
-        // }],
         // eventItinerary: {
         //     type: [eventItinerarySchema], //array of itinerary events
         //     default: null
@@ -57,11 +54,11 @@ const eventSchema = new mongoose.Schema(
             default: null
 
         },
-        
-        // eventVendorList: {
-        //     type: [eventVendorSchema],
-        //     default: null
-        // }
+        stalls: [{
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "stall",
+                    index: true,
+        }],
     },
     { timestamps: true }
 );
