@@ -52,12 +52,7 @@ const PreviewPage = () => {
 
     return (
         <div>
-            {/* Back to dashboard */}
-            <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
-                <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
-                    <span>Back to Dashboard</span>
-                </Link>
-
+            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
                 <div className="text-center rounded border border-base-400 bg-base-100 p-1">
                     <label className="label text-base-content">Administrator View</label>
                 </div>

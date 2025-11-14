@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import QRCodePage from "../components/QRCodePage";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
@@ -11,6 +12,8 @@ const EventDashboardPage = () => {
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showPrintQR, setShowPrintQR] = useState({ open: false, eventName: "", qrValue: "" });
+  const [showPreview, setShowPreview] = useState(false);
 
   const fetchMyEvents = async () => {
       try {
@@ -162,15 +165,15 @@ const EventDashboardPage = () => {
 
   return(
     <div className="h-screen pt-20">
-      <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-          <div className="max-w-md justify-left space-y-6">
+      <div className="container flex flex-1 gap-8 p-16 mx-auto bg-base-100/50">
+          <div className="max-w-md justify-left space-y-6 flex-shrink-0">
             <h1 className="text-2xl font-bold">Event Dashboard </h1>
             
             {listEventInfo}   
             
             <div className="flex items-center gap-2">
               <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}> 
-                    <span>View Event Layout</span>
+                    <span>Edit Event Layout</span>
               </Link>
               <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
                     <span>View Stalls</span>
@@ -181,15 +184,49 @@ const EventDashboardPage = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary btn-outline`}> 
-                    <span>Preview</span>
-              </Link>
+              <button 
+                onClick={() => setShowPreview(!showPreview)}
+                className="btn btn-primary btn-outline"
+              >
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </button>
               <Link to={`/event/${id}/viewmap`} className={`btn btn-primary btn-outline`}>
                     <span>View Published Map</span>
               </Link>
             </div>
 
+            <button 
+              onClick={() => {
+                const eventName = event.length > 0 ? event[0].eventName : "Event";
+                setShowPrintQR({
+                  open: true,
+                  eventName: eventName,
+                  qrValue: `${window.location.origin}/event/${id}/viewmap`
+                });
+              }}
+              className="btn btn-primary btn-outline w-full"
+            >
+              Generate QR Code
+            </button>
           </div>
+          
+          {/* Right side - Preview */}
+          {showPreview && (
+            <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden">
+              <iframe 
+                src={`/event/${id}/dashboard/preview`}
+                className="w-full h-full border-none"
+                title="Event Preview"
+              />
+            </div>
+          )}
+
+          <QRCodePage 
+            open={showPrintQR.open}
+            onClose={() => setShowPrintQR({...showPrintQR, open: false})}
+            title={showPrintQR.eventName}
+            qrValue={showPrintQR.qrValue}
+          />
       </div>
     </div>
   );

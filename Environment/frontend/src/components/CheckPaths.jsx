@@ -6,10 +6,10 @@ import Navbar from './Navbar';
 const CheckPaths = () => {
     const location = useLocation();
 
-    const match = matchPath('/event/:id/dashboard/site-plan', location.pathname);
+    const previewMatch = matchPath('/event/:id/dashboard/preview', location.pathname);
 
-    if(match) {
-        return <Navbar/>
+    if(previewMatch) {
+        return null;
     }
     else {
         return <Navbar/>
