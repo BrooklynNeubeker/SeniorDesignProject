@@ -59,6 +59,10 @@ const eventSchema = new mongoose.Schema(
                     ref: "stall",
                     index: true,
         }],
+        published: {
+            type: Boolean,
+            default: false
+        }
     },
     { timestamps: true }
 );
