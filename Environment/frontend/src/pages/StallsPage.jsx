@@ -646,7 +646,7 @@ const StallsPage = () => {
       <div className="container max-w-5xl flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
         <div className="max-w-md justify-left space-y-6">
           <h1 className="text-4xl font-bold">Stalls Dashboard</h1>
-          <h1 className="text-2xl font-bold">{event?.eventName} - {new Date(event.startDate).toLocaleDateString()} </h1>
+          <h1 className="text-2xl font-bold">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h1>
           <div className="max-w-md justify-left  mt-5">
             
         </div>
