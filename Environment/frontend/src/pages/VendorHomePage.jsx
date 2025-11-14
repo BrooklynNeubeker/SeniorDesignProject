@@ -52,7 +52,7 @@ const VendorHomePage = () => {
         const map = {};
         const eidToStalls = {}
         for (const stall of stalls) {
-            if (stall.eventID) {
+            if (stall?.eventID) {
                 const res = await axiosInstance.get(`/events/${stall.eventID}`);
                 map[stall.eventID] = res.data; 
                 if(!eidToStalls[stall.eventID]){
