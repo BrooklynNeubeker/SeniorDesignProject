@@ -82,7 +82,7 @@ const VendorRegisterStallPage = () => {
 
       try {
         const res = await axiosInstance.put(`/events/stalls/update/${stallId}`, payload);
-        alert("event created");
+        alert("stall created");
         console.log("updated stall:", res.data);
         navigate(`/vendor/${stallId}`);
       } catch (err) {

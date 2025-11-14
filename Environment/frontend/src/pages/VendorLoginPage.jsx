@@ -7,6 +7,7 @@ import { axiosInstance } from "../lib/axios";
 
 
 /**
+ * @IGNORE this comment needs to be updated
  * @brief Handles two cases: 
  *      [1.]: When a Coordinator sends an invite email to the email of an existing
  *         user. This appends the stallid that was sent via the invite to the
@@ -74,7 +75,8 @@ const VendorLoginPage = () => {
       if(stallId){
         // case [1.]
         await loginVendor(formData, stallId)
-        navigate(`/vendor/register-stall/${stallId}`)
+        navigate(`/vendor`)
+        //navigate(`/vendor/register-stall/${stallId}`)
       }else{
         // case [2.]
         await login(formData);

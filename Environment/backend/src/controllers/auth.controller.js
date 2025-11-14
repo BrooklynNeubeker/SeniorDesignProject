@@ -217,7 +217,7 @@ export const resetPassword = async (req, res) => {
 export const inviteNewVendor = async (req, res) => {
   console.log("in inviteNewVendor");
   try {
-    const {name: stallName , email: stallEmail, eventID} = req.body;
+    const {name: stallName , email: stallEmail, eventID, stallId} = req.body;
     // Verifies that target is not an existing user
     const user = await User.findOne({ email: stallEmail});
     if (user) {
@@ -232,7 +232,6 @@ export const inviteNewVendor = async (req, res) => {
 
     const eventName = currentEvent.eventName;
     const eventStartDate = currentEvent.startDate;
-    const {stallId} = req.params;
    
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
@@ -255,14 +254,21 @@ export const inviteNewVendor = async (req, res) => {
 export const inviteExistingVendor = async (req, res) => {
   console.log("in ExistingVendor");
   try {
-    const {name: stallName , email: stallEmail, eventID} = req.body;
-    console.log(`Printout status:${stallName} ${stallEmail} ${eventID}`);
+    const {name: stallName , email: stallEmail, eventID, stallId} = req.body;
+    //console.log(`Printout status:${stallName} ${stallId} ${stallEmail} ${eventID}`);
     // Verifies that target IS an existing user
     const user = await User.findOne({ email: stallEmail});
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
+
+    // Append stall to user
+    const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        { $addToSet: { stalls: stallId, vendorEvents: eventID }},//
+        { new: true }
+      );
+ 
     // Setting eventName for the email
     const currentEvent = await Event.findById(eventID);
     if (!currentEvent) {
@@ -271,16 +277,16 @@ export const inviteExistingVendor = async (req, res) => {
 
     const eventName = currentEvent.eventName;
     const eventStartDate = currentEvent.startDate;
-    const {stallId} = req.params;
+
    
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: stallEmail,
       subject: `${eventName} registration for ${stallName}`,
       html: `<p>Hey ${user.fullname}!</p>
-      <p>You've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
-      <p> Click on the link to register: </p>
-      <a href="http://localhost:5173/vendor/${stallId}/login">Register Your Stall</a>`,
+      <p> We're reaching out to let you know that you've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
+      <p> Click on the link to login </p>
+      <a href="http://localhost:5173/vendor/login">Register Your Stall</a>`,
     };
 
     // send the email

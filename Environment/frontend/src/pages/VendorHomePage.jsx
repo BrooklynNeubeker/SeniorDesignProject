@@ -67,6 +67,30 @@ const VendorHomePage = () => {
         
     };
     useEffect(() => { fetchEvents(); }, [stalls]);
+    useEffect(() => { console.log("events:", events) });
+
+    // Displays which step in the onboarding status the Vendor is at
+    const onboardingStatusComponent = (onboardingStatus) => {
+        switch (onboardingStatus) {
+        case "noInvite":
+            return (
+            <span className="label-text font-bold text-error"> Uncontacted </span>
+            );
+        case "inviteSent":
+            return (
+            <span className="label-text font-bold text-warning"> Pending...</span>
+            );
+        case "vendorRegistered":
+            return (
+            <span className="label-text font-bold text-success"> Registered </span>
+            );
+        default:
+            return (
+            <span className="label-text font-bold"> Error </span>
+            );
+
+        }
+    };
     
     let listStalls;
 
@@ -112,6 +136,7 @@ const VendorHomePage = () => {
                                 <tr>
                                     <th className="text-left">Stall</th>
                                     <th className="text-left">Email</th>
+                                    <th className="text-left">Onboarding Status</th>
                                     <th className="text-right">Actions</th>
                                 </tr>
                                 </thead>
@@ -120,6 +145,7 @@ const VendorHomePage = () => {
                                     <tr key={stall._id} className="hover:bg-base-100/50">
                                         <td className="py-2 whitespace-nowrap">{stall.name}</td>
                                         <td className="py-2 whitespace-nowrap">{stall.email}</td>
+                                        <td className="py-2 whitespace-nowrap" >{onboardingStatusComponent(stall.onboardingStatus)}</td>
                                         <td className="py-2 whitespace-nowrap text-right">
                                             <Link
                                                 to={`/vendor/register-stall/${stall._id}`}

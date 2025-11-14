@@ -23,28 +23,21 @@ const StallsPage = () => {
 
   /*
     TODO:
-    -TESTING: what happens when stall is deleted from Coordinator side during onboarding process?
     -sort for table? // delete all ??
-    -make an edit button in stalls list 
-    -make the top level buttons (add stalls, vendor reg...) collapsable on click as well
-        maybe make them all a collapsable pane to the left
-    x-implement export stalls
-    -implement vendor registration <-- working -- vvv
-        -review the if statements guarding the returns on VendorSignup and login
-        -trackdown console.logs
-        x-create the form on VendorViewStallPage
-        x-build out submit route through the backend- change stall status
-        x-create the Vendor homePage
-            will serve as dashboard
-              have all events that they are related to
-              be able to select event
-                have all stalls for event able to view
-        x-create a save template feature that will save a particular stallform
-            for other events
-    x- Change NavBar for Vendor view
     - After finished with stall page, rework messages:
         coordinator can see all vendors of their events
         vendors can only see the coordinator they are assinged to 
+    - Fix the table scrolling away the search bar and group action buttons
+    - Don't freeze the screen while waiting for invites to go out
+        - show a spinning bar within the component and a notice of completetion
+    - Define logic of sending emails, 
+        - vendors with existing pages now have a streamlined process of just signing
+          in,(the process that couples _:id's to the different classes is no longer owned by that page,
+          it happens when the invites are sent in the backend)
+          - that said, we need to define logic for what amount of time should elapse between sending
+            existing users an email. Should be more like a push notification, just telling them to log
+            in and register new stalls
+          
         
   */
 
@@ -160,7 +153,7 @@ const StallsPage = () => {
       for (const stall of targets) {
         const { _id: stallId, name, email, eventID } = stall;
         await axiosInstance.post(`/auth/${stallId}/signup-vendor-email`, {
-          name,email,eventID,
+          name, email,eventID, stallId
         });
     }
       alert(`Invites sent to ${targets.length} stall(s).`);

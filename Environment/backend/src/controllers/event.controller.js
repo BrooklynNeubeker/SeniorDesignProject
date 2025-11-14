@@ -1,4 +1,5 @@
 import Event from "../models/event.model.js";
+import User from "../models/user.model.js";
 import eventItinerary from "../models/eventItinerary.model.js";
 import eventMap from "../models/eventMap.model.js";
 import stall from "../models/stall.model.js";
@@ -42,24 +43,34 @@ export const deleteEvent = async (req, res) => {
         //console.log("DELETE /events/:id", { params: req.params, req.body }); // debug
 
         const { id } = req.params; 
+        const event =  await Event.findById(id);
 
-        const event = await Event.findByIdAndDelete(id);
         if (!event) {
         return res.status(404).json({
             success: false,
             message: "Event not found.",
         });
         }
+        
+        // delete the child stalls
+        await stall.deleteMany({ eventID: id });
+
+        // remove eventiID from all tethered Users.vendorEvents 
+        await User.updateMany({ vendorEvents: id },     
+                { $pull: { vendorEvents: id } }
+            );
+        // delete the event
+        await Event.findByIdAndDelete(id); 
 
         return res.status(200).json({
-        success: true,
-        message: "Event deleted successfully.",
+            success: true,
+            message: "Event deleted successfully.",
         });
     }catch(error){
         console.error("Error deleting event:", error);
         return res.status(500).json({
-        success: false,
-        message: error.message,
+            success: false,
+            message: error.message,
         });
     }
 };
@@ -259,7 +270,10 @@ export const createItineraryItem = async (req,res) => {
 //Deletes itinerary item using parameter id
 export const deleteItineraryItem = async (req,res) => {
     try {
-        //console.log("DELETE /itinerary/:id", { params: req.params, req.body }); // debug
+        // console.log("DELETE /itinerary/:id", { params: req.params, req.body }); // debug
+        // NOTE: 
+        // when finishing the implementation of this make sure to delete anywhere
+        // eventItenerary is nested(other Event,User, etc)
         const { id } = req.params; 
         const itinerary = await eventItinerary.findByIdAndDelete(id);
         if (!itinerary) {
