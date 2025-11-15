@@ -37,8 +37,6 @@ const StallsPage = () => {
           - that said, we need to define logic for what amount of time should elapse between sending
             existing users an email. Should be more like a push notification, just telling them to log
             in and register new stalls
-          
-        
   */
 
   // id = :id in route
@@ -265,7 +263,9 @@ const StallsPage = () => {
     XLSX.writeFile(wb, `${event.eventName}-Stalls.xlsx`);
   };
 
-  const [selectedIds, setSelectedIds] = useState([]); // 
+  
+  const [selectedIds, setSelectedIds] = useState([]); // selected rows state
+  // Defines the behavior checkbox in the header of the table 
   const allSelected = selectedIds.length === allStalls.length;
   const toggleSelectAll = () => {
     if (allSelected) {
@@ -276,8 +276,8 @@ const StallsPage = () => {
     }
   };
 
+  // Defines behavior of the search input above the table
   const [searchValue, setSearchValue] = useState("");
-
   const filteredStalls = allStalls.filter(stall =>
     stall.name.toLowerCase().includes(searchValue.toLowerCase())
   );
@@ -300,7 +300,7 @@ const StallsPage = () => {
             onChange={(e) => setSearchValue(e.target.value)}
           >
           </input>
-        </div>
+          </div>
         <div className="flex space-x-2 ml-auto">
           {selectedIds.length > 0 && (
             <>
@@ -338,8 +338,6 @@ const StallsPage = () => {
                   onChange={toggleSelectAll}
                 ></input>
               </th>
-                
-              
             </tr>
           </thead>
           <tbody>

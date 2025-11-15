@@ -63,7 +63,9 @@ const EventDashboardPage = () => {
         console.error("Failed to update event", err);
       }
   };
+
   let listEventInfo = (
+  
     <ul className="space-y-3">
     {event.map(ev => (
         <li key={ev._id} className="flex flex-col justify-left gap-x-6 p-3">
@@ -174,13 +176,15 @@ const EventDashboardPage = () => {
             </form>
         </li>
     ))}
-    </ul>)
+    </ul>
+
+    )
 
   return(
     <div className="h-screen pt-20">
       <div className="container flex flex-1 gap-8 p-16 mx-auto bg-base-100/50">
           <div className="max-w-md justify-left space-y-6 flex-shrink-0">
-            <h1 className="text-2xl font-bold">Event Dashboard </h1>
+            <h1 className="text-4xl font-bold">Event Dashboard </h1>
             
             {listEventInfo}   
 

@@ -34,6 +34,20 @@ const HomePage = () => {
         }
     };
 
+    const [searchValue, setSearchValue] = useState("");
+    const filteredEvents = events.filter(event =>
+            event.eventName.toLowerCase().includes(searchValue.toLowerCase())
+        );
+
+    const searchBar = (
+        <input
+            type="input"
+            className="input input-bordered w-3/4"
+            placeholder="Search..."
+            onChange={(e) => setSearchValue(e.target.value)}
+        > 
+        </input>
+    )
     let listEvents;
     if(loading) {
         listEvents = <p className="text-base-content/60">Loading your events…</p>;
@@ -42,7 +56,7 @@ const HomePage = () => {
     }else {
         listEvents = (
         <ul className="space-y-3">
-        {events.map(ev => (
+        {filteredEvents.map(ev => (
             <li key={ev._id} className="flex items-center justify-between gap-x-6 rounded border border-base-300 p-3">
             <div >
                 <div className="font-medium">{ev.eventName}</div>
@@ -65,17 +79,16 @@ const HomePage = () => {
     }
   return (
     <div className="h-screen pt-20">
-        <div className="w-full flex flex-1 flex-col items-center justify-left p-16 bg-base-100/50">
-            <div className="max-w-md text-center space-y-6 gap-2">
-
-            <h1 className="text-2xl font-bold">My Events</h1>
-
-            <Link to={"/event/create-event"} className={`btn btn-primary btn-outline`}>
-                <span>Create Event</span>
-            </Link>
-
-            {listEvents}
-
+        <div className="w-full flex flex-1 flex-col  justify-left p-16 bg-base-100/50">
+            <div className="max-w-md space-y-6 gap-2">
+                <h1 className="text-4xl font-bold ">My Events</h1> 
+                <div className="flex justify-end space-x-2 mtb-5">   
+                    {searchBar}
+                    <Link to={"/event/create-event"} className={`btn btn-primary btn-outline`}>
+                        <span>Create Event</span>
+                    </Link>
+                </div>
+                {listEvents}
             </div>
         </div>
     </div>
