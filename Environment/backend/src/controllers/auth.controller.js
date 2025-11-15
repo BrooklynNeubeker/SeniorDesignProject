@@ -246,7 +246,7 @@ export const inviteNewVendor = async (req, res) => {
       <a href="http://localhost:5173/vendor/${stallId}/signup">Register Your Stall</a>`,
     };
     // send the email
-    console.log("Variables for email are good!");
+    console.log("Variables for email are good!", SENDER_EMAIL, stallEmail, eventName, eventStartDate ,stallId, SENDER_EMAIL );
     await transporter.sendMail(mailOptions)
     console.log("Passed the sendmail");
     await Stall.findByIdAndUpdate(stallId, { onboardingStatus: "inviteSent" });
