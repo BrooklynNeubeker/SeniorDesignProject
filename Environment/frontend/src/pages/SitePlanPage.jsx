@@ -156,7 +156,7 @@ const SitePlanPage = () => {
             
             {/* Save EventMap*/}
             <div className="fixed top-20 left-48 pointer-events-auto z-14">
-                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-success text-black'}>
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent'}>
                     <span>Save</span>
                 </button>
             </div>

@@ -47,7 +47,7 @@ const CreateEventPage = () => {
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
               <div className="text-center mb-14">
-                <h1 className="text-2xl font-semibold ">Create a New Event</h1>
+                <h1 className="text-3xl font-semibold ">Create a New Event</h1>
                 <p className="mt-2">Start by first creating a new event!</p>
               </div>
 

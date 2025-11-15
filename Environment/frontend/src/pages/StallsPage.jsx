@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ParseExcel from "../components/ParseExcel.jsx";
 import * as XLSX from "xlsx";
-import { Trash2, Mail, FileDown } from 'lucide-react';
+import { Trash2, Mail, FileDown, Plus, X } from 'lucide-react';
 
 /**
  * @brief Coordinators can assign stalls to a given event
@@ -285,7 +285,7 @@ const StallsPage = () => {
   let searchBar =(
     <input
       type="input"
-      className="input input-bordered w-full"
+      className="input input-bordered w-full bg-base-200 text-md rounded-lg px-4 py-3"
       placeholder="Search for a stall..."
       onChange={(e) => setSearchValue(e.target.value)}
     >
@@ -316,115 +316,120 @@ const StallsPage = () => {
     listStalls = <p className="text-base-content/60">No stalls yet. Create your first one!</p>;
   } else {
     listStalls = (
-      <>
-      <div className="overflow-auto max-h-80 rounded-md ">
-        <div className="flex justify-end space-x-2 mb-2">
-          <div className="w-1/2">
-          {searchBar}
-          </div>
-          <div className="flex space-x-2 ml-auto">
-            {selectedIds.length > 0 && (
-              <>
-                <button
-                  type="button"
-                  className="btn btn-accent hover:btn-primary"
-                  onClick={sendInvites}
-                  disabled={sending}>
-                  {allSelected ? <><Mail size={16}/>Invite All</> : <><Mail size={16}/>Invite</>}
-                </button>
-                {exportStallsButton}
-                <button
-                  type="button"
-                  className="btn btn-error"
-                  onClick={() => {deleteStalls(selectedIds)}}
-                  > {allSelected ? <><Trash2 size={16}/>Delete All</>:<><Trash2 size={16}/>Delete</> }
-                </button>
-                
-              </>  
-              )
-            }
+      <div className="flex flex-col gap-6">
+        <div className="overflow-auto max-h-80 rounded-md ">
+          <div className="flex justify-end space-x-2 mb-2">
+            <div className="w-1/2">
+              {searchBar}
+            </div>
+            <div className="flex space-x-2 ml-auto">
+              {selectedIds.length > 0 && (
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-accent"
+                    onClick={sendInvites}
+                    disabled={sending}>
+                    {allSelected ? <><Mail size={16}/>Invite All</> : <><Mail size={16}/>Invite</>}
+                  </button>
+                  {exportStallsButton}
+                  <button
+                    type="button"
+                    className="btn btn-error"
+                    onClick={() => {deleteStalls(selectedIds)}}
+                    > {allSelected ? <><Trash2 size={16}/>Delete All</>:<><Trash2 size={16}/>Delete</> }
+                  </button>
+                  
+                </>  
+                )
+              }
+            </div>
           </div>
         </div>
-      </div>
-        <div className="overflow-auto max-h-80 rounded-md ">
-        <table className="table table-sm w-full">
-          <thead className="bg-base-200 sticky top-0 z-20">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Onboarding Status</th>
-              <th className="text-center">Actions
-                <input 
-                  type="checkbox" 
-                  className="checkbox checkbox-primary ml-2"
-                  checked={allSelected}
-                  onChange={toggleSelectAll}
-                ></input>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredStalls.map((stall) => (
-              <tr key={stall._id} 
-                  className={`${selectedIds.includes(stall._id) ? "bg-primary/20" : ""} hover`}
-              >
-                <td className="whitespace-nowrap">{stall.name}</td>
-                <td className="whitespace-nowrap">{stall.email}</td>
-                <td className="whitespace-nowrap">{onboardingStatusComponent(stall.onboardingStatus)}</td>
-                <td className="whitespace-nowrap text-center">
-                  {/* span for spacing */}
-                  <span className="opacity-0 mr-4">
-                    Actions
-                  </span>
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
-                      checked={selectedIds.includes(stall._id)}
-                      onChange={() => {
-                        setSelectedIds(prev => prev.includes(stall._id)
-                            ? prev.filter(id => id !== stall._id)  // deselect
-                            : [...prev, stall._id]                 // select
-                        );
-                      }}
-                    />
-                </td>
+
+        <div className="overflow-auto max-h-80 rounded-md bg-base-200 border border-base-content/20">
+          <table className="table table-sm w-full">
+            <thead className="bg-base-300 sticky top-0 z-20">
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Onboarding Status</th>
+                <th className="text-center">Actions
+                  <input 
+                    type="checkbox" 
+                    className="checkbox checkbox-primary ml-2"
+                    checked={allSelected}
+                    onChange={toggleSelectAll}
+                  ></input>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredStalls.map((stall) => (
+                <tr key={stall._id} 
+                    className={`${selectedIds.includes(stall._id) ? "bg-primary/20" : ""} hover`}
+                >
+                  <td className="whitespace-nowrap">{stall.name}</td>
+                  <td className="whitespace-nowrap">{stall.email}</td>
+                  <td className="whitespace-nowrap">{onboardingStatusComponent(stall.onboardingStatus)}</td>
+                  <td className="whitespace-nowrap text-center">
+                    {/* span for spacing */}
+                    <span className="opacity-0 mr-4">
+                      Actions
+                    </span>
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-primary"
+                        checked={selectedIds.includes(stall._id)}
+                        onChange={() => {
+                          setSelectedIds(prev => prev.includes(stall._id)
+                              ? prev.filter(id => id !== stall._id)  // deselect
+                              : [...prev, stall._id]                 // select
+                          );
+                        }}
+                      />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      </>
     )
   }
   // lets Coordinator enter/remove stalls one at a time.
   let addStallsForm = (
-    <div className="rounded-lg border border-base-300 p-4 space-y-3">
+    <div className="rounded-lg bg-base-300 p-6 space-y-4">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <div className="flex items-center justify-between mb-3">
+
+          <div className="flex items-center justify-between mb-6">
+
             <label className="label">
-              <span className="label-text font-medium"> Add Stalls</span>
+              <span className="text-base-content font-medium"> Add Stalls</span>
             </label>
-            <div className="flex items-center justify-between mb-3">
+
+            <div className="flex gap-2">
               <button
                 type="button"
-                className="btn btn-sm btn-outline"
-                onClick={addStalls}
-              >
-                + Add Stall
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-ghost text-error"
+                className="btn btn-sm border-base-content"
                 onClick={() => {
                   toggleAddForm();
                 }}
               >
-                Collapse
+                Collapse List
               </button>
               <button
                 type="button"
-                className="btn btn-sm btn-ghost text-error"
+                className="btn btn-sm btn-accent"
+                onClick={addStalls}
+              >
+                <Plus size={16}/>
+                Add Stall
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-error"
                 onClick={() => {
                   setStalls([{ id: crypto.randomUUID(), name: "", email: "" }]);
                   toggleAddForm();
@@ -433,31 +438,45 @@ const StallsPage = () => {
                 Cancel
               </button>
             </div>
+
           </div>
 
+
           <div className="space-y-4">
+
             {stalls.map((stall) => (
               <div
                 key={stall.id}
-                className="rounded-lg border border-base-300 p-4 space-y-3"
+                className="rounded-lg bg-base-100 p-6 flex flex-col gap-6"
               >
-                <input
-                  className="input input-bordered w-full"
-                  placeholder="stall name"
-                  value={stall.name}
-                  onChange={(e) => updateStalls(stall.id, "name", e.target.value)}
-                />
-                <input
-                  className="input input-bordered w-full"
-                  placeholder="e-mail"
-                  value={stall.email}
-                  onChange={(e) => updateStalls(stall.id, "email", e.target.value)}
-                />
+                <div>
+                  <label className="label text-base-content text-sm mt-2 mb-2">
+                    Vendor Name:
+                  </label>
+                  <input
+                    className="input input-bordered w-full"
+                    placeholder="Enter vendor name..."
+                    value={stall.name}
+                    onChange={(e) => updateStalls(stall.id, "name", e.target.value)}
+                  />
+                </div>
 
-                <div className="text-right">
+                <div>
+                  <label className="label text-base-content text-sm mt-2 mb-2">
+                    Vendor Email:
+                  </label>
+                  <input
+                    className="input input-bordered w-full"
+                    placeholder="Enter vendor email..."
+                    value={stall.email}
+                    onChange={(e) => updateStalls(stall.id, "email", e.target.value)}
+                  />
+                </div>
+
+                <div className="flex justify-end mt-1 mb-1">
                   <button
                     type="button"
-                    className="btn btn-xs btn-error btn-outline"
+                    className="btn btn-sm btn-error"
                     onClick={() => removeStalls(stall.id)}
                     disabled={stalls.length === 1}
                   >
@@ -466,12 +485,15 @@ const StallsPage = () => {
                 </div>
               </div>
             ))}
-            <div className="flex justify-left gap-2">
-              <button type="submit" className="btn btn-primary btn-outline">
-                Submit
+
+            <div className="flex justify-end gap-2">
+              <button type="submit" className="btn btn-primary">
+                Save Stalls
               </button>
             </div>
+
           </div>
+
         </div>
       </form>
     </div>
@@ -491,28 +513,31 @@ const StallsPage = () => {
 
   // Displays ParseExcel component
   let importFileComponent = (
-    <div className="rounded-lg border border-base-300 p-4 space-y-3">
-      <div className="flex items-center justify-between mb-3">
+    <div className="rounded-lg bg-base-300 p-6 space-y-4">
+
+      <div className="flex items-center justify-between mb-6">
         <label className="label">
-          <span className="label-text font-medium"> Import Stalls</span>
+          <span className="text-base-content font-medium"> Import Stalls</span>
         </label>
-        <div className="flex items-center justify-between mb-3">
+
+        <div className="flex gap-2">
           <button
             type="button"
-            className="btn btn-sm btn-ghost text-error"
+            className="btn btn-sm btn-error"
             onClick={() => {
               toggleImport();
             }}
           >
-            Collapse
+            Close
           </button>
         </div>
       </div >
-      <div className="rounded-lg border border-base-300 p-4 space-y-3">
+
+      <div className="flex flex-col relative rounded-lg border border-base-300 space-y-3">
         <ParseExcel onParsed={handleParsed} />
         <button
           type="button"
-          className="btn btn-sm btn-primary btn-outline mt-3"
+          className="btn btn-md btn-primary absolute bottom-0 right-0"
           onClick={importToBackend}
           disabled={importRows.length === 0}
         >
@@ -528,98 +553,120 @@ const StallsPage = () => {
   // more than 10 events, they wont be able to see all of them at once
   // in the table, this component provides a quick reference to that end.
   let inviteComponent = (
-    <div className="rounded-lg border border-base-300 p-4 space-y-3">
-      <div className="flex items-center justify-between mb-3">
-        <label className="label">
-          <span className="label-text font-medium"> Preview Invites</span>
-        </label>
-        <div className="flex items-center justify-between mb-3">
+    <div className="rounded-lg bg-base-300 p-6 space-y-4">
+
+      <div className="flex items-center justify-between mb-6">
+        <h2>
+          <span className="text-base-content font-medium"> Preview Invites</span>
+        </h2>
+
+        <div className="flex gap-2">
           <button
             type="button"
-            className="btn btn-sm btn-ghost text-error"
+            className="btn btn-sm btn-error"
             onClick={() => {
               toggleInvite();
             }}
           >
-            Collapse
+            Close
           </button>
         </div>
       </div>
-      <ul>
-        {selectedIds.map((stallId) => {
-          const stall = allStalls.find(stall => stall._id === stallId);  // lookup stalls
-          if (!stall) return null; 
-          return (
-            <li key={stall._id}>
-              <span className="font-medium">{stall.name}</span>
-            </li>
-          );
-        })}
-      </ul>
-      <div>
+
+      <div className="flex flex-col gap-6 rounded-lg bg-base-100 p-6">
+        <h3>
+          <span className="text-base-content text-sm">Invitations will be sent to the following vendors:</span>
+        </h3>
+        <ul className="flex flex-col gap-4">
+          {selectedIds.map((stallId) => {
+            const stall = allStalls.find(stall => stall._id === stallId);  // lookup stalls
+            if (!stall) return null; 
+            return (
+              <li key={stall._id}>
+                <span className="text-md">{stall.name}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="flex justify-end">
         <button
           type="button"
-          className="btn btn-primary btn-outline mt-3 hover:btn-primary"
+          className="btn btn-primary mt-3"
           onClick={sendInvites}
           disabled={sending}>
           {sending ? "Sending…" : "Send Invites"}
         </button>
       </div>
+
     </div>
   ) 
 
   let toggleAddStallsButton = (
     <button
       type="button"
-      className={showAddForm ? "btn btn-outline btn-primary" : "btn btn-primary"}
+      className={showAddForm ? "btn btn-primary btn-soft border-primary" : "btn btn-primary"}
       onClick={toggleAddForm}
     >
-      {showAddForm ? "x Add Stalls":"+ Add Stalls"}
+      {showAddForm ? <X size={16}/> : <Plus size={16}/>}
+      Add Stalls
     </button>
   )
   let invitationButton = (
     <button
       type="button"
-      className={showInvite ? "btn btn-outline btn-primary" : "btn btn-primary"}
+      className={showInvite ? "btn btn-primary btn-soft border-primary" : "btn btn-primary"}
       onClick={toggleInvite}
     >
-      {showInvite ? "x Invitation Preview" : "+ Invitation Preview"}
+      {showInvite ? <X size={16}/> : <Plus size={16}/>}
+      Invitation Preview
     </button>
   )
   let importStallsButton = (
     <button
       type="button"
-      className={showImport ? "btn btn-outline btn-primary" : "btn btn-primary"}
+      className={showImport ? "btn btn-primary btn-soft border-primary" : "btn btn-primary"}
       onClick={toggleImport}
     >
-      {showImport ? "x Import Stalls": "+ Import Stalls"}
+      {showImport ? <X size={16}/> : <Plus size={16}/>}
+      Import Stalls
     </button>
   )
   return (
     <div className="min-h-screen pt-20 bg-base-200">
-      <div className="container max-w-5xl flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
-        <div className=" text-center mb-8">
-          <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
-          <p className="mt-2">Manage your stalls!</p>
-        </div>
-          <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
-          <h2 className="text-2xl font-bold mb-5 mt-5">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h2>
-          <h1 className="text-2xl font-bold mb-5"> Stalls:</h1>
-        <div >
-          {listStalls}
-        </div>
-        <div className="flex gap-2 mt-5">
-              {toggleAddStallsButton}
-              {importStallsButton}
-              {invitationButton}
-        </div>
-        {showAddForm && <div className="mt-5">{addStallsForm}</div>}
-        {showImport && <div className="mt-5">{importFileComponent}</div>}
-        {showInvite && <div className="mt-5">{inviteComponent}</div>}
-        <div>
-          <Link to={`/event/${id}/dashboard`} className="btn btn-primary mt-5 justify-left gap-2">
-            Back
-          </Link>
+      <div className="max-w-5xl mx-auto p-4 py-8">
+        <div className="bg-base-100 rounded-xl p-6 space-y-8">
+
+          <div className="absolute">
+            <Link to={`/event/${id}/dashboard`} className="btn btn-primary justify-left gap-2">
+              Back to Dashboard
+            </Link>
+          </div>
+
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
+            <p className="mt-2">Manage your stalls!</p>
+          </div>
+
+            <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+            <h2 className="text-2xl font-bold mb-5 mt-5">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h2>
+            <h1 className="text-2xl font-bold mb-5"> Stalls:</h1>
+
+          <div>
+            {listStalls}
+          </div>
+
+          <div className="flex gap-4 my-4">
+                {toggleAddStallsButton}
+                {importStallsButton}
+                {invitationButton}
+          </div>
+
+          {showAddForm && <div className="mt-5">{addStallsForm}</div>}
+          {showImport && <div className="mt-5">{importFileComponent}</div>}
+          {showInvite && <div className="mt-5">{inviteComponent}</div>}
+
         </div>
       </div>
     </div>

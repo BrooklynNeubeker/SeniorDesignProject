@@ -186,7 +186,7 @@ const ParseExcel = ({ onParsed }) => {
         {previewComponent}
       </div>
           <div>
-        <button type="button" className="btn btn-sm btn-outline" onClick={downloadTemplate}>
+        <button type="button" className="btn btn-sm border border-base-content" onClick={downloadTemplate}>
             Download Template
         </button>
     </div>
