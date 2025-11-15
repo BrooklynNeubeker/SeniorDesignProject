@@ -134,12 +134,12 @@ const VendorStallPage = () => {
     if(editForm){
       submitButton = (
         <div className="flex space-x-5">
-            <button type="submit" className="btn btn-primary btn-outline">
+            <button type="submit" className="btn btn-accent">
                Submit Changes
             </button>
             <button 
                 type="button"
-                className="btn btn-primary btn-outline"
+                className="btn btn-secondary "
                 onClick={() => window.location.reload()}
             >
                Revert
@@ -149,19 +149,20 @@ const VendorStallPage = () => {
 
       )
     }
-    let editFormButton = (
+    let editFormButton;
+    if(!editForm){
+        editFormButton = (
         <button
             type="button"
             className="btn btn-primary"
             onClick={() => setEditForm(!editForm)}
-            disabled={editForm}
         >
-            Edit Stall
-        </button>
-    )
+            Edit Stall Information
+        </button>)
+    }
     
     let backButton = (
-        <Link to={`/vendor`} className="btn btn-outline btn-primary">
+        <Link to={`/vendor`} className="btn btn-primary">
            Back
         </Link>
     )
@@ -175,22 +176,28 @@ const VendorStallPage = () => {
     }
 
   return (
-          <div className="h-screen pt-20">
-            <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-              <div className="max-w-md justify-left space-y-6">
-                <div className="flex justify-between space-x-8">
-                    <h1 className="text-2xl font-bold"> Stall: {formData.name}</h1>
-                    {backButton}
-                    {editFormButton}
-                </div>
+          <div className="min-h-screen pt-20 bg-base-200">
+                <div className="container flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
+                    <div className=" text-center mb-8">
+                        
+                        <h1 className="text-3xl font-bold"> {formData.name}</h1>
+                        <p className="mt-2">Details about your stall!</p>
+                    </div>
+                    <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+
+                <div>
                 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6 w-3/4">
 
                   {/* Stall name */}
                   <div className="form-control">
+                    <div className="container flex flex-row justify-between items-center mt-5 mb-2">
                     <label className="label">
                       <span className="label-text font-medium">Stall Name</span>
                     </label>
+                      {editFormButton}
+                      {submitButton}
+                    </div>
                     <div className="relative mt-3">
                       <input
                         className={`input input-bordered w-full`}
@@ -265,10 +272,9 @@ const VendorStallPage = () => {
                         }}
                       />
                     </div>
-                  </div>
-
+                  </div>       
                   {showFoodInfo && setTagsComponent}
-                  {submitButton}
+                  {backButton}
                 </form>
               </div>
             </div>

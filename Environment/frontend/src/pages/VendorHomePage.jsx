@@ -203,7 +203,7 @@ const VendorHomePage = () => {
                         <h1 className="text-3xl font-semibold">Welcome back, {authUser?.fullname}!</h1>
                         <p className="mt-2">View your events!</p>
                     </div>
-                        <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+                    <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
                     <div className="mt-5">
                         <h1 className="text-2xl font-bold mb-5"> Events:</h1>
                         {searchBar}

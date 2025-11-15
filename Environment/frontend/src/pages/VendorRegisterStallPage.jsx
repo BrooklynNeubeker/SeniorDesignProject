@@ -116,7 +116,7 @@ const VendorRegisterStallPage = () => {
     if(!stallRegistered){
       submitButton = (
         <div className="flex justify-end">
-            <button type="submit" className="btn btn-primary btn-outline">
+            <button type="submit" className="btn btn-primary">
                 Submit Registration
             </button>
         </div>
@@ -134,13 +134,15 @@ const VendorRegisterStallPage = () => {
     }
 
   return (
-          <div className="h-screen pt-20">
-            <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-              <div className="max-w-md justify-left space-y-6">
-
-                <h1 className="text-2xl font-bold">Register Stall</h1>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="min-h-screen pt-20 bg-base-200">
+            <div className="container flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
+              <div className="text-center mb-8">
+                <h1 className="text-3xl text-center font-semibold">Register Stall</h1>
+                <p className="mt-2">Update the form and submit to register your stall!</p>
+              </div>
+              <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+              <div className="mt-5 w-2/3">
+                <form onSubmit={handleSubmit} className="space-y-6 ">
 
                   {/* Stall name */}
                   <div className="form-control">
