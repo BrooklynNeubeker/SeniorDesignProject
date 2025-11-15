@@ -150,15 +150,8 @@ const SitePlanPage = () => {
             </div>
 
             <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure}/>  
+                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/>  
                 {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
-            </div>
-            
-            {/* Save EventMap*/}
-            <div className="fixed top-20 left-48 pointer-events-auto z-14">
-                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent'}>
-                    <span>Save</span>
-                </button>
             </div>
         </div>
     );
