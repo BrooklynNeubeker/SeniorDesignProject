@@ -91,6 +91,28 @@ const VendorHomePage = () => {
 
         }
     };
+
+    // Defines behavior of the search input above the table
+    const [searchValue, setSearchValue] = useState("");
+    const searchTerm = searchValue.toLowerCase();
+
+    const filteredEvents = Object.entries(eventIdToStalls).filter(
+        ([eventID]) => {
+            const event = events[eventID];
+            if (!event) {return false;}
+            const matchedEvent = event.eventName?.toLowerCase().includes(searchTerm);
+            return searchTerm === "" || matchedEvent;
+        }
+    );
+    let searchBar =(
+        <input
+        type="input"
+        className="input input-bordered w-1/2"
+        placeholder="Search for an event..."
+        onChange={(e) => setSearchValue(e.target.value)}
+        >
+        </input>
+    )
     
     let listStalls;
 
@@ -114,28 +136,32 @@ const VendorHomePage = () => {
         //    passes the eventID to the events map, getting our event info for header
         //    then add a row to the table per index in the stallsForEvent
         listStalls = (
-        <div className="space-y-10">
-            {Object.entries(eventIdToStalls).map(([eventID, stallsForEvent]) => {
+
+        <div className="space-y-10 mt-5 flex-1 overflow-auto max-h-100">
+            {filteredEvents.map(([eventID, stallsForEvent]) => {
                 const event = events[eventID];
                 return (
-                    <div key={eventID} className="max-w-xl mx-auto rounded">
+                    <div key={eventID} className="w-full flex gap-6 rounded mb-10  bg-base-200">
                         {/* Event Header */}
-                        <div className="mb-3 border-b pb-1">
-                            <h2 className="text-xl font-bold text-center">{event.eventName}</h2>
-                            <p className="text-lg text-center text-base-content/70">
-                                {event.location}
-                                {" "}
-                                {new Date(event.startDate).toLocaleDateString()}
-                            </p>
+                        <div className="w-1/2 ">
+                            <div className="mt-3 p-10  justify-left">
+                                <h2 className="text-xl font-bold ">{event.eventName}</h2>
+                                <p className="text-lg text-base-content/70">
+                                    {event.location}
+                                    {" "}
+                                    {new Date(event.startDate).toLocaleDateString()}
+                                </p>
+                                <p className="text-lg text-base-content/70">
+                                    Coordinator: {event?.eventCoordinatorName}
+                                </p>
+                            </div>
                         </div>
-
                         {/* Table for stalls in this event */}
-                        <div className="overflow-auto rounded-md border border-base-300">
+                        <div className="w-1/2  max-h-40 overflow-auto rounded-md border border-base-300 mt-2">
                             <table className="table table-sm w-full">
                                 <thead className="bg-base-200 sticky top-0">
                                 <tr>
                                     <th className="text-left">Stall</th>
-                                    <th className="text-left">Email</th>
                                     <th className="text-left">Onboarding Status</th>
                                     <th className="text-right">Actions</th>
                                 </tr>
@@ -144,12 +170,11 @@ const VendorHomePage = () => {
                                 {stallsForEvent.map((stall) => (
                                     <tr key={stall._id} className="hover:bg-base-100/50">
                                         <td className="py-2 whitespace-nowrap">{stall.name}</td>
-                                        <td className="py-2 whitespace-nowrap">{stall.email}</td>
                                         <td className="py-2 whitespace-nowrap" >{onboardingStatusComponent(stall.onboardingStatus)}</td>
                                         <td className="py-2 whitespace-nowrap text-right">
                                             <Link
                                                 to={`/vendor/register-stall/${stall._id}`}
-                                                className="btn btn-xs btn-outline btn-primary"
+                                                className="btn btn-xs btn-primary"
                                             >
                                                 View
                                             </Link>
@@ -172,22 +197,19 @@ const VendorHomePage = () => {
         </div>
     }else{
         return (
-            <div className="h-screen pt-20">
-                    <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-                        <div className="max-w-xl justify-left space-y-6">
-                            <div className="mb-8">
-                                <h1 className="text-3xl font-bold mt-2">
-                                    Welcome back, {authUser?.fullname}!
-                                </h1>
-                                <h1 className="text-2xl font-bold mt-5">
-                                    Events:
-                                </h1>
-                                <div className="mt-5">
-                                    {listStalls}  
-                                </div>          
-                            </div>
-                        </div>
+            <div className="min-h-screen pt-20 bg-base-200">
+                <div className="container flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-semibold">Welcome back, {authUser?.fullname}!</h1>
+                        <p className="mt-2">View your events!</p>
                     </div>
+                        <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+                    <div className="mt-5">
+                        <h1 className="text-2xl font-bold mb-5"> Events:</h1>
+                        {searchBar}
+                        {listStalls}  
+                    </div>   
+                </div>
             </div>
         );
     }

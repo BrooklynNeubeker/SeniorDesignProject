@@ -598,11 +598,12 @@ const StallsPage = () => {
   return (
     <div className="min-h-screen pt-20 bg-base-200">
       <div className="container max-w-5xl flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
-        <div className=" text-center mb-14">
+        <div className=" text-center mb-8">
           <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
           <p className="mt-2">Manage your stalls!</p>
         </div>
-          <h2 className="text-2xl font-bold mb-5">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h2>
+          <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
+          <h2 className="text-2xl font-bold mb-5 mt-5">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h2>
           <h1 className="text-2xl font-bold mb-5"> Stalls:</h1>
         <div >
           {listStalls}
