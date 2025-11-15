@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ParseExcel from "../components/ParseExcel.jsx";
 import * as XLSX from "xlsx";
-
+import { Trash2, Mail, FileDown } from 'lucide-react';
 
 /**
  * @brief Coordinators can assign stalls to a given event
@@ -27,7 +27,8 @@ const StallsPage = () => {
     - After finished with stall page, rework messages:
         coordinator can see all vendors of their events
         vendors can only see the coordinator they are assinged to 
-    - Fix the table scrolling away the search bar and group action buttons
+    -x Fix the table scrolling away the search bar and group action buttons
+      - Fix the visible checkbox when row scrolls passed the header
     - Don't freeze the screen while waiting for invites to go out
         - show a spinning bar within the component and a notice of completetion
     - Define logic of sending emails, 
@@ -55,7 +56,7 @@ const StallsPage = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showInvite, setInvite] = useState(false);
   const [showImport, setImport] = useState(false);
-  const [showExport, setExport] = useState(false);    
+   
  
 
   //grabs an event using the eventID in the route
@@ -281,6 +282,31 @@ const StallsPage = () => {
   const filteredStalls = allStalls.filter(stall =>
     stall.name.toLowerCase().includes(searchValue.toLowerCase())
   );
+  let searchBar =(
+    <input
+      type="input"
+      className="input input-bordered w-full"
+      placeholder="Search for a stall..."
+      onChange={(e) => setSearchValue(e.target.value)}
+    >
+    </input>
+  )
+
+  let exportStallsButton = (
+      <button
+        type="button"
+        className="btn btn-primary hover:btn-primary"
+        onClick={() => {
+          if (!window.confirm("Would you like to download an Excel Sheet?")) {
+            alert("Export Cancelled");
+            return;
+          }
+          exportStallsToXLSX();
+        }} 
+      >
+        {allSelected ?<><FileDown size={16} />Export All</> :<><FileDown size={16} />Export</>}
+      </button>
+  )
   // Responsible for rendering the main table. Displays all stalls currently assigned to 
   // this event
   let listStalls;
@@ -290,39 +316,37 @@ const StallsPage = () => {
     listStalls = <p className="text-base-content/60">No stalls yet. Create your first one!</p>;
   } else {
     listStalls = (
+      <>
       <div className="overflow-auto max-h-80 rounded-md ">
         <div className="flex justify-end space-x-2 mb-2">
           <div className="w-1/2">
-          <input
-            type="input"
-            className="input input-bordered w-full"
-            placeholder="Search..."
-            onChange={(e) => setSearchValue(e.target.value)}
-          >
-          </input>
+          {searchBar}
           </div>
-        <div className="flex space-x-2 ml-auto">
-          {selectedIds.length > 0 && (
-            <>
-              <button
-                type="button"
-                className="btn btn-primary btn-outline hover:btn-primary"
-                onClick={sendInvites}
-                disabled={sending}>
-                {allSelected ? "Invite All" : "Invite"}
-              </button>
-              <button
-                type="button"
-                className="btn btn-error btn-outline"
-                onClick={() => {deleteStalls(selectedIds)}}
-                > {allSelected ? "Delete All":"Delete" }
-              </button>
-            </>  
-            )
-          }
+          <div className="flex space-x-2 ml-auto">
+            {selectedIds.length > 0 && (
+              <>
+                <button
+                  type="button"
+                  className="btn btn-accent hover:btn-primary"
+                  onClick={sendInvites}
+                  disabled={sending}>
+                  {allSelected ? <><Mail size={16}/>Invite All</> : <><Mail size={16}/>Invite</>}
+                </button>
+                {exportStallsButton}
+                <button
+                  type="button"
+                  className="btn btn-error"
+                  onClick={() => {deleteStalls(selectedIds)}}
+                  > {allSelected ? <><Trash2 size={16}/>Delete All</>:<><Trash2 size={16}/>Delete</> }
+                </button>
+                
+              </>  
+              )
+            }
+          </div>
         </div>
       </div>
-
+        <div className="overflow-auto max-h-80 rounded-md ">
         <table className="table table-sm w-full">
           <thead className="bg-base-200 sticky top-0">
             <tr>
@@ -383,11 +407,12 @@ const StallsPage = () => {
           </tbody>
         </table>
       </div>
+      </>
     )
   }
   // lets Coordinator enter/remove stalls one at a time.
   let addStallsForm = (
-    <div id="addStallForm" className="rounded-lg border border-base-300 p-4 space-y-3">
+    <div className="rounded-lg border border-base-300 p-4 space-y-3">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <div className="flex items-center justify-between mb-3">
@@ -474,10 +499,6 @@ const StallsPage = () => {
     setImport(!showImport);
   };
 
-  const toggleExport = () => {
-    setExport(!showExport);
-  };
-
   const toggleInvite = () => {
     setInvite(!showInvite);
   };
@@ -559,109 +580,60 @@ const StallsPage = () => {
         </button>
       </div>
     </div>
-  )
-  
-  // displays export stalls button
-  let exportStallsComponent = (
-    <div className="rounded-lg border border-base-300 p-4 space-y-3">
-      <div className="flex items-center justify-between mb-3">
-        <label className="label">
-          <span className="label-text font-medium"> Export Stalls</span>
-        </label>
-        <div className="flex items-center justify-between mb-3">
-          <button
-            type="button"
-            className="btn btn-sm btn-ghost text-error"
-            onClick={() => {
-              toggleExport();
-            }}
-          >
-            Collapse
-          </button>
-        </div>
-      </div>
-      <div>
-        <button
-          type="button"
-          className="btn btn-primary btn-outline mt-3 hover:btn-primary"
-          onClick={exportStallsToXLSX}
-        >
-          Export Stalls
-        </button>
-      </div>
-    </div>
-  )
+  ) 
 
   let toggleAddStallsButton = (
     <button
       type="button"
-      className="btn btn-primary btn-outline"
-      disabled={showAddForm}
+      className={showAddForm ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleAddForm}
     >
-      Add Stalls
+      {showAddForm ? "x Add Stalls":"Add Stalls"}
     </button>
   )
   let invitationButton = (
     <button
       type="button"
-      className="btn btn-primary btn-outline"
-      disabled={showInvite}
+      className={showInvite ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleInvite}
     >
-      Vendor Registration Preview
+      {showInvite ? "x Vendor Registration Preview" : "Vendor Registration Preview"}
     </button>
   )
   let importStallsButton = (
     <button
       type="button"
-      className="btn  btn-primary btn-outline"
-      disabled={showImport}
+      className={showImport ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleImport}
     >
-      Import Stalls
-    </button>
-  )
-  let exportStallsButton = (
-    <button
-      type="button"
-      className="btn  btn-primary btn-outline"
-      disabled={showExport}
-      onClick={toggleExport}
-    >
-      Export Stalls
+      {showImport ? "x Import Stalls": "Import Stalls"}
     </button>
   )
   return (
-    <div className="h-full pt-20">
+    <div className="min-h-screen pt-20 bg-base-200">
       <div className="container max-w-5xl flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-        <div className="max-w-md justify-left space-y-6">
-          <h1 className="text-4xl font-bold">Stalls Dashboard</h1>
-          <h1 className="text-2xl font-bold">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h1>
-          <div className="max-w-md justify-left  mt-5">
-            
+        <div className=" text-center mb-14">
+          <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
+          <p className="mt-2">Manage your stalls!</p>
         </div>
+          <h2 className="text-2xl font-bold mb-5">{event?.eventName} - {new Date(event?.startDate).toLocaleDateString()} </h2>
           <h1 className="text-2xl font-bold mb-5"> Stalls:</h1>
-        </div>
         <div >
           {listStalls}
         </div>
         <div className="flex gap-2 mt-5">
               {toggleAddStallsButton}
               {importStallsButton}
-              {exportStallsButton}
               {invitationButton}
         </div>
         {showAddForm && <div className="mt-5">{addStallsForm}</div>}
         {showImport && <div className="mt-5">{importFileComponent}</div>}
-        {showExport && <div className="mt-5">{exportStallsComponent}</div>}
         {showInvite && <div className="mt-5">{inviteComponent}</div>}
         <div>
           <Link to={`/event/${id}/dashboard`} className="btn btn-primary mt-5 justify-left gap-2">
             Back
           </Link>
         </div>
-
       </div>
     </div>
 
