@@ -38,7 +38,7 @@ const Overlay = ({ addStructure }) => {
                 <input id="add-objects-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
                     {/* Imperial/metric toggle */}
-                    <div className="pointer-events-auto z-14 bg-white p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                    <div className="pointer-events-auto z-14 bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                         <label className="label text-base-content">
                             Imperial
                             <input type="checkbox" className="toggle checked:toggle-success"
