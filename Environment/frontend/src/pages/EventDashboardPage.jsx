@@ -4,6 +4,7 @@ import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import QRCodePage from "../components/QRCodePage";
+import { SquarePen, MapPin, Calendar } from "lucide-react";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
@@ -57,7 +58,7 @@ const EventDashboardPage = () => {
       // console.log(payload);
       try {
         await axiosInstance.put(`/events/${id}`, payload);
-        alert("Event updated successfully");
+        console.log("Event updated successfully");
         //Anything else?
       } catch(error){
         console.error("Failed to update event", err);
@@ -73,8 +74,9 @@ const EventDashboardPage = () => {
               {/* Event name */}
               
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Name</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <SquarePen className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Event Name</span>
                 </label>
                 <div className="relative">
                   <input
@@ -91,8 +93,9 @@ const EventDashboardPage = () => {
 
               {/* Event Location */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Location</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Event Location</span>
                 </label>
                 <div className="relative">
                   <input
@@ -108,8 +111,9 @@ const EventDashboardPage = () => {
 
               {/* Start date & time */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Start Date</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Start Date</span>
                 </label>
                 <div className="relative">
                   <input
@@ -135,8 +139,9 @@ const EventDashboardPage = () => {
 
               {/* End date & time */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">End Date</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">End Date</span>
                 </label>
                 <div className="relative">
                   <input
@@ -159,19 +164,46 @@ const EventDashboardPage = () => {
                   />
                 </div>
               </div>
-            <div className="flex items-center gap-2">
-              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary btn-outline`}> 
+
+              <div className="flex justify-end">
+                <button type="submit" className="btn btn-accent">
+                  Save Changes
+                </button>
+              </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-y-6 mb-8 mt-8">
+              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary`}> 
                     <span>Edit Event Layout</span>
               </Link>
-              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary btn-outline`}>
+              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary`}>
                     <span>View Stalls</span>
               </Link>
-              <button type="submit" className="btn btn-primary btn-outline">
-                Save Changes
-              </button>
-              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary btn-outline`}> 
-                    <span>Preview</span>
+              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary`}> 
+                    <span>View Full Preview</span>
               </Link>
+
+              { /* <button 
+                onClick={() => setShowPreview(!showPreview)}
+                className="btn btn-primary btn-outline"
+              >
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </button> */ }
+
+              <Link to={`/event/${id}/viewmap`} className={`btn btn-primary`}>
+                    <span>View Published Map</span>
+              </Link>
+              <button 
+                onClick={() => {
+                  const eventName = event.length > 0 ? event[0].eventName : "Event";
+                  setShowPrintQR({
+                    open: true,
+                    eventName: eventName,
+                    qrValue: `${window.location.origin}/event/${id}/viewmap`
+                  });
+                }}
+                className="btn btn-primary w-full">
+                Generate QR Code
+              </button>
             </div>
             </form>
         </li>
@@ -181,57 +213,41 @@ const EventDashboardPage = () => {
     )
 
   return(
-    <div className="h-screen pt-20">
-      <div className="container flex flex-1 gap-8 p-16 mx-auto bg-base-100/50">
-          <div className="max-w-md justify-left space-y-6 flex-shrink-0">
-            <h1 className="text-4xl font-bold">Event Dashboard </h1>
-            
-            {listEventInfo}   
-
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setShowPreview(!showPreview)}
-                className="btn btn-primary btn-outline"
-              >
-                {showPreview ? "Hide Preview" : "Show Preview"}
-              </button>
-              <Link to={`/event/${id}/viewmap`} className={`btn btn-primary btn-outline`}>
-                    <span>View Published Map</span>
-              </Link>
+    <div className="min-h-screen pt-20 bg-base-200">
+        <div className="mx-4 p-4 py-8">
+          <div className="bg-base-100 rounded-xl p-6 space-y-8">
+            <div className="text-center mb-14">
+              <h1 className="text-3xl font-semibold ">Event Dashboard</h1>
+              <p className="mt-2">Manage your event details and layout!</p>
             </div>
+            
+            <div className="flex w-full gap-14">
+              <div className="w-1/2">
+                {listEventInfo}
+              </div>
 
-            <button 
-              onClick={() => {
-                const eventName = event.length > 0 ? event[0].eventName : "Event";
-                setShowPrintQR({
-                  open: true,
-                  eventName: eventName,
-                  qrValue: `${window.location.origin}/event/${id}/viewmap`
-                });
-              }}
-              className="btn btn-primary btn-outline w-full"
-            >
-              Generate QR Code
-            </button>
+              <div className="w-1/2">
+                {/* Right side - Preview */}
+                <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden h-full">
+                  <iframe 
+                    src={`/event/${id}/dashboard/preview`}
+                    className="w-full h-full border-none"
+                    title="Event Preview"
+                  />
+                </div>
+              </div>
+
+              <QRCodePage 
+                open={showPrintQR.open}
+                onClose={() => setShowPrintQR({...showPrintQR, open: false})}
+                title={showPrintQR.eventName}
+                qrValue={showPrintQR.qrValue}
+              />
+
+            </div>
+            
           </div>
           
-          {/* Right side - Preview */}
-          {showPreview && (
-            <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden">
-              <iframe 
-                src={`/event/${id}/dashboard/preview`}
-                className="w-full h-full border-none"
-                title="Event Preview"
-              />
-            </div>
-          )}
-
-          <QRCodePage 
-            open={showPrintQR.open}
-            onClose={() => setShowPrintQR({...showPrintQR, open: false})}
-            title={showPrintQR.eventName}
-            qrValue={showPrintQR.qrValue}
-          />
       </div>
     </div>
   );

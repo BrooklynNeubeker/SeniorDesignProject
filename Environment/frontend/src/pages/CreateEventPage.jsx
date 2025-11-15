@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
+import { SquarePen, MapPin, Calendar } from "lucide-react";
 
 const CreateEventPage = () => {
     const { authUser } = useAuthStore();
@@ -41,18 +42,22 @@ const CreateEventPage = () => {
     };
       
     return (
-      <div className="h-screen pt-20">
-          <div className="container flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
-              <div className="max-w-md justify-left space-y-6">
+      <div className="min-h-screen pt-20 bg-base-200">
+        <div className="max-w-2xl mx-auto p-4 py-8">
+          <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
-              <h1 className="text-2xl font-bold">Create Event</h1>
+              <div className="text-center mb-14">
+                <h1 className="text-2xl font-semibold ">Create a New Event</h1>
+                <p className="mt-2">Start by first creating a new event!</p>
+              </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 flex flex-col gap-3">
               
               {/* Event name */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Name</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <SquarePen className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Event Name</span>
                 </label>
                 <div className="relative">
                   <input
@@ -69,8 +74,9 @@ const CreateEventPage = () => {
 
               {/* Event Location */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Event Location</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Event Location</span>
                 </label>
                 <div className="relative">
                   <input
@@ -86,10 +92,11 @@ const CreateEventPage = () => {
 
               {/* Start date & time */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Start Date</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">Start Date</span>
                 </label>
-                <div className="relative">
+                <div className="relative flex flex-col gap-2">
                   <input
                     type="date"
                     className={`input input-bordered w-full`}
@@ -113,10 +120,11 @@ const CreateEventPage = () => {
 
               {/* End date & time */}
               <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">End Date</span>
+                <label className="label space-y-1.5 text-sm flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-medium pb-2 text-base-content">End Date</span>
                 </label>
-                <div className="relative">
+                <div className="relative flex flex-col gap-2">
                   <input
                     type="date"
                     className={`input input-bordered w-full`}
@@ -138,15 +146,14 @@ const CreateEventPage = () => {
                 </div>
               </div>
               <div className="flex justify-end">
-              <button type="submit" className="btn btn-primary btn-outline">
+              <button type="submit" className="btn btn-primary">
                 Submit Event
               </button>
             </div>
           </form>
               
-
-              </div>
           </div>
+        </div>
       </div>
     );
 };
