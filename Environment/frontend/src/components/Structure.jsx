@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
+import { useGlobal } from "../components/GlobalContext";
 
 const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef }) => {
 
@@ -12,7 +13,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     const [structureDimensions, setStructureDimensions] = useState(structure.dimensions)    // State and setter for structure dimensions, default [20,20]
     const [structureLocation, setStructureLocation] = useState(structure.position)
     const [structureOrientation, setStructureOrientation] = useState(structure.orientation)
-    
+    const { editing } = useGlobal();
 
     const markerRef = useRef(); // Ref to instance of marker
     const map = useMap();   // Hook to get the map being used
@@ -70,7 +71,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     }, [map, structureName, structureDimensions, structureOrientation, imperial]);
 
     
-    useEffect(() => {
+    if(editing) {useEffect(() => {
         const handleSave = async () => {
             structure.name = structureName;
             structure.description = structureDescription;
@@ -86,7 +87,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         return () => saveBtnRef.current?.removeEventListener("click", handleSave);
     }, [saveBtnRef, structureName, structureDescription, structureTags, 
         structureDimensions, structureLocation, structureOrientation]);
-
+    }
 
 
     // Tag lists for different types of structures
@@ -145,7 +146,8 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
-            <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
+            {editing && (
+                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
                         dragend: (e) => {
@@ -154,9 +156,21 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                         },
                     }}
             />
-
+                )}
+            
+            {!editing && (
+                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={false} 
+                    eventHandlers={{
+                        click: isOpen ? onClose : onOpen,
+                        dragend: (e) => {
+                            const updatedPos = e.target.getLatLng();
+                            setStructureLocation([updatedPos.lat, updatedPos.lng]);
+                        },
+                    }}
+            />
+            )}
             {/* Stall info card */}
-            {isOpen && (
+            {isOpen && editing && (
 
                 <div className="flex h-screen items-start">
                 <InfoCard 
@@ -179,6 +193,23 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 />
                 </div>
 
+            )}
+            {isOpen && !editing && (
+
+                <div className="flex h-screen items-center">
+                <InfoCard 
+                    structureName={structureName} 
+                    structureDescription={structureDescription}
+                    tagType={structure.tagType}
+                    tagTypeList={getTagList(structure)}
+                    structureTags={structureTags}
+                    structureDimensions={structureDimensions}
+                    structureOrientation={structureOrientation}
+                    onClose={onClose}
+                    structure={structure}
+                    imperial={imperial}
+                />
+                </div>
             )}
         </>
     );

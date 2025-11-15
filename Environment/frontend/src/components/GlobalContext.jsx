@@ -10,9 +10,10 @@ export function GlobalProvider({ children }) {
       label: "",
     });
   const [zoom, setZoom] = useState(19);
+  const [editing, setEditing] = useState(true);
   const [eventID, setEventID] = useState(null);
   return (
-    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation, zoom, setZoom, eventID, setEventID }}>
+    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation, zoom, setZoom, editing, setEditing, eventID, setEventID }}>
       {children}
     </GlobalContext.Provider>
   );

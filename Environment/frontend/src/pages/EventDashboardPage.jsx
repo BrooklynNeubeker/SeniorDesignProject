@@ -167,6 +167,9 @@ const EventDashboardPage = () => {
               <button type="submit" className="btn btn-primary btn-outline">
                 Save Changes
               </button>
+              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary btn-outline`}> 
+                    <span>Preview</span>
+              </Link>
             </div>
             </form>
         </li>

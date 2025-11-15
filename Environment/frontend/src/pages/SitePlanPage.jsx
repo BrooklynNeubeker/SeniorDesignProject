@@ -9,7 +9,7 @@ import {axiosInstance} from "../lib/axios";
 import { map } from 'leaflet';
 
 const SitePlanPage = () => {
-    const { imperial, setImperial, location, setLocation, zoom, setEventID} = useGlobal();
+    const { imperial, setImperial, location, setLocation, zoom, setEditing, setEventID} = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
     // Keep track of structures added, these will be rendered on map
@@ -17,6 +17,9 @@ const SitePlanPage = () => {
     const [loading, setLoading] = useState(true);
     const [myMap, setMap] = useState([]);
     // const [newMap, setNewMap] = useState([{mapCenter: {x: location.lng, y: location.lat}, eventID: id, zoomLevel: zoom, mapMarkers: []}]);
+    useEffect(() => {
+        setEditing(true);
+    }, []);
 
     useEffect(() => {
     if (id) {
