@@ -10,7 +10,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
-
+    const {editing} = useGlobal();
     // ScaleBar component, shows scale at bottom of map in meters
     const ScaleBar = () => {
         const map = useMap();
@@ -53,7 +53,9 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }
                 minZoom={18}
             />
 
+            {editing && (
             <Search apiKey={"annregalab@gmail.com"} baseZoom={zoom}/>
+            )}
 
             <ZoomControl position="bottomright" />   {/* + and - to zoom in and out */}
             
