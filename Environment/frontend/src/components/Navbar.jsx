@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { LogOut, MapPin, Settings, User, MessageSquareMore } from "lucide-react";
+import { LogOut, MapPin, Settings, User, MessageSquareMore, Sun, Moon } from "lucide-react";
+import { useThemeStore } from "../store/useThemeStore";
+import { THEMES } from "../constants";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
+  const {theme, setTheme} = useThemeStore();
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
   
   return (
     <header
@@ -33,36 +41,59 @@ const Navbar = () => {
           {/* right side */}
           <div className="flex items-center gap-2">
 
-            <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
-              <MessageSquareMore className="w-4 h-4" />
-              <span className="hidden sm:inline">Chat</span>
-            </Link>
             <>
               {authUser && (
                 <>
+                  <Link to={"/profile"} className="btn btn-sm gap-2">
+                    <User className="size-5" />
+                    <span className="hidden md:inline">Profile</span>
+                  </Link>
 
                   <Link 
                     to={authUser?.role === "Coordinator" ? "/" : "/vendor"}
                     className={`btn btn-sm gap-2 transition-colors`} >
                     <MapPin className="w-4 h-4" />
-                    <span className="hidden sm:inline">My Events</span>
+                    <span className="hidden md:inline">My Events</span>
                   </Link>
 
-                  <Link to={"/profile"} className="btn btn-sm gap-2">
-                    <User className="size-5" />
-                    <span className="hidden sm:inline">Profile</span>
+                  <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
+                    <MessageSquareMore className="w-4 h-4" />
+                    <span className="hidden md:inline">Chat</span>
                   </Link>
+                
+                  {/* <Link to={"/settings"} className="btn btn-sm gap-2 transition-colors">
+                    <Settings className="w-4 h-4" />
+                    <span className="hidden sm:inline">Settings</span>
+                  </Link> */}
+                  
+                  <div className="flex gap-2">
+                    <button className="btn btn-sm transition-colors" 
+                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+
+                      <div className="swap swap-rotate relative w-5 h-5 flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          checked={theme === "dark"}
+                          readOnly
+                          className="hidden"
+                        />
+
+                        <Sun className="swap-on size-5 absolute" />
+                        <Moon className="swap-off size-5 absolute" />
+                      </div>
+
+                      <span className="hidden md:inline">
+                        {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                      </span>
+                    </button>
+
+                    <button className="btn btn-sm transition-colors" onClick={logout}>
+                      <LogOut className="size-5" />
+                      <span className="hidden md:inline">Logout</span>
+                    </button>
+
+                  </div>
                 </>
-              )}
-              <Link to={"/settings"} className="btn btn-sm gap-2 transition-colors">
-                <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">Settings</span>
-              </Link>
-              {authUser && (
-                <button className="flex gap-2 items-center" onClick={logout}>
-                  <LogOut className="size-5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
               )}
             </>
           </div>
