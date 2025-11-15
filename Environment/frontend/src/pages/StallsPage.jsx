@@ -28,7 +28,7 @@ const StallsPage = () => {
         coordinator can see all vendors of their events
         vendors can only see the coordinator they are assinged to 
     -x Fix the table scrolling away the search bar and group action buttons
-      - Fix the visible checkbox when row scrolls passed the header
+      -x Fix the visible checkbox when row scrolls passed the header
     - Don't freeze the screen while waiting for invites to go out
         - show a spinning bar within the component and a notice of completetion
     - Define logic of sending emails, 
@@ -348,13 +348,12 @@ const StallsPage = () => {
       </div>
         <div className="overflow-auto max-h-80 rounded-md ">
         <table className="table table-sm w-full">
-          <thead className="bg-base-200 sticky top-0">
+          <thead className="bg-base-200 sticky top-0 z-20">
             <tr>
               <th>Name</th>
               <th>Email</th>
               <th>Onboarding Status</th>
-              <th className="text-center">Actions</th>
-              <th>
+              <th className="text-center">Actions
                 <input 
                   type="checkbox" 
                   className="checkbox checkbox-primary ml-2"
@@ -372,26 +371,14 @@ const StallsPage = () => {
                 <td className="whitespace-nowrap">{stall.name}</td>
                 <td className="whitespace-nowrap">{stall.email}</td>
                 <td className="whitespace-nowrap">{onboardingStatusComponent(stall.onboardingStatus)}</td>
-                <td className="text-center">
-                  <button 
-                    type="button"
-                    className="btn btn-xs btn-primary btn-outline mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-xs btn-error btn-outline"
-                    onClick={() => deleteStall(stall._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-                <td>
-            
+                <td className="whitespace-nowrap text-center">
+                  {/* span for spacing */}
+                  <span className="opacity-0 mr-4">
+                    Actions
+                  </span>
                     <input
                       type="checkbox"
-                      className="checkbox checkbox-primary ml-2"
+                      className="checkbox checkbox-primary"
                       checked={selectedIds.includes(stall._id)}
                       onChange={() => {
                         setSelectedIds(prev => prev.includes(stall._id)
@@ -400,7 +387,6 @@ const StallsPage = () => {
                         );
                       }}
                     />
-              
                 </td>
               </tr>
             ))}
@@ -588,7 +574,7 @@ const StallsPage = () => {
       className={showAddForm ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleAddForm}
     >
-      {showAddForm ? "x Add Stalls":"Add Stalls"}
+      {showAddForm ? "x Add Stalls":"+ Add Stalls"}
     </button>
   )
   let invitationButton = (
@@ -597,7 +583,7 @@ const StallsPage = () => {
       className={showInvite ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleInvite}
     >
-      {showInvite ? "x Vendor Registration Preview" : "Vendor Registration Preview"}
+      {showInvite ? "x Invitation Preview" : "+ Invitation Preview"}
     </button>
   )
   let importStallsButton = (
@@ -606,12 +592,12 @@ const StallsPage = () => {
       className={showImport ? "btn btn-outline btn-primary" : "btn btn-primary"}
       onClick={toggleImport}
     >
-      {showImport ? "x Import Stalls": "Import Stalls"}
+      {showImport ? "x Import Stalls": "+ Import Stalls"}
     </button>
   )
   return (
     <div className="min-h-screen pt-20 bg-base-200">
-      <div className="container max-w-5xl flex flex-1 flex-col p-16 mx-auto bg-base-100/50">
+      <div className="container max-w-5xl flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
         <div className=" text-center mb-14">
           <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
           <p className="mt-2">Manage your stalls!</p>
