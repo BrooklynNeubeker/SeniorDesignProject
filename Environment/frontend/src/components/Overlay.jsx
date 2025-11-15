@@ -126,7 +126,7 @@ const Overlay = ({ addStructure }) => {
 
                         {/* Close button */}
                         <li className="mb-4">
-                            <label htmlFor="add-objects-drawer" className="btn btn-md fixed left-4 bottom-4 border-neutral-600">
+                            <label htmlFor="add-objects-drawer" className="btn btn-md btn-primary fixed left-4 bottom-4">
                                 <X size={18} />
                                 Close
                             </label>

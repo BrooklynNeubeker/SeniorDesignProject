@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X, Trash2 } from 'lucide-react';
 import StallDropdown from './StallDropdown';
+import { useMap } from 'react-leaflet';
 
 const InfoCard = ({ structure, structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
                     structureTags, setStructureTags, structureDimensions, setStructureDimensions, structureOrientation, setStructureOrientation,
@@ -29,28 +30,52 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
         console.log("structureDescription:", structureDescription);
         console.log("structureTags:", structureTags);
     }, [structureName, structureDescription, structureTags]);
+
+    
+    const map = useMap();
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        const card = cardRef.current;
+
+        const handleFocus = () => map.scrollWheelZoom.disable();
+        const handleBlur = () => map.scrollWheelZoom.enable();
+
+        if (card) {
+            card.addEventListener("mouseenter", handleFocus);
+            card.addEventListener("mouseleave", handleBlur);
+        }
+
+        return () => {
+        if (card) {
+            card.removeEventListener("mouseenter", handleFocus);
+            card.removeEventListener("mouseleave", handleBlur);
+        }
+        };
+    }, [map]);
     
     return (
         <>
-            <div className="card bg-base-100 w-90 shadow-sm m-2 mt-30 z-9999">
+            <div className="card bg-base-100 w-100 shadow-sm m-2 mt-30 z-9999 h-[80vh] overflow-y-scroll cursor-default"
+            ref={cardRef}
+            tabIndex={0}>
                 <div className="card-body flex gap-6">
 
                     {/* Edit stall name */}
-                    <div className="flex flex-col w-full">
-                        <div className="flex items-center gap-2 w-full mb-2">
-                            <input
-                                type="text"
-                                value={structureName}
-                                onChange={(e) => setStructureName(e.target.value)}
-                                className="input input-bordered w-full font-bold text-lg"
-                            />
-                            <button
-                                className="btn btn-sm btn-primary w-auto"
-                                onClick={() => setShowSearch(!showSearch)}
-                            >
-                                {showSearch ? "Collapse" : "Select"}
-                            </button>
-                        </div>
+                    <div className="flex flex-col w-full gap-3">
+                        <label className='font-bold'>Structure Name:</label>
+                        <input
+                            type="text"
+                            value={structureName}
+                            onChange={(e) => setStructureName(e.target.value)}
+                            className="input input-bordered w-full font-bold text-lg"
+                        />
+                        <button
+                            className="btn btn-sm btn-primary w-auto"
+                            onClick={() => setShowSearch(!showSearch)}
+                        >
+                            {showSearch ? "Collapse" : "Import Vendor Info"}
+                        </button>
                         {showSearch && (
                             <StallDropdown
                                 onChange={(stall) => {
@@ -67,7 +92,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                     {/* Accessibility tags */}
                     <div className="flex flex-wrap gap-2">
                         {structureTags.map((tag) => (
-                            <div key={tag} className="badge bg-amber-200 relative group">
+                            <div key={tag} className="badge badge-outline relative group">
                                 {tag}
                                 <X onClick={() => removeTag(tag)} className="hidden group-hover:block w-3 cursor-pointer" />
                             </div>
@@ -92,7 +117,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                     ))}
                                     <option value="custom_tag">Custom</option>
                                 </select>
-                                <button className="btn ml-2" onClick={() => {
+                                <button className="btn btn-sm btn-primary ml-2" onClick={() => {
                                     if(selectedTag && selectedTag !== "custom_tag") addTag(selectedTag);
                                 }}>Add Tag</button>
                             </div>
@@ -124,8 +149,8 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 className="input input-bordered w-full mb-2"
                             />
                             {imperial ? 
-                                <span className="px-2 text-gray-500">feet</span> 
-                                : <span className="px-2 text-gray-500">meters</span> }
+                                <span className="px-2">feet</span> 
+                                : <span className="px-2">meters</span> }
                         </div>
                         <div className='flex flex-row items-center justify-between'>
                             <label className='w-70 font-bold'>Length:</label>
@@ -136,8 +161,8 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 className="input input-bordered w-full mb-2"
                             />
                             {imperial ? 
-                                <span className="px-2 text-gray-500">feet</span> 
-                                : <span className="px-2 text-gray-500">meters</span> }
+                                <span className="px-2">feet</span> 
+                                : <span className="px-2">meters</span> }
                         </div>
                         <div className='flex flex-row items-center justify-between'>
                             <label className='w-70 font-bold'>Orientation:</label>
@@ -147,19 +172,19 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 onChange={(e) => setStructureOrientation(e.target.value)}
                                 className="input input-bordered w-full mb-2"
                             />
-                            <span className="px-2 text-gray-500">deg.</span> 
+                            <span className="px-2">deg.</span> 
                         </div>
                     </div>
 
                     {/* Edit stall description */}
                     <div>
-                        <label>Enter a description for this stall:</label>
+                        <label className='font-bold'>Description:</label>
                         <textarea
                             value={structureDescription}
                             onChange={(e) => setStructureDescription(e.target.value)}
                             className="textarea textarea-bordered w-full"
                             rows={3}
-                            placeholder="Description here..."
+                            placeholder="Enter a description for this structure here..."
                         />
                     </div>
 
@@ -169,7 +194,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                             <Trash2 size={16}/>
                             Delete
                         </button>
-                        <button className="btn btn-sm border border-neutral-600" onClick={onClose}>
+                        <button className="btn btn-sm btn-primary" onClick={onClose}>
                             <X size={16} />
                             Close
                         </button>
