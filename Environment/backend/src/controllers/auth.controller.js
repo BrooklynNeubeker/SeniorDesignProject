@@ -223,16 +223,11 @@ export const inviteNewVendor = async (req, res) => {
     if (user) {
       return inviteExistingVendor(req,res)
     }
-    console.log("Passed inviteExistingVendor conditional");
-    
     // Setting eventName for the email
     const currentEvent = await Event.findById(eventID);
     if (!currentEvent) {
       return res.status(404).json({ message: "Event not found" });
-    }
-
-    console.log("Passed findById");
-   
+    }  
     const eventName = currentEvent.eventName;
     const eventStartDate = currentEvent.startDate;
    
@@ -246,9 +241,7 @@ export const inviteNewVendor = async (req, res) => {
       <a href="http://localhost:5173/vendor/${stallId}/signup">Register Your Stall</a>`,
     };
     // send the email
-    console.log("Variables for email are good!", stallEmail, eventName, eventStartDate ,stallId  );
     await transporter.sendMail(mailOptions)
-    console.log("Passed the sendmail");
     await Stall.findByIdAndUpdate(stallId, { onboardingStatus: "inviteSent" });
     res.status(200).json({ message: "Email sent successfully and onboardingStatus changed" });
   } catch (error) {
