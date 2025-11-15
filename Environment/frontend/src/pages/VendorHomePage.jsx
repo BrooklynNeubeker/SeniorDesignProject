@@ -118,7 +118,7 @@ const VendorHomePage = () => {
 
     if( loadingStalls){
         listStalls = (
-            <div className="min-h-[200px] flex items-center justify-center">
+            <div className="min-h-[200px] p-20 flex items-center justify-center">
                 <span className="loading loading-spinner loading-lg text-primary" />
             </div>
         )
@@ -192,7 +192,7 @@ const VendorHomePage = () => {
     }
     
     if(loading){ 
-        <div className="min-h-[200px] flex items-center justify-center">
+        <div className="min-h-[200px] p-20 flex items-center justify-center">
                 <span className="loading loading-spinner loading-lg text-primary" />
         </div>
     }else{
