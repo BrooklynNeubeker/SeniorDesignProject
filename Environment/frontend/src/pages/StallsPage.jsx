@@ -248,15 +248,19 @@ const StallsPage = () => {
   // *event name*-Stalls.xlsx
   const exportStallsToXLSX = () => {
 
-    if (!allStalls || allStalls.length <= 0) {
-      toast.error("No stalls to export");
+    const selectedStalls = allStalls.filter((stall) => selectedIds.includes(stall._id));
+
+    //we should never hit this case, if we do, ui isn't functioning 
+    //as designed. [button to export should only be visible if a row is 
+    // selected]
+    if (!selectedStalls || selectedStalls.length <= 0) {
+      toast.error("No stalls selected to export");
       return;
     }
 
-    const rows = allStalls.map((stall) => [
+    const rows = selectedStalls.map((stall) => [
       stall.name,
       stall.email,
-      console.log("in exportStallsToXLSX:", stall.name, stall.email)
     ]);
 
     const ws = XLSX.utils.aoa_to_sheet(rows);

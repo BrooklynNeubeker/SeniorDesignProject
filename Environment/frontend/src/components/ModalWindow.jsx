@@ -34,7 +34,7 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
         }
         case "exportStalls": {
             title = "Export stalls to Excel";
-            text = "Would you like to export all stall data to an Excel spreadsheet (.xlsx)?"
+            text = "Would you like to export the selected stalls data to an Excel spreadsheet (.xlsx)?"
             actionBtnText = "Export";
             actionBtnTheme = "btn btn-primary btn-outline flex-1";
             break;
@@ -45,9 +45,9 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black/50" onClick={onClose}></div>
             <div className="bg-white p-6 rounded shadow-lg z-10 w-96">
-                <h2 className="text-lg font-bold mb-4 text-center">{title}</h2>
+                <h2 className="text-lg font-bold mb-4 text-center text-black">{title}</h2>
                     <div className="flex flex-col items-center gap-4">
-                        <div className="relative inline-flex items-center justify-center">
+                        <div className="relative inline-flex items-center justify-center text-black">
                             {text}
                         </div>
                     </div>
