@@ -276,7 +276,6 @@ const VendorStallPage = () => {
                     </div>
                   </div>       
                   {showFoodInfo && setTagsComponent}
-                  {backButton}
                 </form>
               </div>
             </div>
