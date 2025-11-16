@@ -143,7 +143,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (!isOpen) return;
+            if (!isOpen || !editing) return;
 
             const moveDistance = 0.00001;
 
@@ -171,7 +171,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
 
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [structureLocation, isOpen]);
+    }, [structureLocation, isOpen, editing]);
 
     return (
         <>
