@@ -37,7 +37,7 @@ const Legend = ({event, structures}) => {
             <div className="drawer drawer-end fixed pointer-events-auto">
 
                 <input id="legend-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
+                <div className="drawer-content top-4 fixed right-4 flex gap-4 items-center">
 
                     {/* "Open Legend" button */}
                     <label htmlFor="legend-drawer" className="drawer-button btn btn-primary">Legend</label>

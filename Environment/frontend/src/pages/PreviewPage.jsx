@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Map from '../components/Map';
 import { useGlobal } from "../components/GlobalContext";
-import {useParams} from "react-router-dom";
+import {useParams, useSearchParams} from "react-router-dom";
 import {axiosInstance} from "../lib/axios";
 import { Link } from "react-router-dom";
 import {Loader2} from "lucide-react";
@@ -11,6 +11,8 @@ const PreviewPage = () => {
     const { imperial, location, zoom, setLocation, setEditing, mini } = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
+    const [searchParams] = useSearchParams();
+    const isEmbedded = searchParams.get('embedded') === 'true';
     console.log(mini);
     const [structures, setStructures] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -99,22 +101,22 @@ const PreviewPage = () => {
             </div>
 
             {/* Back to dashboard */}
-            {!isPublished && ( //Only show the back to dashboard buttone and admin view toggle button if not published
+            {!isPublished && !isEmbedded && (
             <div>
                 <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
                     <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                         <span>Back to Dashboard</span>
                     </Link>
                 </div>
-                <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
-                    <div className="text-center rounded border border-base-400 bg-base-100 p-1">
-                        <label className="label text-base-content">Administrator View</label>
-                    </div>
-
-                </div>
-
             </div>
             )};  
+            {!isPublished &&(
+            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+                <div className="text-center rounded border border-base-400 bg-base-100 p-1">
+                    <label className="label text-base-content">Administrator View</label>
+                </div>
+            </div>
+            )};
             {/* <div className='fixed inset-0 z-10 pointer-events-none'>
                 <Legend event={events[0]} structures={structures}/>  
             </div>     */}

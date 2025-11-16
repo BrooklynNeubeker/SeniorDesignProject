@@ -260,7 +260,7 @@ const EventDashboardPage = () => {
                 {/* Right side - Preview */}
                 <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden h-full">
                   <iframe 
-                    src={`/event/${id}/dashboard/preview`}
+                    src={`/event/${id}/dashboard/preview?embedded=true`}
                     className="w-full h-full border-none"
                     title="Event Preview"
                   />
