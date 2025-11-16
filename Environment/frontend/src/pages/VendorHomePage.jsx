@@ -47,21 +47,28 @@ const VendorHomePage = () => {
     // Once we have the stalls returned from fetchStalls we use each stall.eventID
     // to define an events map(access event info) and the 
     // eventIdToStalls map(group stalls by eventID)
+    // added a visited array so we don't call the backend more than necessary
     const fetchEvents = async () => {
         
-        const map = {};
-        const eidToStalls = {}
+        const eidToEvents = {};
+        const eidToStalls = {};
+        const visitedIds = [];
         for (const stall of stalls) {
-            if (stall?.eventID) {
+            if(!stall?.eventID) continue;
+            
+            if(!eidToStalls[stall.eventID]){
+                eidToStalls[stall.eventID] = []
+            }
+            eidToStalls[stall.eventID].push(stall)  
+
+            // we only call the backend if we haven't visited the eventID yet
+            if (!visitedIds.includes(stall.eventID)) {
+                visitedIds.push(stall.eventID);
                 const res = await axiosInstance.get(`/events/${stall.eventID}`);
-                map[stall.eventID] = res.data; 
-                if(!eidToStalls[stall.eventID]){
-                    eidToStalls[stall.eventID] = []
-                }
-                eidToStalls[stall.eventID].push(stall)  
+                eidToEvents[stall.eventID] = res.data; 
             }
         }
-        setEvents(map); // for accessing event model information
+        setEvents(eidToEvents); // for accessing event model information
         setEventIdToStalls(eidToStalls); // for grouping stalls by events
         setLoading(false);
         
