@@ -111,6 +111,11 @@ const VendorRegisterStallPage = () => {
         </ul>
      </div>
     )
+    let backButton = (
+        <Link to={`/vendor`} className="btn btn-primary">
+           Back to Dashboard
+        </Link>
+    )
 
     let submitButton;
     if(!stallRegistered){
@@ -136,6 +141,9 @@ const VendorRegisterStallPage = () => {
   return (
           <div className="min-h-screen pt-20 bg-base-200">
             <div className="container flex flex-1 flex-col p-6 mx-auto bg-base-100/50">
+                <div className="absolute">
+                    {backButton}
+                </div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl text-center font-semibold">Register Stall</h1>
                 <p className="mt-2">Update the form and submit to register your stall!</p>
