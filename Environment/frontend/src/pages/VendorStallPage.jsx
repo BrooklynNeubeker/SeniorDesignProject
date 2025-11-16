@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { useParams } from "react-router-dom";
-
+import toast from "react-hot-toast";
 
 /** 
  * @brief Vendors interface for editing individual stall information
@@ -97,11 +97,11 @@ const VendorStallPage = () => {
        };
       try {
         const res = await axiosInstance.put(`/events/update/${stallId}`, payload);
-        alert("event created");
+        toast.success("Event created successfully");
         console.log("updated stall:", res.data);
         setEditForm(false)
       } catch (err) {
-        alert("error");
+        toast.error("Error");
         console.error("stall update failed:", err);
       }
     };

@@ -65,13 +65,15 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                     <div className="drawer-side">
                         <label htmlFor="add-objects-drawer" aria-label="close sidebar" className="drawer-overlay"></label>                   
 
+
                         {/* Sidebar content */}
                         <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-2">
                             <li className="pointer-events-none">
                                 <h1 className="text-lg font-bold">Choose Object to Place</h1>
                             </li>
 
-                           {/* 
+
+                            {/* 
                                 TileMapButtons for different structures
                                 Calls 'addStructure' on click, pass in as prop
                             */}
@@ -131,18 +133,20 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                                 iconColor="text-black"
                                 border="border border-neutral-800"
                                 onClick={addStructure} />
-                            </li>                        
+
+                            </li>
 
                             {/* Close button */}
                             <label htmlFor="add-objects-drawer" className="btn btn-md btn-primary fixed left-4 bottom-4 z-20"
                             tabIndex={0}
-                            onKeyDown={e => (e.key === "Enter") && e.target.click()}    >                       
+
+                            onKeyDown={e => (e.key === "Enter") && e.target.click()}    >
                                 <X size={18} />
                                 Close
                             </label>
                         </ul>
-                    </div> 
-
+                    </div>
+                    
                 </div>
             </div>
 
