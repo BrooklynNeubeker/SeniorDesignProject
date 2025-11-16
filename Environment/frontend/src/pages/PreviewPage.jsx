@@ -5,15 +5,18 @@ import {useParams} from "react-router-dom";
 import {axiosInstance} from "../lib/axios";
 import { Link } from "react-router-dom";
 import {Loader2} from "lucide-react";
-import Overlay from '../components/Overlay';
+import Legend from '../components/Legend';
 
 const PreviewPage = () => {
-    const { imperial, location, zoom, setLocation, setEditing } = useGlobal();
+    const { imperial, location, zoom, setLocation, setEditing, mini } = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
-
+    console.log(mini);
     const [structures, setStructures] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+    const [events, setEvents] = useState([]);
+    const [isPublished, setIsPublished] = useState(false);
 
     const [myMap, setMap] = useState([]);
 
@@ -21,10 +24,23 @@ const PreviewPage = () => {
         setEditing(false);
     }, []);
 
+    const fetchMyEvents = async () => {
+      try {
+      const res = await axiosInstance.get("/events");
+      setEvents(res.data || []);
+    //   console.log(res.data[0]);
+      console.log(res.data[0].published);
+      setIsPublished(res.data[0].published);
+      } catch (error) {
+      console.error("Failed to load events:", error);
+      } finally {
+      setLoading2(false);
+      }
+  };
     const fetchMyMap = async () => {
         try {
             let res = await axiosInstance.get(`/events/${id}/site-plan`);
-            console.log(res.data);
+            // console.log(res.data);
             setMap(res.data || []);
             const center = res.data[0].mapCenter;
             setLocation({ //Set the location globals based on db center
@@ -32,8 +48,7 @@ const PreviewPage = () => {
                 lng: center.x['$numberDecimal'],
                 label: location.label,
             });
-            // console.log(res.data[0].mapMarkers);
-
+            console.log(res.data[0].mapMarkers);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
         } catch (error) {
             console.error("Failed to load map:", error);
@@ -50,13 +65,21 @@ const PreviewPage = () => {
             hasFetched = true;
         }
     }, []);
+    let hasFetched2 = false;
+
+    useEffect(() => {
+        if (!hasFetched2) {
+            fetchMyEvents();
+            hasFetched2 = true;
+        }
+    }, []);
 
 
     const removeStructure = (id) => {
         setStructures(prev => prev.filter(structure => structure.id !== id));
     }
 
-    while (loading) { //Load until db has been fetched and the global variables are updated
+    while (loading || loading2) { //Load until db has been fetched and the global variables are updated
         return <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
@@ -64,29 +87,39 @@ const PreviewPage = () => {
     }
 
     return (
+        <>
         <div>
 
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} 
-                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom}/> 
+                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events[0]} /> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
-                {/* Back to dashboard */}
-            <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
-                <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
-                    <span>Back to Dashboard</span>
-                </Link>
-            </div>
-            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
-                <div className="text-center rounded border border-base-400 bg-base-100 p-1">
-                    <label className="label text-base-content">Administrator View</label>
+
+            {/* Back to dashboard */}
+            {!isPublished && ( //Only show the back to dashboard buttone and admin view toggle button if not published
+            <div>
+                <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+                    <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
+                        <span>Back to Dashboard</span>
+                    </Link>
+                </div>
+                <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+                    <div className="text-center rounded border border-base-400 bg-base-100 p-1">
+                        <label className="label text-base-content">Administrator View</label>
+                    </div>
+
                 </div>
 
             </div>
-
+            )};  
+            {/* <div className='fixed inset-0 z-10 pointer-events-none'>
+                <Legend event={events[0]} structures={structures}/>  
+            </div>     */}
         </div>
+        </>
     );
 };
     

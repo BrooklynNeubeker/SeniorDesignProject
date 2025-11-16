@@ -4,22 +4,25 @@ import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import QRCodePage from "../components/QRCodePage";
+import { useGlobal } from "../components/GlobalContext";
 import { SquarePen, MapPin, Calendar } from "lucide-react";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
   console.log("Loaded event ID:", id);
   const navigate = useNavigate();
-
+  const { mini, setMini} = useGlobal();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showPrintQR, setShowPrintQR] = useState({ open: false, eventName: "", qrValue: "" });
   const [showPreview, setShowPreview] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
 
   const fetchMyEvents = async () => {
       try {
       const res = await axiosInstance.get("/events");
       setEvents(res.data || []);
+      setIsPublished(res.data[0].published);
       } catch (error) {
       console.error("Failed to load events:", error);
       } finally {
@@ -31,6 +34,9 @@ const EventDashboardPage = () => {
       fetchMyEvents();
   }, []);
 
+  useEffect(() => {
+      setMini(true);
+  }), [];
   // Updates the event if fields are changed
   const updateEvents = (id, field, value) => 
     setEvents(prevEventState => prevEventState.map(row => (row.id === id ? {...row, [field]:value } : row)));
@@ -42,10 +48,11 @@ const EventDashboardPage = () => {
 // Gets the updated event, changes the data on the database
   const handleSubmit = async (e) => {
       e.preventDefault();
+      console.log("We got here!");
       const event = events.filter(eve => 
         eve._id === id
       );
-      const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID }) => ({ 
+      const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID, stalls, published }) => ({ 
         eventName,
         location,
         startDate,
@@ -53,9 +60,11 @@ const EventDashboardPage = () => {
         endDate,
         endTime,
         eventCoordinatorName,
-        eventCoordinatorID
+        eventCoordinatorID,
+        stalls,
+        published
       }));
-      // console.log(payload);
+      console.log(payload);
       try {
         await axiosInstance.put(`/events/${id}`, payload);
         console.log("Event updated successfully");
@@ -178,9 +187,17 @@ const EventDashboardPage = () => {
               <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary`}>
                     <span>View Stalls</span>
               </Link>
-              <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary`}> 
+              {/* <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary`}> 
                     <span>View Full Preview</span>
-              </Link>
+              </Link> */}
+              <button 
+                onClick={() => {
+                  // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
+                  {isPublished? window.location = `/event/${id}/public/map` : window.location = `/event/${id}/dashboard/preview`}; 
+                }} 
+                className= "btn btn-primary">
+                {isPublished? "View Map" : "View Full Preview"}
+              </button>
 
               { /* <button 
                 onClick={() => setShowPreview(!showPreview)}
@@ -189,16 +206,29 @@ const EventDashboardPage = () => {
                 {showPreview ? "Hide Preview" : "Show Preview"}
               </button> */ }
 
-              <Link to={`/event/${id}/viewmap`} className={`btn btn-primary`}>
-                    <span>View Published Map</span>
-              </Link>
+              {/* Publish the Map (Updates database as well) */}
+              <button 
+              onClick={() => { 
+                console.log(isPublished);
+                updateEvents(ev.id, "published", !isPublished);
+                setIsPublished(!isPublished);
+                console.log("is published after setting to its opposite");
+                console.log(isPublished);
+                handleSubmit();
+                console.log("map is now public")
+              }}  
+              className={`btn btn-primary`}>
+                    {isPublished? "Unpublish Map" : "Make Map Public"}
+              </button>
+
+
               <button 
                 onClick={() => {
                   const eventName = event.length > 0 ? event[0].eventName : "Event";
                   setShowPrintQR({
                     open: true,
                     eventName: eventName,
-                    qrValue: `${window.location.origin}/event/${id}/viewmap`
+                    qrValue: `${window.location.origin}/event/${id}/public/map`
                   });
                 }}
                 className="btn btn-primary w-full">

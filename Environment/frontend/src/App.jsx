@@ -85,6 +85,12 @@ const App = () => {
             element={authUser ? <PreviewPage /> : <Navigate to="/login" />}
           />
 
+          {/* add a non auth route for published version of the map? This didn't work lol*/}
+          <Route
+            path="/event/:id/public/map"
+            element={<PreviewPage />}
+          /> 
+
           <Route
             path="/event/:id/viewmap"
             element={authUser ? <PublishedPage /> : <Navigate to="/login" />}

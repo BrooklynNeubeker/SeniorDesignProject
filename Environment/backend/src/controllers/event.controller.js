@@ -105,7 +105,7 @@ export const getEventById = async (req, res) => {
 // This is untested currently
 export const updateEvent = async (req, res) => {
     // console.log("We are trying to update the event!");
-    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID} = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item
+    const{eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName,eventCoordinatorID, stalls, published} = req.body[0]; // Needed to have the [0] because the payload is arriving as an array with one item
     // console.log(req.body[0].eventName);
 
     const {id} = req.params; // pass the event object ID
@@ -118,7 +118,9 @@ export const updateEvent = async (req, res) => {
         endDate: endDate,
         endTime: endTime,
         eventCoordinatorName: eventCoordinatorName,
-        eventCoordinatorID: eventCoordinatorID
+        eventCoordinatorID: eventCoordinatorID,
+        stalls: stalls,
+        published: published
         }
         });// We can add a third argument for options if we want.
         console.log("event updated");

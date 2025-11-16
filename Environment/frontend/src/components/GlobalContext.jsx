@@ -12,8 +12,9 @@ export function GlobalProvider({ children }) {
   const [zoom, setZoom] = useState(19);
   const [editing, setEditing] = useState(true);
   const [eventID, setEventID] = useState(null);
+  const [mini, setMini] = useState(true);
   return (
-    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation, zoom, setZoom, editing, setEditing, eventID, setEventID }}>
+    <GlobalContext.Provider value={{ imperial, setImperial, location, setLocation, zoom, setZoom, editing, setEditing, eventID, setEventID, mini, setMini }}>
       {children}
     </GlobalContext.Provider>
   );

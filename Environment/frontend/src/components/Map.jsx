@@ -5,8 +5,9 @@ import CanvasLayer from "./CanvasLayer";
 import Structure from "./Structure";
 import Search from "./Search";
 import { useGlobal } from "./GlobalContext";
+import Legend from "./Legend";
 
-const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
@@ -56,9 +57,13 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }
             {editing && (
             <Search apiKey={"annregalab@gmail.com"} baseZoom={zoom}/>
             )}
-
             <ZoomControl position="bottomright" />   {/* + and - to zoom in and out */}
-            
+
+            {!editing && (
+                <Legend style={{zIndex:1}} event={event} structures={structures}
+                />
+            )}
+
             {/* Map structures prop as Structure components */}
             {/* Track which structures InfoCard is open through index and isOpen */}
             {structures.map((structure, index) => (
@@ -74,7 +79,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom }
                     saveBtnRef={saveBtnRef}
                 />
             ))}
-
+            
             <ScaleBar />
             <MapWithGrid />
 
