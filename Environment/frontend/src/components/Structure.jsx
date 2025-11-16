@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import { Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet";
 import InfoCard from "./InfoCard";
+import PreviewInfoCard from "./PreviewInfoCard";
 import { useGlobal } from "../components/GlobalContext";
 
 const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, index, totalStructures, onTabNext, onTabPrev }) => {
@@ -44,7 +45,9 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             <div class="flex flex-col gap-2 items-center justify-center w-full h-full
                         text-center text-xs ${structure.iconColor} ${structure.border}"
                         style="background-color: ${structure.bgColor}; width: ${widthPx}px; height: ${lengthPx}px;
-                        transform: rotate(${structureOrientation}deg); transform-origin: center;">
+                        transform: rotate(${structureOrientation}deg); transform-origin: center;
+                        ${isOpen ? 'box-shadow: 0 0 8px 3px rgba(255, 242, 0, 1), inset 0 0 4px rgba(255, 255, 255, 1);' : ''}
+                        transition: box-shadow 0.2s ease;">
                 <span style="font-size:${Math.min(widthPx, lengthPx) * 0.01}rem;">
                     ${structureName}
                 </span>
@@ -68,7 +71,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         scaleMarkerIcon();
         map.on("zoom", scaleMarkerIcon);
         return () => map.off("zoom", scaleMarkerIcon);
-    }, [map, structureName, structureDimensions, structureOrientation, imperial]);
+    }, [map, structureName, structureDimensions, structureOrientation, imperial, isOpen]);
 
     
     if(editing) {useEffect(() => {
@@ -143,6 +146,14 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     
     useEffect(() => {
         const handleKeyDown = (e) => {
+            //escape to close info card
+            if (e.key === "Escape") {
+                e.preventDefault();
+                if (isOpen) {
+                    onClose();
+                }
+                return;
+            }
             //tabbing open info card
             if (e.key === "Tab") {
                 e.preventDefault();
@@ -158,7 +169,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 return;
             }
             //moving structures with arrow keys
-            if (!isOpen || !editing) return;
+            if (!isOpen || !editing || !e.ctrlKey) return;
             const moveDistance = 0.00001;
             switch (e.key) {
                 case "ArrowUp":
@@ -238,17 +249,12 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             {isOpen && !editing && (
 
                 <div className="flex h-screen items-center">
-                <InfoCard 
+                <PreviewInfoCard 
                     structureName={structureName} 
                     structureDescription={structureDescription}
-                    tagType={structure.tagType}
-                    tagTypeList={getTagList(structure)}
                     structureTags={structureTags}
-                    structureDimensions={structureDimensions}
-                    structureOrientation={structureOrientation}
                     onClose={onClose}
                     structure={structure}
-                    imperial={imperial}
                 />
                 </div>
             )}

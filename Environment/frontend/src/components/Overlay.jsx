@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin, Grid3x3 } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useGlobal } from "./GlobalContext";
 
 const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
     const { id } = useParams();
-    const {imperial, setImperial} = useGlobal();
+    const {imperial, setImperial, showGrid, setShowGrid} = useGlobal();
 
     return (
         <div>
@@ -37,6 +37,16 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
             */}
 
             <div className="fixed top-20 flex right-4 z-14 gap-4 pointer-events-auto">
+                {/* Grid toggle */}
+                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                    <label className="label text-base-content">
+                        Toggle Grid
+                        <input type="checkbox" className="toggle checked:toggle-success"
+                        checked={showGrid} onChange={() => setShowGrid(!showGrid)}
+                        onKeyDown={e => (e.key === "Enter") && e.target.click()}/>
+                    </label>
+                </div>
+
                 {/* Imperial/metric toggle */}
                 <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                     <label className="label text-base-content">

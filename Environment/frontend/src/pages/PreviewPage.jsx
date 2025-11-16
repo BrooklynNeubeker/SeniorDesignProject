@@ -8,7 +8,7 @@ import {Loader2} from "lucide-react";
 import Legend from '../components/Legend';
 
 const PreviewPage = () => {
-    const { imperial, location, zoom, setLocation, setEditing, mini } = useGlobal();
+    const { imperial, location, zoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
     const [searchParams] = useSearchParams();
@@ -109,11 +109,20 @@ const PreviewPage = () => {
                     </Link>
                 </div>
             </div>
-            )};  
+            )};
+                        
             {!isPublished &&(
-            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex gap-4 items-center">
                 <div className="text-center rounded border border-base-400 bg-base-100 p-1">
                     <label className="label text-base-content">Administrator View</label>
+                </div>
+                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                    <label className="label text-base-content">
+                        Toggle Grid
+                        <input type="checkbox" className="toggle checked:toggle-success"
+                        checked={showGrid} onChange={() => setShowGrid(!showGrid)}
+                        onKeyDown={e => (e.key === "Enter") && e.target.click()}/>
+                    </label>
                 </div>
             </div>
             )};

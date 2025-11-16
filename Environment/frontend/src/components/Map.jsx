@@ -11,7 +11,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
-    const {editing} = useGlobal();
+    const {editing, showGrid} = useGlobal();
 
     // Using Tab navigation between structures
     const tabNavigation = (direction) => {
@@ -94,7 +94,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             ))}
             
             <ScaleBar />
-            <MapWithGrid />
+            {showGrid && <MapWithGrid />}
 
         </MapContainer>
     );
