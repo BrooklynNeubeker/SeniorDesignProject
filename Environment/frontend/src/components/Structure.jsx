@@ -23,6 +23,16 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         Function for scaling marker for structure on zoom
         Scales based on size of real-life meters
     */}
+    function isTextboxFocused() { //Get if the textbox is the focus
+    const activeElement = document.activeElement;
+    if (activeElement && 
+        (activeElement.tagName.toLowerCase() === 'input' && activeElement.type === 'text' || 
+        activeElement.tagName.toLowerCase() === 'textarea')) {
+        return true;
+    } else {
+        return false;
+    }
+    }
     const scaleMarkerIcon = () => {
         if (!markerRef.current) return;
 
@@ -155,7 +165,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 return;
             }
             //tabbing open info card
-            if (e.key === "Tab") {
+            if (e.key === "`" && !isTextboxFocused()) {
                 e.preventDefault();
                 if (isOpen) {
                     onClose();
