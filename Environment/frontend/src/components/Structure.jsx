@@ -140,12 +140,44 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 return []
         }
     }
+    
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!isOpen) return;
+
+            const moveDistance = 0.00001;
+
+            switch (e.key) {
+                case "ArrowUp":
+                    e.preventDefault();
+                    setStructureLocation([structureLocation[0] + moveDistance, structureLocation[1]]);
+                    break;
+                case "ArrowDown":
+                    e.preventDefault();
+                    setStructureLocation([structureLocation[0] - moveDistance, structureLocation[1]]);
+                    break;
+                case "ArrowLeft":
+                    e.preventDefault();
+                    setStructureLocation([structureLocation[0], structureLocation[1] - moveDistance]);
+                    break;
+                case "ArrowRight":
+                    e.preventDefault();
+                    setStructureLocation([structureLocation[0], structureLocation[1] + moveDistance]);
+                    break;
+                default:
+                    return;
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [structureLocation, isOpen]);
 
     return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
             {editing && (
-                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={true} 
+                <Marker ref={markerRef} key={structure.id} position={structureLocation} draggable={true} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
                         dragend: (e) => {
@@ -157,7 +189,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 )}
             
             {!editing && (
-                <Marker ref={markerRef} key={structure.id} position={structure.position} draggable={false} 
+                <Marker ref={markerRef} key={structure.id} position={structureLocation} draggable={false} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
                         dragend: (e) => {
