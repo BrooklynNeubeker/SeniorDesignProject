@@ -4,6 +4,7 @@ import { axiosInstance } from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { SquarePen, MapPin, Calendar } from "lucide-react";
+import toast from "react-hot-toast";
 
 const CreateEventPage = () => {
     const { authUser } = useAuthStore();
@@ -32,11 +33,11 @@ const CreateEventPage = () => {
       try {
         const res = await axiosInstance.post("/events", payload);
         const createdEventId = res.data._id;
-        alert("event created");
+        toast.success("Event created successfully");
         navigate(`/event/${createdEventId}/dashboard`);
         console.log("created event:", res.data);
       } catch (err) {
-        alert("error");
+        toast.error("Error creating event");
         console.error("create event failed:", err);
       }
     };

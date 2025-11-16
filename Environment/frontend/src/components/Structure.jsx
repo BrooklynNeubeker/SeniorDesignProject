@@ -79,8 +79,6 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             structure.dimensions = structureDimensions;
             structure.position = structureLocation;
             structure.orientation = structureOrientation;
-
-            //alert(`Saved: ${structure.name}`);
         };
 
         saveBtnRef.current.addEventListener("click", handleSave);

@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import ParseExcel from "../components/ParseExcel.jsx";
 import * as XLSX from "xlsx";
 import { Trash2, Mail, FileDown, Plus, X } from 'lucide-react';
+import ModalWindow from "../components/ModalWindow.jsx";
+import toast from "react-hot-toast";
 
 /**
  * @brief Coordinators can assign stalls to a given event
@@ -57,7 +59,8 @@ const StallsPage = () => {
   const [showInvite, setInvite] = useState(false);
   const [showImport, setImport] = useState(false);
    
- 
+ const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
+ const [modalOpen, setOpen] = useState(false);
 
   //grabs an event using the eventID in the route
   useEffect(() => {
@@ -110,12 +113,11 @@ const StallsPage = () => {
       await fetchMyStalls();
     } catch (error) {
       console.error("Failed to delete stall:", error);
-      alert("Error: failed to delete stall");
+      toast.error("Error: failed to delete stall");
     }
   };
   
   const deleteStalls = async (stallIds) => {
-    if (!window.confirm(`Confirm: delete ${stallIds.length} stalls?`)) return;
     try {
       await Promise.all(
         stallIds.map(stallId =>
@@ -125,15 +127,14 @@ const StallsPage = () => {
       await fetchMyStalls();
     } catch (error) {
       console.error("Failed to delete stall:", error);
-      alert("Error: failed to delete stall");
+      toast.error("Error: failed to delete stall");
     }
   };
-
 
   // Sends invites to all stalls from the event that haven't received an invite yet
   const sendInvites = async () => {
     if (!selectedIds || selectedIds.length === 0) {
-      alert("No stalls selected.");
+      toast.error("No stalls selected.");
       return;
     }
     setSending(true);
@@ -145,7 +146,7 @@ const StallsPage = () => {
       );
 
       if (targets.length === 0) {
-        alert("No 'Uncontacted' stalls selected.");
+        toast.error("No 'Uncontacted' stalls selected.");
         return;
       }
 
@@ -155,10 +156,10 @@ const StallsPage = () => {
           name, email,eventID, stallId
         });
     }
-      alert(`Invites sent to ${targets.length} stall(s).`);
+      toast.success(`Invites sent to ${targets.length} stall(s).`);
     } catch (err) {
       console.error("Bulk invite error:", err);
-      alert("Some invites may have failed. Check console for details.");
+      toast.error("Some invites may have failed. Check console for details.");
     } finally {
       await fetchMyStalls();
       setSending(false);
@@ -180,7 +181,7 @@ const StallsPage = () => {
       for (const payload of payloads) {
         await axiosInstance.post(`/events/${id}/stalls`, payload);
       }
-      alert("Stalls created successfully");
+      toast.success("Stall(s) created successfully");
       await fetchMyStalls();// refreshes the table
       setStalls([{ id: crypto.randomUUID(), name: "", email: "" }]); //re-initializes proposed stalls
       toggleAddForm();
@@ -233,12 +234,12 @@ const StallsPage = () => {
           })
         )
       );
-      alert(`Imported ${importRows.length} stalls`);
+      toast.success(`Imported ${importRows.length} stalls`);
       setImportRows([]);
       await fetchMyStalls();
     } catch (err) {
       console.error(err);
-      alert("Import failed for some rows.");
+      toast.error("Import failed for some rows.");
     }
   };
   
@@ -248,7 +249,7 @@ const StallsPage = () => {
   const exportStallsToXLSX = () => {
 
     if (!allStalls || allStalls.length <= 0) {
-      alert("No stalls to export");
+      toast.error("No stalls to export");
       return;
     }
 
@@ -290,23 +291,32 @@ const StallsPage = () => {
       onChange={(e) => setSearchValue(e.target.value)}
     >
     </input>
-  )
+  );
 
   let exportStallsButton = (
       <button
         type="button"
         className="btn btn-primary hover:btn-primary"
-        onClick={() => {
-          if (!window.confirm("Would you like to download an Excel Sheet?")) {
-            alert("Export Cancelled");
-            return;
-          }
-          exportStallsToXLSX();
-        }} 
+        onClick={() => setShowModal({
+          open: true,
+          type: "exportStalls",
+          action: () => {exportStallsToXLSX(), setShowModal({...showModal, open: false})},
+        })} 
       >
         {allSelected ?<><FileDown size={16} />Export All</> :<><FileDown size={16} />Export</>}
       </button>
-  )
+  );
+
+  let modalWindow = (
+    <ModalWindow
+      open={showModal.open}
+      onClose={() => setShowModal({...showModal, open: false})}
+      type={showModal.type}
+      action={showModal.action}
+      input={showModal.input}
+    />
+  );
+
   // Responsible for rendering the main table. Displays all stalls currently assigned to 
   // this event
   let listStalls;
@@ -332,11 +342,20 @@ const StallsPage = () => {
                     disabled={sending}>
                     {allSelected ? <><Mail size={16}/>Invite All</> : <><Mail size={16}/>Invite</>}
                   </button>
+
                   {exportStallsButton}
+
+                  {modalWindow}
+                  
                   <button
                     type="button"
                     className="btn btn-error"
-                    onClick={() => {deleteStalls(selectedIds)}}
+                    onClick={() => setShowModal({
+                      open: true,
+                      type: "confirmDelete",
+                      action: () => {deleteStalls(selectedIds), setShowModal({...showModal, open: false})},
+                      input: selectedIds.length
+                    })}
                     > {allSelected ? <><Trash2 size={16}/>Delete All</>:<><Trash2 size={16}/>Delete</> }
                   </button>
                   
