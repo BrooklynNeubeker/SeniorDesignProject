@@ -5,7 +5,7 @@ import L from "leaflet";
 import InfoCard from "./InfoCard";
 import { useGlobal } from "../components/GlobalContext";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, index, totalStructures, onTabNext, onTabPrev }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -143,10 +143,23 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     
     useEffect(() => {
         const handleKeyDown = (e) => {
+            //tabbing open info card
+            if (e.key === "Tab") {
+                e.preventDefault();
+                if (isOpen) {
+                    onClose();
+                    //shift tab to go back
+                    if (e.shiftKey) {
+                        onTabPrev();
+                    } else {
+                        onTabNext();
+                    }
+                }
+                return;
+            }
+            //moving structures with arrow keys
             if (!isOpen || !editing) return;
-
             const moveDistance = 0.00001;
-
             switch (e.key) {
                 case "ArrowUp":
                     e.preventDefault();
@@ -168,12 +181,10 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                     return;
             }
         };
-
+        
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [structureLocation, isOpen, editing]);
-
-    return (
+    }, [structureLocation, isOpen, editing, index, totalStructures, onTabNext, onTabPrev, onClose]);    return (
         <>
             {/* Marker for "structure" on map. On double click, open or close depending on isOpen (passed from Map component) */}
             {editing && (

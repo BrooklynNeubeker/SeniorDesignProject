@@ -12,6 +12,16 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
     const {editing} = useGlobal();
+
+    // Using Tab navigation between structures
+    const tabNavigation = (direction) => {
+        if (currentlyOpen === null) return;
+        let nextIndex = direction === 'next' ? currentlyOpen + 1 : currentlyOpen - 1;
+        if (nextIndex < 0) nextIndex = structures.length - 1;
+        if (nextIndex >= structures.length) nextIndex = 0;
+        setCurrentlyOpen(nextIndex);
+    };
+
     // ScaleBar component, shows scale at bottom of map in meters
     const ScaleBar = () => {
         const map = useMap();
@@ -69,11 +79,14 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             {structures.map((structure, index) => (
                 <Structure
                     key={structure.id}
-                    index={index} 
+                    index={index}
+                    totalStructures={structures.length}
                     structure={structure}
                     isOpen={currentlyOpen === index}
                     onOpen={() => setCurrentlyOpen(index)}
                     onClose={() => setCurrentlyOpen(null)}
+                    onTabNext={() => tabNavigation('next')}
+                    onTabPrev={() => tabNavigation('prev')}
                     removeStructure={removeStructure}
                     imperial={imperial}
                     saveBtnRef={saveBtnRef}
