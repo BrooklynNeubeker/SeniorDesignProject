@@ -164,19 +164,24 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 }
                 return;
             }
-            //tabbing open info card
-            if (e.key === "`" && !isTextboxFocused()) {
-                e.preventDefault();
-                if (isOpen) {
-                    onClose();
-                    //shift tab to go back
-                    if (e.shiftKey) {
-                        onTabPrev();
-                    } else {
+            //go next and prev with < or >
+            if (!isTextboxFocused()) {
+                if (e.key === ">") {
+                    e.preventDefault();
+                    if (isOpen) {
+                        onClose();
                         onTabNext();
                     }
+                    return;
                 }
-                return;
+                if (e.key === "<") {
+                    e.preventDefault();
+                    if (isOpen) {
+                        onClose();
+                        onTabPrev();
+                    }
+                    return;
+                }
             }
             //moving structures with arrow keys
             if (!isOpen || !editing || !e.ctrlKey) return;
