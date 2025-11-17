@@ -10,6 +10,11 @@ const Legend = ({event, structures}) => {
     const { id } = useParams();
     const { zoom } = useGlobal();
     const map = useMap();
+    const [startDateFormatted, setStartDate] = useState("");
+    const [startTimeFormatted, setStartTime] = useState("");
+    const [endDateFormatted, setEndDate] = useState("");
+    const [endTimeFormatted, setEndTime] = useState("");
+
     // const {imperial, setImperial} = useGlobal();
     // const {stalls, setStalls} = useGlobal();
     console.log(event);
@@ -27,6 +32,38 @@ const Legend = ({event, structures}) => {
         console.log(structure.position[1]);
         map.setView([structure.position[0], structure.position[1]], zoom);
         // Can we set the focus to the structure here somehow? 
+    };
+    useEffect(() => { //Setter for all times
+        setStartDate(formatDate(event.startDate));
+        setEndDate(formatDate(event.endDate));
+        setStartTime(formatTime(event.startTime));
+        setEndTime(formatTime(event.endTime));
+    }, []);
+
+    const formatDate = (date) => { //Make date in form "Month Date, Year"
+        let parts = date.split('-');
+        var months = ["January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December"];
+        var s = months[parts[1] - 1];
+        s = s + " " + parts[2] +  ", " + parts[0];
+        return s;
+    };
+
+    const formatTime = (time) => { //Make the time show AM/PM instead of military time
+        let parts = time.split(':');
+        var hour = Number(parts[0]);
+        var s = "";
+        if (hour < 13){
+            s = parts[0] + ":" + parts[1] + " AM";
+        } else {
+            hour = hour - 12;
+            s = String(hour)
+            if(hour < 10){
+                s = "0"+ s;
+            }
+            s = s + ":" + parts[1] + " PM";
+        }
+        return s;
     };
 
 
@@ -50,26 +87,26 @@ const Legend = ({event, structures}) => {
                     <label htmlFor="legend-drawer" aria-label="close legend" className="drawer-overlay"></label>
 
                     {/* Sidebar content */}
-                    <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-2">
+                    <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-4">
                         <li className="pointer-events-none">
-                            <header id="eventName" tabindex="0">
+                            <header id="eventName" tabIndex="0">
                                 <h1 className="text-xl font-bold">{event.eventName} </h1>
                             </header>
                         </li>
 
                         <li className="pointer-events-none">
-                            <header id="eventName" tabindex="1">
+                            <header id="eventName" tabIndex="0">
                             <h1 className="text-lg font-bold">Dates and Times:</h1>
                             </header>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text font-bold">{event.startDate} at {event.startTime}</p>
+                            <p className="text font-bold">{startDateFormatted} at {startTimeFormatted}</p>
                         </li>
                         <li className="pointer-events-none">
                             <p className="text font-bold"> to </p>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text font-bold">{event.endDate} at {event.endTime}</p>
+                            <p className="text font-bold">{endDateFormatted} at {endTimeFormatted}</p>
                         </li>
                         {/* <li className="pointer-events-none">
                             <h1 className="text-lg font-bold">Start and End Time:</h1>
@@ -78,7 +115,7 @@ const Legend = ({event, structures}) => {
                             <p className="text font-bold">{event.event.startTime} to {event.event.endTime}</p>
                         </li> */}
                         <li className="pointer-events-none">
-                            <header id="eventName" tabindex="2">
+                            <header id="eventName" tabIndex="0">
                             <h1 className="text-lg font-bold">Search Stall Tags for Keywords:</h1>
                             </header>
                         </li>
@@ -91,17 +128,25 @@ const Legend = ({event, structures}) => {
                         </form>
 
                         <li className="pointer-events-none">
-                            <h1 className="text-lg font-bold">Stalls:</h1>
+                            <header id="eventName" tabIndex="0">
+                                <h1 className="text-lg font-bold">Stalls:</h1>
+                            </header>
                         </li>
+                        <div className="max-h-40 overflow-auto">
                             <ul>
                                 {structures.map(structure => (
                                     <div className="vertical-button-container">
-                                        <button className="btn" key={structure._id} onClick={() => handleClick(structure)}>
-                                            {structure.name}
-                                            </button>
+                                        <li>
+                                        <button className="flex gap-4" 
+                                        onClick={() => handleClick(structure)}>
+                                            <span className="text-md">{structure.name}</span>
+                                        </button>
+                                        </li>
+
                                     </div>
                                 ))}
                             </ul>
+                        </div>
 
                         {/* Close button */}
                         <li className="mb-4">
