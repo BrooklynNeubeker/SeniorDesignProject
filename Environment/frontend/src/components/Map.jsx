@@ -6,6 +6,7 @@ import Structure from "./Structure";
 import Search from "./Search";
 import { useGlobal } from "./GlobalContext";
 import Legend from "./Legend";
+import SetCenter from "./SetCenter";
 
 const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event, isEmbedded }) => {
 
@@ -59,7 +60,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxNativeZoom={zoom}
+                maxNativeZoom={22}
                 maxZoom={22}
                 minZoom={18}
             />
@@ -69,7 +70,9 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             )}
             <ZoomControl position="bottomright" />   {/* + and - to zoom in and out */}
 
-
+            {editing && (
+            <SetCenter/>
+            )}
 
             {/* Map structures prop as Structure components */}
             {/* Track which structures InfoCard is open through index and isOpen */}

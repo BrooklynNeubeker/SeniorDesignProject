@@ -10,7 +10,7 @@ import { map } from 'leaflet';
 import toast from "react-hot-toast";
 
 const SitePlanPage = () => {
-    const { imperial, setImperial, location, setLocation, zoom, setEditing, setEventID} = useGlobal();
+    const { imperial, setImperial, location, setLocation, zoom, setZoom, setEditing, setEventID} = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
     // Keep track of structures added, these will be rendered on map
@@ -62,6 +62,7 @@ const SitePlanPage = () => {
                 lng: center.x['$numberDecimal'],
                 label: location.label,
             });
+            setZoom(res.data[0].zoomLevel);
             // console.log(location.lat);
             // console.log(location.lng);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
@@ -94,6 +95,7 @@ const SitePlanPage = () => {
             mapMarkers: structures,
             imperial: imperial
         }
+        console.log(zoom);
         setMap(prev => [...prev, payload])
 
         try {

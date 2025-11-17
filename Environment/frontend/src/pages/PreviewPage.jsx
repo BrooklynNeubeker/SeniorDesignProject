@@ -8,7 +8,7 @@ import {Loader2} from "lucide-react";
 import Legend from '../components/Legend';
 
 const PreviewPage = () => {
-    const { imperial, location, zoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
+    const { imperial, location, zoom, setZoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
     const saveBtnRef = useRef();
     const{ id } = useParams();
     const [searchParams] = useSearchParams();
@@ -50,6 +50,7 @@ const PreviewPage = () => {
                 lng: center.x['$numberDecimal'],
                 label: location.label,
             });
+            setZoom(res.data[0].zoomLevel);
             console.log(res.data[0].mapMarkers);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
         } catch (error) {
@@ -87,6 +88,7 @@ const PreviewPage = () => {
                   Loading...
                 </>;
     }
+
 
     return (
         <>
