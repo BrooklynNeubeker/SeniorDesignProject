@@ -95,7 +95,7 @@ const PreviewPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} 
-                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events[0]} /> 
+                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events[0]} isEmbedded={isEmbedded}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>

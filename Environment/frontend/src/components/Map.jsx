@@ -7,7 +7,7 @@ import Search from "./Search";
 import { useGlobal } from "./GlobalContext";
 import Legend from "./Legend";
 
-const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event, isEmbedded }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
@@ -92,7 +92,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             
             <ScaleBar />
             {showGrid && editing && <MapWithGrid />}
-            {!editing && <Legend style={{zIndex:1}} event={event} structures={structures} />}
+            {!editing && !isEmbedded && <Legend style={{zIndex:1}} event={event} structures={structures} />}
         </MapContainer>
     );
 
