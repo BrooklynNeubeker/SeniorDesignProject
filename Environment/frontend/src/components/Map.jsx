@@ -69,10 +69,7 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             )}
             <ZoomControl position="bottomright" />   {/* + and - to zoom in and out */}
 
-            {!editing && (
-                <Legend style={{zIndex:1}} event={event} structures={structures}
-                />
-            )}
+
 
             {/* Map structures prop as Structure components */}
             {/* Track which structures InfoCard is open through index and isOpen */}
@@ -94,8 +91,8 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
             ))}
             
             <ScaleBar />
-            {showGrid && <MapWithGrid />}
-
+            {showGrid && editing && <MapWithGrid />}
+            {!editing && <Legend style={{zIndex:1}} event={event} structures={structures} />}
         </MapContainer>
     );
 
