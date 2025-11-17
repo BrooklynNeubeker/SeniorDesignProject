@@ -266,12 +266,10 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                 <div className="flex h-screen items-center">
                 <PreviewInfoCard 
                     structureName={structureName} 
-                    structureDimensions={structureDimensions}
                     structureDescription={structureDescription}
                     structureTags={structureTags}
                     onClose={onClose}
                     structure={structure}
-                    imperial={imperial}
                 />
                 </div>
             )}

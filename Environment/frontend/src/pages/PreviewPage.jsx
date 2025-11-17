@@ -103,7 +103,7 @@ const PreviewPage = () => {
             {/* Back to dashboard */}
             {!isPublished && !isEmbedded && (
             <div>
-                <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+                <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
                     <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                         <span>Back to Dashboard</span>
                     </Link>
@@ -113,7 +113,7 @@ const PreviewPage = () => {
                         
             {/* Map Preview label and Toggle Grid button */}
             {!isPublished && !isEmbedded && (
-            <div className="fixed top-18 left-4 pointer-events-auto z-14 flex flex-col gap-3 items-left">
+            <div className="fixed top-33 left-4 pointer-events-auto z-14 flex flex-col gap-3 items-left">
                 <div className="text-center p-2 pt-1 pb-1 rounded border border-base-400 bg-base-100">
                     <label className="label font-bold text-base-content">Map Preview</label>
                 </div>
