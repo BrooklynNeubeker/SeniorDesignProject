@@ -34,10 +34,11 @@ const Legend = ({event, structures}) => {
         <div>
 
             {/* "Legend" sidebar drawer */}
-            <div className="drawer drawer-end fixed pointer-events-auto">
+            <div className="drawer drawer-end">
 
-                <input id="legend-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content top-4 fixed right-4 flex gap-4 items-center">
+                <input id="legend-drawer" type="checkbox" className="drawer-toggle"
+                onKeyDown={e => (e.key === "Enter") && e.target.click()} />
+                <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
 
                     {/* "Open Legend" button */}
                     <label htmlFor="legend-drawer" className="drawer-button btn btn-primary">Legend</label>
@@ -51,11 +52,15 @@ const Legend = ({event, structures}) => {
                     {/* Sidebar content */}
                     <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-2">
                         <li className="pointer-events-none">
-                            <h1 className="text-xl font-bold">{event.eventName} </h1>
+                            <header id="eventName" tabindex="0">
+                                <h1 className="text-xl font-bold">{event.eventName} </h1>
+                            </header>
                         </li>
 
                         <li className="pointer-events-none">
+                            <header id="eventName" tabindex="1">
                             <h1 className="text-lg font-bold">Dates and Times:</h1>
+                            </header>
                         </li>
                         <li className="pointer-events-none">
                             <p className="text font-bold">{event.startDate} at {event.startTime}</p>
@@ -73,7 +78,9 @@ const Legend = ({event, structures}) => {
                             <p className="text font-bold">{event.event.startTime} to {event.event.endTime}</p>
                         </li> */}
                         <li className="pointer-events-none">
+                            <header id="eventName" tabindex="2">
                             <h1 className="text-lg font-bold">Search Stall Tags for Keywords:</h1>
+                            </header>
                         </li>
                         <li className="pointer-events-none">
                             <p className="text font-bold">Ex: Dairy-Free or Wheelchair Accessible</p>
