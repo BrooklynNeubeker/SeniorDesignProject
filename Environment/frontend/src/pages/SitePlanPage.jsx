@@ -7,6 +7,7 @@ import {useParams} from "react-router-dom";
 import {Loader2} from "lucide-react";
 import {axiosInstance} from "../lib/axios";
 import { map } from 'leaflet';
+import toast from "react-hot-toast";
 
 const SitePlanPage = () => {
     const { imperial, setImperial, location, setLocation, zoom, setEditing, setEventID} = useGlobal();
@@ -97,7 +98,7 @@ const SitePlanPage = () => {
 
         try {
             axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
-            alert("Map updated successfully");
+            toast.success("Map updated successfully");
             //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
         } catch(error){
             console.error("Failed to update map", error);

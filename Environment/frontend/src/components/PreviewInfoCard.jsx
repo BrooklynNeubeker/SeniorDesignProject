@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import { useMap } from 'react-leaflet';
 
-const PreviewInfoCard = ({ structure, structureName, structureDescription, structureTags, onClose }) => {
+const PreviewInfoCard = ({ structure, structureName, structureDimensions, structureDescription, structureTags, imperial, onClose }) => {
 
     const map = useMap();
     const cardRef = useRef(null);
@@ -55,12 +55,32 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                             )}
                         </div>
 
+                        {/* Dimensions - read only */}
+                        <div className="flex flex-col flex-wrap gap-2">
+                            <div className='flex flex-row items-center justify-between'>
+                                <label className='w-70 font-bold'>Width: </label>
+                                <span className="input input-bordered w-full bg-gray-100 pointer-events-none">{structureDimensions[0]}</span>
+                                {imperial ? 
+                                        <span className="px-2">feet</span> 
+                                        : <span className="px-2">meters</span> }
+                            </div>
+                            <div className='flex flex-row items-center justify-between'>
+                                <label className='w-70 font-bold'>Length: </label>
+                                <span className="input input-bordered w-full bg-gray-100 pointer-events-none">{structureDimensions[1]}</span>
+                                {imperial ? 
+                                        <span className="px-2">feet</span> 
+                                        : <span className="px-2">meters</span> }
+                            </div>
+                        </div>
+
                         {/* Description - read only */}
                         <div>
                             <label className='font-bold'>Description:</label>
                             <div className="textarea textarea-bordered w-full bg-gray-100 pointer-events-none p-3 rounded"
                                  style={{resize: 'none'}}>
-                                {structureDescription || "No description"}
+                                {structureDescription ? <span>{structureDescription}</span> 
+                                : 
+                                <span className="text-neutral-500">No description</span>}
                             </div>
                         </div>
                     </div>

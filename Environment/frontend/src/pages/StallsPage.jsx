@@ -669,7 +669,7 @@ const StallsPage = () => {
 
           <div className="text-center mb-8">
             <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
-            <p className="mt-2">Manage your stalls!</p>
+            <p className="mt-2">Manage your stalls</p>
           </div>
 
             <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />

@@ -75,7 +75,7 @@ const Legend = ({event, structures}) => {
 
                 <input id="legend-drawer" type="checkbox" className="drawer-toggle"
                 onKeyDown={e => (e.key === "Enter") && e.target.click()} />
-                <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
+                <div className="drawer-content top-4 fixed right-4 flex gap-4 items-center">
 
                     {/* "Open Legend" button */}
                     <label htmlFor="legend-drawer" className="drawer-button btn btn-primary">Legend</label>
@@ -120,7 +120,7 @@ const Legend = ({event, structures}) => {
                             </header>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text font-bold">Ex: Dairy-Free or Wheelchair Accessible</p>
+                            <p className="text text-neutral-600">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
                         </li>
                         <form onSubmit={handleSubmit}>
                             <input type="text" id="search-bar" placeholder="Search Tags Here..."></input>

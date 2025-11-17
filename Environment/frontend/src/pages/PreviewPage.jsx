@@ -103,7 +103,7 @@ const PreviewPage = () => {
             {/* Back to dashboard */}
             {!isPublished && !isEmbedded && (
             <div>
-                <div className="fixed top-20 left-4 pointer-events-auto z-14 flex flex-col gap-4">
+                <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-4">
                     <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
                         <span>Back to Dashboard</span>
                     </Link>
@@ -111,10 +111,11 @@ const PreviewPage = () => {
             </div>
             )};
                         
-            {!isPublished &&(
-            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex gap-4 items-center">
-                <div className="text-center rounded border border-base-400 bg-base-100 p-1">
-                    <label className="label text-base-content">Administrator View</label>
+            {/* Map Preview label and Toggle Grid button */}
+            {!isPublished && !isEmbedded && (
+            <div className="fixed top-18 left-4 pointer-events-auto z-14 flex flex-col gap-3 items-left">
+                <div className="text-center p-2 pt-1 pb-1 rounded border border-base-400 bg-base-100">
+                    <label className="label font-bold text-base-content">Map Preview</label>
                 </div>
                 <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                     <label className="label text-base-content">
@@ -126,6 +127,26 @@ const PreviewPage = () => {
                 </div>
             </div>
             )};
+
+            {/* slightly adjust location if isEmbedded */}
+            {!isPublished && isEmbedded && (
+            <div className="fixed top-4 left-4 pointer-events-auto z-14 flex flex-col gap-3 items-left">
+                <div className="text-center p-2 pt-1 pb-1 rounded border border-base-400 bg-base-100">
+                    <label className="label font-bold text-base-content">Map Preview</label>
+                </div>
+                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                    <label className="label text-base-content">
+                        Toggle Grid
+                        <input type="checkbox" className="toggle checked:toggle-success"
+                        checked={showGrid} onChange={() => setShowGrid(!showGrid)}
+                        onKeyDown={e => (e.key === "Enter") && e.target.click()}/>
+                    </label>
+                </div>
+            </div>
+            )};
+
+
+
             {/* <div className='fixed inset-0 z-10 pointer-events-none'>
                 <Legend event={events[0]} structures={structures}/>  
             </div>     */}

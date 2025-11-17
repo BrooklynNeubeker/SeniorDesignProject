@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import QRCodePage from "../components/QRCodePage";
 import { useGlobal } from "../components/GlobalContext";
-import { SquarePen, MapPin, Calendar } from "lucide-react";
+import { SquarePen, MapPin, Calendar, ExternalLink } from "lucide-react";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
@@ -68,6 +68,7 @@ const EventDashboardPage = () => {
       try {
         await axiosInstance.put(`/events/${id}`, payload);
         console.log("Event updated successfully");
+        toast.success("Event updated successfully");
         //Anything else?
       } catch(error){
         console.error("Failed to update event", err);
@@ -180,48 +181,53 @@ const EventDashboardPage = () => {
                 </button>
               </div>
 
+            <div className="flex flex-wrap justify-between gap-y-6 mb-8 mt-8">
+              <span className="grid grid-cols-2 gap-x-6 justify-left">
+                <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary`}> 
+                      <span>Edit Event Layout</span>
+                </Link>
+                <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary`}>
+                      <span>View Stalls</span>
+                </Link>
+              </span>
+
+              <span className="grid grid-cols-2 gap-x-6 justify-right">
+                <button 
+                  onClick={() => {
+                    // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
+                    {isPublished? window.open(`/event/${id}/public/map`, "_blank", "noreferrer") 
+                      : window.location = `/event/${id}/dashboard/preview`}; 
+                  }} 
+                  className= "btn btn-primary">
+                  {isPublished ? "View Published Map" : "Preview Map"}
+                  {isPublished && <ExternalLink size={18} />}
+                </button>
+
+                { /* <button 
+                  onClick={() => setShowPreview(!showPreview)}
+                  className="btn btn-primary btn-outline"
+                >
+                  {showPreview ? "Hide Preview" : "Show Preview"}
+                </button> */ }
+
+                {/* Publish the Map (Updates database as well) */}
+                <button 
+                onClick={() => { 
+                  console.log(isPublished);
+                  updateEvents(ev.id, "published", !isPublished);
+                  setIsPublished(!isPublished);
+                  console.log("is published after setting to its opposite");
+                  console.log(isPublished);
+                  handleSubmit();
+                  console.log("map is now public")
+                }}  
+                className={`btn btn-primary`}>
+                      {isPublished? "Unpublish Map" : "Make Map Public"}
+                </button>
+              </span>
+            </div>
+
             <div className="flex flex-wrap items-center justify-between gap-y-6 mb-8 mt-8">
-              <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary`}> 
-                    <span>Edit Event Layout</span>
-              </Link>
-              <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary`}>
-                    <span>View Stalls</span>
-              </Link>
-              {/* <Link to={`/event/${id}/dashboard/preview`} className={`btn btn-primary`}> 
-                    <span>View Full Preview</span>
-              </Link> */}
-              <button 
-                onClick={() => {
-                  // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
-                  {isPublished? window.location = `/event/${id}/public/map` : window.location = `/event/${id}/dashboard/preview`}; 
-                }} 
-                className= "btn btn-primary">
-                {isPublished? "View Map" : "View Full Preview"}
-              </button>
-
-              { /* <button 
-                onClick={() => setShowPreview(!showPreview)}
-                className="btn btn-primary btn-outline"
-              >
-                {showPreview ? "Hide Preview" : "Show Preview"}
-              </button> */ }
-
-              {/* Publish the Map (Updates database as well) */}
-              <button 
-              onClick={() => { 
-                console.log(isPublished);
-                updateEvents(ev.id, "published", !isPublished);
-                setIsPublished(!isPublished);
-                console.log("is published after setting to its opposite");
-                console.log(isPublished);
-                handleSubmit();
-                console.log("map is now public")
-              }}  
-              className={`btn btn-primary`}>
-                    {isPublished? "Unpublish Map" : "Make Map Public"}
-              </button>
-
-
               <button 
                 onClick={() => {
                   const eventName = event.length > 0 ? event[0].eventName : "Event";
@@ -235,6 +241,7 @@ const EventDashboardPage = () => {
                 Generate QR Code
               </button>
             </div>
+
             </form>
         </li>
     ))}
@@ -248,7 +255,7 @@ const EventDashboardPage = () => {
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
             <div className="text-center mb-14">
               <h1 className="text-3xl font-semibold ">Event Dashboard</h1>
-              <p className="mt-2">Manage your event details and layout!</p>
+              <p className="mt-2">Manage your event details and layout</p>
             </div>
             
             <div className="flex w-full gap-14">

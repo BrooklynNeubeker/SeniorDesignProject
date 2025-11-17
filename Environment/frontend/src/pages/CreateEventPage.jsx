@@ -23,12 +23,31 @@ const CreateEventPage = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+      // input validation for date range
+      if (formData.startDate > formData.endDate) {
+        toast.error("Invalid date range");
+        return;
+      }
+      // input validation for time range for one-day events
+      if (formData.startDate == formData.endDate) {
+        // if start time later than end time
+        if (formData.startTime > formData.endTime) {
+          toast.error("Invalid time range");
+          return;
+        }
+        // if start time empty but end time isn't
+        if (formData.startTime == "" && formData.endTime != "") {
+          toast.error("Invalid time range");
+          return;
+        }
+      }
+
       const payload = { 
         ...formData, 
         eventCoordinatorName: authUser?.email,
         eventCoordinatorID: authUser?._id,
        };
-      
 
       try {
         const res = await axiosInstance.post("/events", payload);
@@ -148,7 +167,7 @@ const CreateEventPage = () => {
               </div>
               <div className="flex justify-end">
               <button type="submit" className="btn btn-primary">
-                Submit Event
+                Create Event
               </button>
             </div>
           </form>

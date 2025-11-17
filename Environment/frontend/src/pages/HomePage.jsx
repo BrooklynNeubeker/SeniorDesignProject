@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { Trash2 } from 'lucide-react';
+import toast from "react-hot-toast";
 
 const HomePage = () => {
     const [events, setEvents] = useState([]);
@@ -31,7 +32,7 @@ const HomePage = () => {
             await fetchMyEvents();
         } catch (error) {
             console.error("failed to delete event:", error);
-            alert("error: failed to delete event");
+            toast.error("error: failed to delete event");
         }
     };
 

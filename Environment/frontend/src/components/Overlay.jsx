@@ -112,7 +112,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                                 Icon={Toilet} 
                                 bgColor="#1346DD" 
                                 iconColor="text-white" 
-                                border=""
+                                border="border border-white"
                                 onClick={addStructure} />
                             </li>
                             <li>
@@ -122,7 +122,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                                 Icon={BriefcaseMedical} 
                                 bgColor="#E02229" 
                                 iconColor="text-white" 
-                                border=""
+                                border="border border-white"
                                 onClick={addStructure} />
                             </li>
                             <li>
@@ -132,7 +132,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                                 Icon={Info} 
                                 bgColor="#8204DC" 
                                 iconColor="text-white" 
-                                border=""
+                                border="border border-white"
                                 onClick={addStructure} />
                             </li>
                             <li>
