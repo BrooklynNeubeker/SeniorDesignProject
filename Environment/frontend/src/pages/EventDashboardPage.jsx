@@ -222,7 +222,7 @@ const EventDashboardPage = () => {
                   console.log("map is now public")
                 }}  
                 className={`btn btn-primary`}>
-                      {isPublished? "Unpublish Map" : "Make Map Public"}
+                      {isPublished? "Unpublish Map" : "Publish Map"}
                 </button>
               </span>
             </div>
