@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User, Shield, Eye, EyeOff} from "lucide-react";
+import { Camera, Mail, User, Shield, Eye, EyeOff, LineChart} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile, password } = useAuthStore();
@@ -25,7 +26,7 @@ const ProfilePage = () => {
       await updateProfile({ profilePic: base64Image });
     };
   };
-  
+
   return (
     <div className="min-h-screen pt-20 bg-base-200">
       <div className="max-w-2xl mx-auto p-4 py-8">
@@ -92,18 +93,13 @@ const ProfilePage = () => {
               <div className="text-sm flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 Password
-              </div>
+              </div> 
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
                 {showPassword ? password : "********"}
               </p>
-              <form>
-                <input
-                  type="text"
-                  value="Change Password"
-                  className="ml-2"
-                >
-                </input>
-              </form>
+              <Link to="/forget-password">
+                 <button className="btn">Change Password</button>
+              </Link>
              
             </div>
 
