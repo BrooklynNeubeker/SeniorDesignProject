@@ -7,6 +7,9 @@ import { useGlobal } from "./GlobalContext";
 import { useMap } from 'react-leaflet';
 
 const Legend = ({event, structures}) => {
+
+    //focusRef is being used to focus on an item
+    const focusRef = useRef(null);
     const { id } = useParams();
     const { zoom } = useGlobal();
     const map = useMap();
@@ -14,6 +17,7 @@ const Legend = ({event, structures}) => {
     const [startTimeFormatted, setStartTime] = useState("");
     const [endDateFormatted, setEndDate] = useState("");
     const [endTimeFormatted, setEndTime] = useState("");
+    const [search, setSearch] = useState("");
 
     // const {imperial, setImperial} = useGlobal();
     // const {stalls, setStalls} = useGlobal();
@@ -25,6 +29,21 @@ const Legend = ({event, structures}) => {
         e.preventDefault();
           console.log("We are searching tags!");
     };
+    //lowering the users search results
+    const lowerCaseSearch = search.trim().toLowerCase();
+    // filtering the structure list so only those with valid tag types are visible.
+     const filteredStructures = structures.filter(structure => {
+        const lowerCaseTags = structure.tags.map(tag => tag.toLowerCase());
+        //if there's no searching, then show all strucutes
+        //  Note: this could be changed to a for loop that changes the structures 
+        //        with every change in the search
+        if (lowerCaseSearch == "")
+            return structure;
+        // if a tag has been searched only show the stalls that match the tag
+        else 
+            return lowerCaseTags.includes(lowerCaseSearch);
+    });
+
     console.log(structures);
 
     const handleClick = (structure) => { //Click event for structure list in legend
@@ -32,6 +51,11 @@ const Legend = ({event, structures}) => {
         console.log(structure.position[1]);
         map.setView([structure.position[0], structure.position[1]], zoom);
         // Can we set the focus to the structure here somehow? 
+
+        //making the focus on the structure but don't know if it works
+        useEffect(() => {
+            focusRef.current.focus();
+        });
     };
     useEffect(() => { //Setter for all times
         setStartDate(formatDate(event.startDate));
@@ -123,10 +147,9 @@ const Legend = ({event, structures}) => {
                             <p className="text text-neutral-600">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
                         </li>
                         <form onSubmit={handleSubmit}>
-                            <input type="text" id="search-bar" placeholder="Search Tags Here..."></input>
-                            <button type="submit">Search</button>
+                            <input type="text" id="search-bar" placeholder="Search Tags Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
+                            <button className="btn" type="submit">Search</button>
                         </form>
-
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
                                 <h1 className="text-lg font-bold">Stalls:</h1>
@@ -134,12 +157,12 @@ const Legend = ({event, structures}) => {
                         </li>
                         <div className="max-h-40 overflow-auto">
                             <ul>
-                                {structures.map(structure => (
+                                {filteredStructures.map(structure => (
                                     <div className="vertical-button-container">
                                         <li>
-                                        <button className="flex gap-4" 
+                                        <button className="btn btn-outline hover:btn-primary" 
                                         onClick={() => handleClick(structure)}>
-                                            <span className="text-md">{structure.name}</span>
+                                            <span className="text-md" ref={focusRef}>{structure.name}</span>
                                         </button>
                                         </li>
 
