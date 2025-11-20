@@ -40,14 +40,15 @@ const Legend = ({event, structures}) => {
     // filtering the structure list so only those with valid tag types are visible.
     const filteredStructures = structures.filter(structure => {
         const lowerCaseTags = structure.tags.map(tag => tag.toLowerCase());
+        const lowerCaseName = structure.name.toLowerCase();
         //if there's no searching, then show all strucutes
         //  Note: this could be changed to a for loop that changes the structures 
         //        with every change in the search
         if (lowerCaseSearch == "")
             return structure;
-        // if a tag has been searched only show the stalls that match the tag
+        // if a tag has been searched only show the stalls that match the tag or name of structure
         else 
-            return lowerCaseTags.includes(lowerCaseSearch);
+            return lowerCaseTags.includes(lowerCaseSearch) || lowerCaseName.includes(lowerCaseSearch);
     });
 
     console.log(structures);
