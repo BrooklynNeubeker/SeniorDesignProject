@@ -23,6 +23,7 @@ const Legend = ({event, structures}) => {
     //these two are used to open the PreviewInfoPage
     const [isOpen, setIsOpen] = useState(false);
     const [isShown, setIsShown] = useState(false);
+    const [selectItem, setSelectItem] = useState(null);
 
     // const {imperial, setImperial} = useGlobal();
     // const {stalls, setStalls} = useGlobal();
@@ -37,7 +38,7 @@ const Legend = ({event, structures}) => {
     //lowering the users search results
     const lowerCaseSearch = search.trim().toLowerCase();
     // filtering the structure list so only those with valid tag types are visible.
-     const filteredStructures = structures.filter(structure => {
+    const filteredStructures = structures.filter(structure => {
         const lowerCaseTags = structure.tags.map(tag => tag.toLowerCase());
         //if there's no searching, then show all strucutes
         //  Note: this could be changed to a for loop that changes the structures 
@@ -54,24 +55,26 @@ const Legend = ({event, structures}) => {
     //this function can be changed but I made it for the time being if there's a better way to close
     const handleClose = () => {
         setIsOpen(false);
+        setSelectItem(null);
         console.log("closed clicked")
     };
     
-    const handleSelect = (selectedItem) => {
-        setSelectedItem(selectedItem);
+    const handleSelect = (structure) => {
+        setSelectItem(structure);
     };
+
     const handleClick = (structure) => { //Click event for structure list in legend
         console.log(structure.position[0]);
         console.log(structure.position[1]);
         map.setView([structure.position[0], structure.position[1]], zoom);
         // Can we set the focus to the structure here somehow? 
-
         setIsShown(true);
         setIsOpen(true);
-    
+        setSelectItem(structure);
         //making the focus on the structure but don't know if it works
         focusRef.current.focus();
     };
+
     useEffect(() => { //Setter for all times
         setStartDate(formatDate(event.startDate));
         setEndDate(formatDate(event.endDate));
@@ -176,7 +179,9 @@ const Legend = ({event, structures}) => {
                                     <div className="vertical-button-container">
                                         <li>
                                         <button className="btn btn-outline hover:btn-primary"
-                                        onClick={() => handleClick(structure)}>
+                                        onClick={() => {handleClick(structure)
+                                            handleSelect(structure);
+                                        }}>
                                             <span className="text-md" ref={focusRef}>{structure.name}</span>
                                         </button>
                                         </li>
@@ -196,20 +201,21 @@ const Legend = ({event, structures}) => {
                     </ul>
 
                 </div>
-                {isShown && isOpen && filteredStructures.map((structure) => (
-                    <div className="flex h-screen items-center">
+                <>
+                {isShown && isOpen && filteredStructures.map(structure => (
+                    <div className="flex h-screen items-center" key={structure.name}>
                         <PreviewInfoCard 
-                            structureName={structure.name} 
-                            structureDescription={structure.description}
-                            structureTags={structure.tags}
+                            structureName={selectItem.name} 
+                            structureDescription={selectItem.description}
+                            structureTags={selectItem.tags}
                             onClose={handleClose}
-                            structure={structure}
+                            structure={selectItem}
                         />
                     </div>
                 ))}
                 {/* If not open, then display nothing */}
                 {!isOpen}
-                
+                </>
             </div>
 
         </div>
