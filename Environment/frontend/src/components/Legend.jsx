@@ -50,7 +50,7 @@ const Legend = ({event, structures}) => {
             return structure;
         // if a tag has been searched only show the stalls that match the tag or name of structure
         else 
-            return lowerCaseTags.includes(lowerCaseSearch) || lowerCaseName.includes(lowerCaseSearch);
+            return lowerCaseTags.some(tag => tag.includes(lowerCaseSearch)) || lowerCaseName.includes(lowerCaseSearch);
     });
 
     console.log(structures);
@@ -115,6 +115,26 @@ const Legend = ({event, structures}) => {
         return s;
     };
 
+    useEffect(() => {
+        const drawer = drawerRef.current;
+
+       const handleOpenDrawer = () => {
+            if (drawer.checked) {
+                map.scrollWheelZoom.disable();
+            } else {
+                map.scrollWheelZoom.enable();
+            }
+        };
+
+        drawer.addEventListener("change", handleOpenDrawer);
+
+        handleOpenDrawer();
+
+        return () => {
+            drawer.removeEventListener("change", handleOpenDrawer);
+        };
+    }, [map]);
+
 
     return (
         <div>
@@ -136,76 +156,80 @@ const Legend = ({event, structures}) => {
                     <label htmlFor="legend-drawer" aria-label="close legend" className="drawer-overlay"></label>
 
                     {/* Sidebar content */}
-                    <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-4">
-                        <li className="pointer-events-none">
-                            <header id="eventName" tabIndex="0">
-                                <Tickets/>
-                                <h1 className="text-3xl font-bold">{event.eventName} </h1>
-                            </header>
-                        </li>
-
-                        {/* <li className="pointer-events-none">
-                            <header id="eventName" tabIndex="0">
-                                <Calendar/>
-                                <h1 className="text-lg font-bold">Dates and Times:</h1>
-                            </header>
-                        </li> */}
-                        <li className="pointer-events-none">
-                            <p className="text font-bold">Start: {startDateFormatted} {startTimeFormatted}</p>
-                        </li>
-                        <li className="pointer-events-none">
-                            <p className="text font-bold">End: {endDateFormatted} {endTimeFormatted}</p>
-                        </li>
+                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 sm:gap-12 gap-16">
+                        <div className="flex flex-col gap-4">
+                            {/* Close button */}
+                            <li className="mb-4">
+                                <label htmlFor="legend-drawer" className="btn btn-sm absolute right-0 top-0">
+                                    <X size={18} />
+                                    Close
+                                </label>
+                            </li>
+                            <li className="pointer-events-none">
+                                <header id="eventName" tabIndex="0">
+                                    <h1 className="text-3xl font-bold">{event.eventName} </h1>
+                                </header>
+                            </li>
+                            <div className="flex flex-col gap-2">
+                                <li className="pointer-events-none">
+                                    <p className="badge badge-primary badge-soft text font-bold">Start: <span className="font-medium">{startDateFormatted} {startTimeFormatted}</span></p>
+                                </li>
+                                <li className="pointer-events-none">
+                                    <p className="badge badge-primary badge-soft text font-bold">End: <span className="font-medium">{endDateFormatted} {endTimeFormatted}</span></p>
+                                </li>
+                            </div>
+                        </div>
                         {/* <li className="pointer-events-none">
                             <h1 className="text-lg font-bold">Start and End Time:</h1>
                         </li> */}
                         {/* <li className="pointer-events-none">
                             <p className="text font-bold">{event.event.startTime} to {event.event.endTime}</p>
                         </li> */}
-                        <li className="pointer-events-none">
-                            <header id="eventName" tabIndex="0">
-                                <Search/>
-                                <h1 className="text-lg text-nowrap font-bold">Search for Tags or Stalls:</h1>
-                            </header>
-                        </li>
-                        <li className="pointer-events-none">
-                            <p className="text">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
-                        </li>
-                        <form onSubmit={handleSubmit}>
-                            <input className={`input input-bordered w-50`} type="text" placeholder="Search Tags Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
-                            <button className="btn btn-outline hover:btn-primary" type="submit">Search</button>
-                        </form>
-                        <li className="pointer-events-none">
-                            <header id="eventName" tabIndex="0">
-                                <StoreIcon/>
-                                <h1 className="text-lg font-bold">Stalls:</h1>
-                            </header>
-                        </li>
-                        <div className="max-h-40 overflow-auto">
-                            <ul>
-                                {filteredStructures.map(structure => (
-                                    <div className="vertical-button-container">
-                                        <li>
-                                        <button className="btn btn-outline hover:btn-primary"
-                                        onClick={() => {handleClick(structure)
-                                            handleSelect(structure);
-                                        }}>
-                                            <span className="text-md" ref={focusRef}>{structure.name}</span>
-                                        </button>
-                                        </li>
-
+                        <div className="flex flex-col gap-4">
+                            <li className="pointer-events-none">
+                                <header id="eventName" tabIndex="0" className="flex flex-col items-start">
+                                    <div className="flex items-center gap-3">
+                                        <Search size={18}/>
+                                        <h1 className="text-lg text-nowrap font-bold">Search for Tags or Structures:</h1>
                                     </div>
-                                ))}
-                            </ul>
+                                    <p className="text">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
+                                </header>
+                            </li>
+                            <form onSubmit={handleSubmit} className="flex gap-2 w-full">
+                                <input className={`input input-bordered`} type="text" placeholder="Search Tags or Structures Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
+                                <button className="btn btn-primary" type="submit">Search</button>
+                            </form>
                         </div>
 
-                        {/* Close button */}
-                        <li className="mb-4">
-                            <label htmlFor="legend-drawer" className="btn btn-md btn-primary fixed left-4 bottom-4">
-                                <X size={18} />
-                                Close
-                            </label>
-                        </li>
+                        <div className="flex flex-col gap-3 py-4">
+                            <li className="pointer-events-none">
+                                <header id="eventName" tabIndex="0">
+                                    <div className="flex items-center gap-3">
+                                        <StoreIcon size={18}/>
+                                        <h1 className="text-lg font-bold">Filtered Structures:</h1>
+                                    </div>
+                                </header>
+                            </li>
+                            <div className="overflow-auto">
+                                <ul className="flex flex-col gap-4">
+                                    {filteredStructures.map(structure => (
+                                        <div className="vertical-button-container">
+                                            <li>
+                                            <button className="btn btn-soft border hover:btn-primary py-10"
+                                            onClick={() => {handleClick(structure)
+                                                handleSelect(structure);
+                                            }}>
+                                                <span className="text-md font-medium" ref={focusRef}>{structure.name}</span>
+                                            </button>
+                                            </li>
+
+                                        </div>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        
                     </ul>
 
                 </div>
