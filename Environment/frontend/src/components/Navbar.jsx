@@ -42,7 +42,7 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
 
             <>
-              {authUser && (
+              {authUser ? (
                 <>
                   <Link to={"/profile"} className="btn btn-sm gap-2">
                     <User className="size-5" />
@@ -94,6 +94,26 @@ const Navbar = () => {
 
                   </div>
                 </>
+              ) : (
+                <button className="btn btn-sm transition-colors" 
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+
+                  <div className="swap swap-rotate relative w-5 h-5 flex items-center justify-center">
+                    <input
+                      type="checkbox"
+                      checked={theme === "dark"}
+                      readOnly
+                      className="hidden"
+                    />
+
+                    <Sun className="swap-on size-5 absolute" />
+                    <Moon className="swap-off size-5 absolute" />
+                  </div>
+
+                  <span className="hidden md:inline">
+                    {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                  </span>
+                </button>
               )}
             </>
           </div>
