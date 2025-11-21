@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin } from 'lucide-react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin, Calendar, Tickets, StoreIcon, Search } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { data, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -85,8 +85,8 @@ const Legend = ({event, structures}) => {
 
     const formatDate = (date) => { //Make date in form "Month Date, Year"
         let parts = date.split('-');
-        var months = ["January", "February", "March", "April", "May", "June", 
-           "July", "August", "September", "October", "November", "December"];
+        var months = ["Jan.", "Feb.", "Mar.", "Apr", "May", "June", 
+           "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
         var s = months[parts[1] - 1];
         s = s + " " + parts[2] +  ", " + parts[0];
         return s;
@@ -133,23 +133,22 @@ const Legend = ({event, structures}) => {
                     <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-4">
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
-                                <h1 className="text-xl font-bold">{event.eventName} </h1>
+                                <Tickets/>
+                                <h1 className="text-3xl font-bold">{event.eventName} </h1>
                             </header>
                         </li>
 
-                        <li className="pointer-events-none">
+                        {/* <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
-                            <h1 className="text-lg font-bold">Dates and Times:</h1>
+                                <Calendar/>
+                                <h1 className="text-lg font-bold">Dates and Times:</h1>
                             </header>
+                        </li> */}
+                        <li className="pointer-events-none">
+                            <p className="text font-bold">Start: {startDateFormatted} {startTimeFormatted}</p>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text font-bold">{startDateFormatted} at {startTimeFormatted}</p>
-                        </li>
-                        <li className="pointer-events-none">
-                            <p className="text font-bold"> to </p>
-                        </li>
-                        <li className="pointer-events-none">
-                            <p className="text font-bold">{endDateFormatted} at {endTimeFormatted}</p>
+                            <p className="text font-bold">End: {endDateFormatted} {endTimeFormatted}</p>
                         </li>
                         {/* <li className="pointer-events-none">
                             <h1 className="text-lg font-bold">Start and End Time:</h1>
@@ -159,11 +158,12 @@ const Legend = ({event, structures}) => {
                         </li> */}
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
-                            <h1 className="text-lg font-bold">Search Stall Tags for Keywords:</h1>
+                                <Search/>
+                                <h1 className="text-lg font-bold">Search Stall Tags for Keywords:</h1>
                             </header>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text text-neutral-600">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
+                            <p className="text text-neutral-400">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
                         </li>
                         <form onSubmit={handleSubmit}>
                             <input type="text" id="search-bar" placeholder="Search Tags Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
@@ -171,6 +171,7 @@ const Legend = ({event, structures}) => {
                         </form>
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
+                                <StoreIcon/>
                                 <h1 className="text-lg font-bold">Stalls:</h1>
                             </header>
                         </li>
