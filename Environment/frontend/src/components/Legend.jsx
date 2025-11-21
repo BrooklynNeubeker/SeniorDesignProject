@@ -25,6 +25,8 @@ const Legend = ({event, structures}) => {
     const [isShown, setIsShown] = useState(false);
     const [selectItem, setSelectItem] = useState(null);
 
+    const drawerRef = useRef(null);
+
     // const {imperial, setImperial} = useGlobal();
     // const {stalls, setStalls} = useGlobal();
     console.log(event);
@@ -74,6 +76,10 @@ const Legend = ({event, structures}) => {
         setSelectItem(structure);
         //making the focus on the structure but don't know if it works
         focusRef.current.focus();
+
+        if (drawerRef.current) {
+            drawerRef.current.checked = false;
+        }
     };
 
     useEffect(() => { //Setter for all times
@@ -116,7 +122,7 @@ const Legend = ({event, structures}) => {
             {/* "Legend" sidebar drawer */}
             <div className="drawer drawer-end">
 
-                <input id="legend-drawer" type="checkbox" className="drawer-toggle"
+                <input id="legend-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef}
                 onKeyDown={e => (e.key === "Enter") && e.target.click()} />
                 <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
 

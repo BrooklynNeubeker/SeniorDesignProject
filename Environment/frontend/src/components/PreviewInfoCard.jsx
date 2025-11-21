@@ -32,55 +32,60 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
     
     return (
         <>
-            <div className="card bg-base-100 w-100 shadow-sm m-2 mt-30 z-9999 h-auto cursor-default"
-            ref={cardRef}
-            tabIndex={0}>
-                <div className="card-body flex flex-col justify-between gap-8">
+            <div className="fixed h-screen w-screen z-50 bg-black/40 flex items-center justify-center">
+                <div className="card bg-base-100 w-100 shadow-sm m-2 z-9999 h-auto cursor-default"
+                ref={cardRef}
+                tabIndex={0}>
+                    <div className="card-body flex flex-col justify-between gap-8">
 
-                    <div className='flex flex-col gap-6'>
-                        {/* Structure name - read only */}
-                        <div className="flex flex-col w-full gap-3">
-                            <label className='font-bold'>Structure Name:</label>
-                            <div className="input input-bordered w-full font-bold text-lg pointer-events-none">
-                                {structureName}
+                        <div className='flex flex-col gap-6'>
+                            {/* Structure name - read only */}
+                            <div className="flex flex-col w-full gap-3">
+                                <label className='font-bold'>Structure Name:</label>
+                                <div className="w-full font-bold text-xl pointer-events-none">
+                                    {structureName}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Tags - read only */}
-                        <div className="flex flex-wrap gap-2">
-                            {structureTags && structureTags.length > 0 ? (
-                                structureTags.map((tag) => (
-                                    <div key={tag} className="badge badge-outline">
-                                        {tag}
+                            {/* Tags - read only */}
+                            {(structureTags && structureTags.length > 0) &&
+                                <div className='flex flex-col gap-3'>
+                                    <label className='font-bold'>Tags:</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {
+                                            structureTags.map((tag) => (
+                                                <div key={tag} className="badge badge-outline">
+                                                    {tag}
+                                                </div>
+                                            ))
+                                       }
                                     </div>
-                                ))
-                            ) : (
-                                <span className="text-gray-500">No tags</span>
-                            )}
+                                </div>
+                            }
+
+                            {/* Description - read only */}
+                            {structureDescription &&
+                                <div className='flex flex-col gap-2'>
+                                    <label className='font-bold'>Description:</label>
+                                    <div className="w-full bg-gray-100 border pointer-events-none p-3 rounded"
+                                        style={{resize: 'none'}}>
+                                        <span>{structureDescription}</span>
+                                    </div>
+                                </div>
+                            }
                         </div>
 
-                        {/* Description - read only */}
+                        {/* Close button */}
                         <div>
-                            <label className='font-bold'>Description:</label>
-                            <div className="textarea textarea-bordered w-full pointer-events-none p-3 rounded"
-                                 style={{resize: 'none'}}>
-                                {structureDescription ? <span>{structureDescription}</span> 
-                                : 
-                                <span className="text-neutral-500">No description</span>}
+                            <div className="card-actions justify-end">
+                                <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
+                                    <X size={16} />
+                                    Close
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Close button */}
-                    <div>
-                        <div className="card-actions justify-end">
-                            <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
-                                <X size={16} />
-                                Close
-                            </button>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </>
