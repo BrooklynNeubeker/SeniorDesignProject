@@ -37,7 +37,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         {/* Structure name - read only */}
                         <div className="flex flex-col w-full gap-3">
                             <label className='font-bold'>Structure Name:</label>
-                            <div className="input input-bordered w-full font-bold text-lg bg-gray-100 pointer-events-none">
+                            <div className="input input-bordered w-full font-bold text-lg pointer-events-none">
                                 {structureName}
                             </div>
                         </div>
@@ -58,7 +58,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         {/* Description - read only */}
                         <div>
                             <label className='font-bold'>Description:</label>
-                            <div className="textarea textarea-bordered w-full bg-gray-100 pointer-events-none p-3 rounded"
+                            <div className="textarea textarea-bordered w-full pointer-events-none p-3 rounded"
                                  style={{resize: 'none'}}>
                                 {structureDescription ? <span>{structureDescription}</span> 
                                 : 
