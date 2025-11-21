@@ -159,15 +159,15 @@ const Legend = ({event, structures}) => {
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
                                 <Search/>
-                                <h1 className="text-lg font-bold">Search Stall Tags for Keywords:</h1>
+                                <h1 className="text-lg text-nowrap font-bold">Search for Tags or Stalls:</h1>
                             </header>
                         </li>
                         <li className="pointer-events-none">
-                            <p className="text text-neutral-400">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
+                            <p className="text">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
                         </li>
                         <form onSubmit={handleSubmit}>
-                            <input type="text" id="search-bar" placeholder="Search Tags Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
-                            <button className="btn" type="submit">Search</button>
+                            <input className={`input input-bordered w-50`} type="text" placeholder="Search Tags Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
+                            <button className="btn btn-outline hover:btn-primary" type="submit">Search</button>
                         </form>
                         <li className="pointer-events-none">
                             <header id="eventName" tabIndex="0">
