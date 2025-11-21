@@ -12,6 +12,8 @@ router.get("/", protectRoute, getMyEvents); // gets events of current coordinato
 
 router.get("/:eventId", protectRoute, getEventById)// gets event by mongoose object id
 
+router.get("/:eventId/public", getEventById)// gets event by mongoose object id
+
 router.delete("/:id", protectRoute, deleteEvent); // deletes selected event
 
 router.put("/:id", protectRoute, updateEvent);
@@ -40,6 +42,8 @@ router.post("/:id/site-plan", protectRoute, createEventMap); //Create an event m
 router.delete("/:id/site-plan/", protectRoute, deleteEventMap); //Delete an event map
 
 router.get("/:id/site-plan", protectRoute, getMyEventMap); //Get event maps
+
+router.get("/:id/site-plan/public", getMyEventMap); //Get event maps
 
 router.put("/:id/site-plan/:mapId", protectRoute, updateEventMap); //Update an event map
 

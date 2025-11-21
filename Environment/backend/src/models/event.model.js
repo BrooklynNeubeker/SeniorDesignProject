@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./user.model.js";
 //May need to import the below things instead of how its setup
 
 // const eventItinerarySchema = require('./eventItinerary.model.js') // a guide said to do this, I don't know for sure if it's implemented properly

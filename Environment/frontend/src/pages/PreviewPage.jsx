@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import {Loader2} from "lucide-react";
 import Legend from '../components/Legend';
 
+
 const PreviewPage = () => {
     const { imperial, location, zoom, setZoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
     const saveBtnRef = useRef();
@@ -28,11 +29,12 @@ const PreviewPage = () => {
 
     const fetchMyEvents = async () => {
       try {
-      const res = await axiosInstance.get("/events");
+      const res = await axiosInstance.get(`/events/${id}/public`);
       setEvents(res.data || []);
     //   console.log(res.data[0]);
-      console.log(res.data[0].published);
-      setIsPublished(res.data[0].published);
+      console.log("Hello world!");
+      console.log(res.data.published);
+      setIsPublished(res.data.published);
       } catch (error) {
       console.error("Failed to load events:", error);
       } finally {
@@ -41,9 +43,11 @@ const PreviewPage = () => {
   };
     const fetchMyMap = async () => {
         try {
-            let res = await axiosInstance.get(`/events/${id}/site-plan`);
+            let res = await axiosInstance.get(`/events/${id}/site-plan/public`);
             // console.log(res.data);
             setMap(res.data || []);
+            console.log("is this ok?");
+            console.log(res.data[0].mapCenter);
             const center = res.data[0].mapCenter;
             setLocation({ //Set the location globals based on db center
                 lat: center.y['$numberDecimal'],
@@ -89,6 +93,9 @@ const PreviewPage = () => {
                 </>;
     }
 
+    // const checkifPublished = () => {
+
+    // }
 
     return (
         <>
@@ -97,7 +104,7 @@ const PreviewPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} 
-                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events[0]} isEmbedded={isEmbedded}/> 
+                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events} isEmbedded={isEmbedded}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
