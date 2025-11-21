@@ -34,9 +34,11 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
     
     const map = useMap();
     const cardRef = useRef(null);
+    const closeBtnRef = useRef(null);
 
     useEffect(() => {
         const card = cardRef.current;
+        const closeBtn = closeBtnRef.current;
 
         const handleFocus = () => map.scrollWheelZoom.disable();
         const handleBlur = () => map.scrollWheelZoom.enable();
@@ -45,6 +47,8 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
             card.addEventListener("mouseenter", handleFocus);
             card.addEventListener("mouseleave", handleBlur);
         }
+
+        closeBtn.addEventListener("click", handleBlur);
 
         return () => {
         if (card) {
@@ -197,7 +201,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 <Trash2 size={16}/>
                                 Delete
                             </button>
-                            <button className="btn btn-sm btn-primary" onClick={onClose}>
+                            <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
                                 <X size={16} />
                                 Close
                             </button>
