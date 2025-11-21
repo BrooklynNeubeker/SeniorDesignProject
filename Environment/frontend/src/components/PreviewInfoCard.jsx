@@ -6,9 +6,11 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
 
     const map = useMap();
     const cardRef = useRef(null);
+    const closeBtnRef = useRef(null);
 
     useEffect(() => {
         const card = cardRef.current;
+        const closeBtn = closeBtnRef.current;
 
         const handleFocus = () => map.scrollWheelZoom.disable();
         const handleBlur = () => map.scrollWheelZoom.enable();
@@ -17,6 +19,8 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
             card.addEventListener("mouseenter", handleFocus);
             card.addEventListener("mouseleave", handleBlur);
         }
+
+        closeBtn.addEventListener("click", handleBlur);
 
         return () => {
         if (card) {
@@ -70,7 +74,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                     {/* Close button */}
                     <div>
                         <div className="card-actions justify-end">
-                            <button className="btn btn-sm btn-primary" onClick={onClose}>
+                            <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
                                 <X size={16} />
                                 Close
                             </button>
