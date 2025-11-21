@@ -42,8 +42,11 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                             {/* Structure name - read only */}
                             <div className="flex flex-col w-full gap-3">
                                 <label className='font-bold'>Structure Name:</label>
-                                <div className="w-full font-bold text-xl pointer-events-none">
-                                    {structureName}
+                                <div className="w-full pointer-events-none flex flex-col gap-3">
+                                    <span className='font-bold text-xl'>{structureName}</span>
+                                    {structure.structureType &&
+                                        <span className="badge badge-soft">{structure.structureType}</span>
+                                    }
                                 </div>
                             </div>
 
@@ -67,7 +70,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                             {structureDescription &&
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-bold'>Description:</label>
-                                    <div className="w-full bg-gray-100 border pointer-events-none p-3 rounded"
+                                    <div className="w-full bg-base-200 border pointer-events-none p-3 rounded"
                                         style={{resize: 'none'}}>
                                         <span>{structureDescription}</span>
                                     </div>

@@ -124,9 +124,9 @@ const SitePlanPage = () => {
         dimensions: width and length of structure in real-life feet/meters, default 20 x 20
         position: position of structure on map, generates at center of map by default
     */}
-    const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType) => {
+    const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType, structureType) => {
         const newStructure = { id: crypto.randomUUID(),
-            name, Icon, bgColor, iconColor, border, description, tagType, orientation: 0,
+            name, Icon, bgColor, iconColor, border, description, tagType, structureType, orientation: 0,
             dimensions: [20, 20], position: [location.lat, location.lng], tags: []} //Show structures at the center from db
         setStructures(prev => [...prev, newStructure])
     }

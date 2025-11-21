@@ -43,6 +43,7 @@ const Legend = ({event, structures}) => {
     const filteredStructures = structures.filter(structure => {
         const lowerCaseTags = structure.tags.map(tag => tag.toLowerCase());
         const lowerCaseName = structure.name.toLowerCase();
+        const lowerCaseStructureType = structure.structureType.toLowerCase();
         //if there's no searching, then show all strucutes
         //  Note: this could be changed to a for loop that changes the structures 
         //        with every change in the search
@@ -50,7 +51,9 @@ const Legend = ({event, structures}) => {
             return structure;
         // if a tag has been searched only show the stalls that match the tag or name of structure
         else 
-            return lowerCaseTags.some(tag => tag.includes(lowerCaseSearch)) || lowerCaseName.includes(lowerCaseSearch);
+            return lowerCaseTags.some(tag => tag.includes(lowerCaseSearch)) || 
+                    lowerCaseName.includes(lowerCaseSearch) || 
+                    lowerCaseStructureType.includes(lowerCaseSearch);
     });
 
     console.log(structures);
@@ -69,7 +72,7 @@ const Legend = ({event, structures}) => {
     const handleClick = (structure) => { //Click event for structure list in legend
         console.log(structure.position[0]);
         console.log(structure.position[1]);
-        map.setView([structure.position[0], structure.position[1]], zoom);
+        map.setView([structure.position[0], structure.position[1]], map.getZoom());
         // Can we set the focus to the structure here somehow? 
         setIsShown(true);
         setIsOpen(true);

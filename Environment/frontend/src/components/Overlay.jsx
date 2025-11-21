@@ -89,7 +89,8 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             */}
                             <li>
                                 <TileMapButton 
-                                name="Food and Beverage" 
+                                name="Food and Drink" 
+                                structureType="Food/Drink"
                                 tagType="dietary"
                                 Icon={Utensils} bgColor="#FFCB3D" 
                                 iconColor="text-black" 
@@ -99,6 +100,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Retail" 
+                                structureType="Retail"
                                 tagType="accessibility"
                                 Icon={Store} bgColor="#00D390" 
                                 iconColor="text-black" 
@@ -107,7 +109,8 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             </li>
                             <li>
                                 <TileMapButton 
-                                name="Restrooms" 
+                                name="Restroom" 
+                                structureType="Restroom/Bathroom"
                                 tagType="facility"
                                 Icon={Toilet} 
                                 bgColor="#1346DD" 
@@ -118,6 +121,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Medical" 
+                                structureType="Medical/First Aid"
                                 tagType="medical"
                                 Icon={BriefcaseMedical} 
                                 bgColor="#E02229" 
@@ -128,6 +132,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Information" 
+                                structureType="Information"
                                 tagType="accessibility"
                                 Icon={Info} 
                                 bgColor="#8204DC" 
@@ -138,6 +143,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Tent"
+                                structureType="Tent"
                                 Icon={MapPin} 
                                 bgColor="#ffffff" 
                                 iconColor="text-black"
