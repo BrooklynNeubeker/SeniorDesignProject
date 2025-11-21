@@ -147,15 +147,14 @@ const SitePlanPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]}  //Map should display at center coordinates from db by default if a search has not happened. To make these place at the right spot immediately after a search, change it back to location.lat and location.lng, but be aware that that means that when the map loads in and no search has happened, 
-                saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom}/> 
+                saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} addStructure={addStructure} saveEventMap={saveEventMap}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
-            <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/>  
-                {/* Buttons in Overlay will be clicked to add structures, pass in addStructures prop */}
-            </div>
+            {/* <div className='fixed inset-0 z-10 pointer-events-none'>
+                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/> 
+            </div> */ }
         </div>
     );
 };

@@ -12,12 +12,12 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
     return (
         <div>
             {/* Back to dashboard */}
-            <div className="fixed top-20 left-4 pointer-events-auto z-14 flex gap-4">
+            <div className="flex flex-col lg:flex-row fixed top-34 md:top-20 left-4 pointer-events-auto z-14 flex gap-4">
                 <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
-                    <span>Back to Dashboard</span>
+                    <span className="text-primary-content">Back to Dashboard</span>
                 </Link>
                 {/* Save EventMap*/}
-                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent'}>
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent w-fit'}>
                     <span>Save</span>
                 </button>
             </div>
@@ -36,9 +36,9 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
             </div>
             */}
 
-            <div className="fixed top-20 flex right-4 z-14 gap-4 pointer-events-auto">
+            <div className="flex flex-col-reverse xl:flex-row items-end fixed top-34 md:top-20 right-4 z-14 gap-4 pointer-events-auto">
                 {/* Grid toggle */}
-                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300 w-fit">
                     <label className="label text-base-content">
                         Toggle Grid
                         <input type="checkbox" className="toggle checked:toggle-success"
@@ -63,7 +63,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
 
                     <input id="add-objects-drawer" type="checkbox" className="drawer-toggle"
                     onKeyDown={e => (e.key === "Enter") && e.target.click()} />
-                    <div className="drawer-content">
+                    <div className="drawer-content flex justify-end">
                         {/* "Add Objects" button */}
                         <label htmlFor="add-objects-drawer" 
                         className="drawer-button btn btn-primary">

@@ -7,8 +7,9 @@ import Search from "./Search";
 import { useGlobal } from "./GlobalContext";
 import Legend from "./Legend";
 import SetCenter from "./SetCenter";
+import Overlay from "./Overlay";
 
-const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event, isEmbedded }) => {
+const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, event, isEmbedded, addStructure, saveEventMap }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
@@ -64,6 +65,8 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
                 maxZoom={22}
                 minZoom={18}
             />
+
+            <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/>  
 
             {editing && (
             <Search apiKey={"annregalab@gmail.com"} baseZoom={zoom}/>
