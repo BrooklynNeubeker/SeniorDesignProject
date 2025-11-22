@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../lib/axios";
 import { Trash2 } from 'lucide-react';
 import toast from "react-hot-toast";
+import ModalWindow from "../components/ModalWindow.jsx";
 
 const HomePage = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
   
     const fetchMyEvents = async () => {
         try {
@@ -24,8 +26,6 @@ const HomePage = () => {
     }, []);
 
     const deleteEvent = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this event?")) return;
-
         try {
             await axiosInstance.delete(`/events/${id}`);
             await axiosInstance.delete(`/events/${id}/site-plan`);
@@ -72,7 +72,12 @@ const HomePage = () => {
                 <button 
                 type="delete"
                 className="btn btn-sm btn-error"
-                onClick={() => deleteEvent(ev._id)} 
+                onClick={() => setShowModal({
+                    open: true,
+                    type: "deleteEvent",
+                    action: () => {deleteEvent(ev._id), setShowModal({...showModal, open: false})},
+                    input: ev.eventName
+                })}
                 >
                     <Trash2 size={16}/>
                     Delete
@@ -82,6 +87,17 @@ const HomePage = () => {
         ))}
         </ul>)
     }
+
+    let modalWindow = (
+        <ModalWindow
+        open={showModal.open}
+        onClose={() => setShowModal({...showModal, open: false})}
+        type={showModal.type}
+        action={showModal.action}
+        input={showModal.input}
+        />
+    );
+
   return (
     <div className="min-h-screen pt-20 bg-base-200">
         <div className="max-w-5xl mx-auto p-4 py-8">
@@ -97,7 +113,10 @@ const HomePage = () => {
                             <span>Create New Event</span>
                         </Link>
                     </div>
-                    <div>{listEvents}</div>
+                    <div>
+                        {listEvents}
+                        {modalWindow}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,21 +1,43 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin, Grid3x3 } from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useGlobal } from "./GlobalContext";
+import ModalWindow from "../components/ModalWindow.jsx";
 
-const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
+const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
     const { id } = useParams();
     const {imperial, setImperial, showGrid, setShowGrid} = useGlobal();
+    const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
+
+    let modalWindow = (
+        <ModalWindow
+        open={showModal.open}
+        onClose={() => setShowModal({...showModal, open: false})}
+        type={showModal.type}
+        action={showModal.action}
+        input={showModal.input}
+        />
+    );
 
     return (
         <div>
-            {/* Back to dashboard */}
-            <div className="flex flex-col lg:flex-row fixed top-34 md:top-20 left-4 pointer-events-auto z-14 flex gap-4">
-                <Link to={`/event/${id}/dashboard`} className={`btn btn-primary`}>
+            <div className="flex flex-col lg:flex-row fixed top-34 md:top-20 left-4 pointer-events-auto z-14 gap-4">
+                {modalWindow}
+
+                {/* Back to dashboard with "Save changes" modal window*/}
+                <button ref={saveBtnRef2}
+                className={`btn btn-primary`} 
+                onClick={() => setShowModal({
+                    open: true,
+                    type: "saveMap",
+                    action: saveEventMap, 
+                    input: `/event/${id}/dashboard`
+                })}>
                     <span className="text-primary-content">Back to Dashboard</span>
-                </Link>
+                </button>
+
                 {/* Save EventMap*/}
                 <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent w-fit'}>
                     <span>Save</span>
@@ -78,6 +100,20 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
 
                         {/* Sidebar content */}
                         <ul className="menu bg-base-200 min-h-full w-80 p-4 pt-20 gap-2">
+
+                            {/* Close button */}
+                            <div className="flex flex-col gap-4 mb-4">
+                                <li className="mb-4">
+                                    <label htmlFor="add-objects-drawer" className="btn btn-sm absolute right-0 top-0"
+                                    tabIndex={0}
+
+                                    onKeyDown={e => (e.key === "Enter") && e.target.click()}    >
+                                        <X size={18} />
+                                        Close
+                                    </label>
+                                </li>
+                            </div>
+
                             <li className="pointer-events-none">
                                 <h1 className="text-lg font-bold">Choose Object to Place</h1>
                             </li>
@@ -110,7 +146,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Restroom" 
-                                structureType="Restroom/Bathroom"
+                                structureType="Restroom"
                                 tagType="facility"
                                 Icon={Toilet} 
                                 bgColor="#1346DD" 
@@ -121,7 +157,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                             <li>
                                 <TileMapButton 
                                 name="Medical" 
-                                structureType="Medical/First Aid"
+                                structureType="Medical"
                                 tagType="medical"
                                 Icon={BriefcaseMedical} 
                                 bgColor="#E02229" 
@@ -149,17 +185,8 @@ const Overlay = ({ addStructure, saveBtnRef, saveEventMap }) => {
                                 iconColor="text-black"
                                 border="border border-neutral-800"
                                 onClick={addStructure} />
-
                             </li>
 
-                            {/* Close button */}
-                            <label htmlFor="add-objects-drawer" className="btn btn-md btn-primary fixed left-4 bottom-4 z-20"
-                            tabIndex={0}
-
-                            onKeyDown={e => (e.key === "Enter") && e.target.click()}    >
-                                <X size={18} />
-                                Close
-                            </label>
                         </ul>
                     </div>
                     

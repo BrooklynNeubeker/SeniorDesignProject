@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import QRCodePage from "../components/QRCodePage";
 import { useGlobal } from "../components/GlobalContext";
 import { SquarePen, MapPin, Calendar, ExternalLink } from "lucide-react";
+import toast from "react-hot-toast";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
@@ -48,10 +49,12 @@ const EventDashboardPage = () => {
 // Gets the updated event, changes the data on the database
   const handleSubmit = async (e) => {
       e.preventDefault();
+
       console.log("We got here!");
       const event = events.filter(eve => 
         eve._id === id
       );
+
       const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID, stalls, published }) => ({ 
         eventName,
         location,
@@ -65,13 +68,32 @@ const EventDashboardPage = () => {
         published
       }));
       console.log(payload);
+
+      // input validation for date range
+      if (payload[0].startDate > payload[0].endDate) {
+        toast.error("Invalid date range");
+        return;
+      }
+      // input validation for time range for one-day events
+      if (payload[0].startDate == payload[0].endDate) {
+        // if start time later than end time
+        if (payload[0].startTime > payload[0].endTime) {
+          toast.error("Invalid time range");
+          return;
+        }
+        // if start time empty but end time isn't
+        if (payload[0].startTime == "" && payload[0].endTime != "") {
+          toast.error("Invalid time range");
+          return;
+        }
+      }
+
       try {
         await axiosInstance.put(`/events/${id}`, payload);
         console.log("Event updated successfully");
         toast.success("Event updated successfully");
-        //Anything else?
       } catch(error){
-        console.error("Failed to update event", err);
+        console.error("Failed to update event", error);
       }
   };
 
@@ -180,14 +202,19 @@ const EventDashboardPage = () => {
                   Save Changes
                 </button>
               </div>
+            </form>
 
-            <div className="flex flex-wrap justify-between gap-y-6 gap-x-2 mb-8 mt-8">
+            <div className="flex flex-wrap justify-between gap-y-6 mb-8 mt-8">
+              <span className="flex gap-x-6 items-start">
                 <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary w-fit`}> 
                       <span>Edit Event Layout</span>
                 </Link>
                 <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary w-fit`}>
                       <span>View Stalls</span>
                 </Link>
+              </span>
+
+              <div className="flex gap-x-6 items-end">
                 <button 
                   onClick={() => {
                     // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
@@ -208,21 +235,21 @@ const EventDashboardPage = () => {
 
                 {/* Publish the Map (Updates database as well) */}
                 <button 
-                onClick={() => { 
-                  console.log(isPublished);
-                  updateEvents(ev.id, "published", !isPublished);
-                  setIsPublished(!isPublished);
-                  console.log("is published after setting to its opposite");
-                  console.log(isPublished);
-                  handleSubmit();
-                  console.log("map is now public")
-                }}  
-                className={`btn btn-primary w-fit`}>
-                      {isPublished? "Unpublish Map" : "Publish Map"}
+                  onClick={() => { 
+                    console.log("event published: " + isPublished);
+                    updateEvents(ev.id, "published", !isPublished);
+                    setIsPublished(!isPublished);
+                    console.log("event published: " + isPublished);
+                    //handleSubmit();
+                    (isPublished ? toast.success("Event unpublished") : toast.success("Event published"));
+                  }}  
+                  className={`btn btn-primary w-fit`}>
+                        {isPublished? "Unpublish Map" : "Publish Map"}
                 </button>
+                </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-y-6 mt-8">
+            <div className="flex flex-wrap items-center justify-between gap-y-6 mb-8">
               <button 
                 onClick={() => {
                   const eventName = event.length > 0 ? event[0].eventName : "Event";
@@ -237,20 +264,26 @@ const EventDashboardPage = () => {
               </button>
             </div>
 
-            </form>
+            
         </li>
     ))}
     </ul>
+    );
 
-    )
-
-  return(
+  return (
     <div className="min-h-screen pt-20 bg-base-200">
         <div className="mx-4 p-4 py-8">
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
-            <div className="text-center mb-14">
-              <h1 className="text-3xl font-semibold ">Event Dashboard</h1>
-              <p className="mt-2">Manage your event details and layout</p>
+
+            <div className="grid grid-cols-3 justify-items-normal mb-14">
+              <Link to={`/`} className={`btn btn-soft justify-self-start`}> 
+                Back to Home
+              </Link>
+              <div className="text-center justify-center">
+                <h1 className="text-3xl font-semibold">Event Dashboard</h1>
+                <p className="mt-2">Manage your event details and layout</p>
+              </div>
+              <span></span>
             </div>
             
             <div className="flex flex-col lg:flex-row w-full gap-14">

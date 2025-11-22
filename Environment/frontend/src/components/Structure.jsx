@@ -6,7 +6,7 @@ import InfoCard from "./InfoCard";
 import PreviewInfoCard from "./PreviewInfoCard";
 import { useGlobal } from "../components/GlobalContext";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, index, totalStructures, onTabNext, onTabPrev }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, saveBtnRef2, index, totalStructures, onTabNext, onTabPrev }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -97,6 +97,21 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
         saveBtnRef.current.addEventListener("click", handleSave);
         return () => saveBtnRef.current?.removeEventListener("click", handleSave);
     }, [saveBtnRef, structureName, structureDescription, structureTags, 
+        structureDimensions, structureLocation, structureOrientation]);
+    }
+    if(editing) {useEffect(() => {
+        const handleSave = async () => {
+            structure.name = structureName;
+            structure.description = structureDescription;
+            structure.tags = structureTags;
+            structure.dimensions = structureDimensions;
+            structure.position = structureLocation;
+            structure.orientation = structureOrientation;
+        };
+
+        saveBtnRef2.current.addEventListener("click", handleSave);
+        return () => saveBtnRef2.current?.removeEventListener("click", handleSave);
+    }, [saveBtnRef2, structureName, structureDescription, structureTags, 
         structureDimensions, structureLocation, structureOrientation]);
     }
 

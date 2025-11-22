@@ -1,6 +1,24 @@
 import { useEffect } from 'react';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+/**
+ * @param {*} open bool for whether ModalWindow displays or not
+ * @param {*} onClose function to set open false
+ * @param {*} type string for type of modal window (e.g. deleteEvent, exportStalls)
+ * @param {*} action function associated with modal window (e.g. delete, export)
+ * @param {*} input string for additional modal window text (e.g. event name, stall count)
+ * example of implementation with button in StallsPage.jsx:
+ * onClick={() => setShowModal({
+        open: true,
+        type: "deleteStalls",
+        action: () => {deleteStalls(selectedIds), setShowModal({...showModal, open: false})},
+        input: selectedIds.length
+    })}
+ */
 const ModalWindow = ({ open, onClose, type, action, input }) => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (!open) return;
 
@@ -16,27 +34,96 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
 
     let title = "";
     let text = "";
+    let actionBtn = "";
     let actionBtnText = "";
     let actionBtnTheme = ""
 
     switch(type) {
-        case "confirmDelete": {
+        // saveMap is special case; needs three buttons
+        case "saveMap": {
+            title = "Save map changes";
+
+            text = "Save your changes and return to dashboard?"
+
+            return (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/50" onClick={onClose}></div>
+                <div className="bg-white p-6 rounded shadow-lg z-10 w-96">
+                    <h2 className="text-lg font-bold mb-4 text-center text-black">{title}</h2>
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="relative inline-flex items-center justify-center text-black">
+                                <span className="text-base text-black">{text}</span>
+                            </div>
+                        </div>
+
+                    <div className="flex gap-2 mt-6">
+                        <button to={input} className={"btn btn-primary flex-1"} 
+                            onClick={async (e) => {
+                                await action(e);
+                                onClose();
+                                navigate(input);
+                        }}>
+                            <span>Save</span>
+                        </button>
+
+                        <Link to={input} className={"btn btn-primary btn-outline flex-1"} onClick={onClose}>
+                            <span className="text-md text-primary">Don't Save</span>
+                        </Link>
+                        
+                        <button className="btn btn-primary btn-outline flex-1" onClick={onClose}>Cancel</button>
+                    </div>
+                    
+                </div>
+            </div>
+        );
+
+            break;
+        }
+        case "deleteEvent": {
+            title = "Delete " + input;
+
+            text = "Are you sure you want to delete this event? This action cannot be undone."
+
+            actionBtn = (
+                <span>
+                    <button className="btn btn-error btn-outline flex-1" onClick={action}>
+                        <span>Delete</span>
+                    </button>
+                </span>
+            );
+            
+            break;
+        }
+        case "deleteStalls": {
             title = "Delete selected stalls";
 
             if (input == 1)
                 text = "Are you sure you want to delete " + input + " stall? This action cannot be undone."
             else
                 text = "Are you sure you want to delete " + input + " stalls? This action cannot be undone."
-            
-            actionBtnText = "Delete";
-            actionBtnTheme = "btn btn-error btn-outline flex-1";
+
+            actionBtn = (
+                <span>
+                    <button className="btn btn-error btn-outline flex-1" onClick={action}>
+                        <span>Delete</span>
+                    </button>
+                </span>
+            );
+
             break;
         }
         case "exportStalls": {
             title = "Export stalls to Excel";
             text = "Would you like to export the selected stalls data to an Excel spreadsheet (.xlsx)?"
-            actionBtnText = "Export";
-            actionBtnTheme = "btn btn-primary btn-outline flex-1";
+
+            actionBtn = (
+                <span>
+                    <button className="btn btn-primary btn-outline flex-1" onClick={action}>
+                        <span>Export</span>
+                    </button>
+                </span>
+            );
+
             break;
         }
     }
@@ -48,14 +135,12 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
                 <h2 className="text-lg font-bold mb-4 text-center text-black">{title}</h2>
                     <div className="flex flex-col items-center gap-4">
                         <div className="relative inline-flex items-center justify-center text-black">
-                            {text}
+                            <span className="text-base text-black">{text}</span>
                         </div>
                     </div>
 
                 <div className="flex gap-2 mt-6">
-                    <button className={actionBtnTheme} onClick={action}>
-                        {actionBtnText}
-                    </button>
+                    {actionBtn}
                     
                     <button className="btn btn-primary btn-outline flex-1" onClick={onClose}>Cancel</button>
                 </div>

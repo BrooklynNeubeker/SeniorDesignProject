@@ -41,7 +41,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         <div className='flex flex-col gap-6'>
                             {/* Structure name - read only */}
                             <div className="flex flex-col w-full gap-3">
-                                <label className='font-bold'>Structure Name:</label>
+                                <label className='font-bold'>Name:</label>
                                 <div className="w-full pointer-events-none flex flex-col gap-3">
                                     <span className='font-bold text-xl'>{structureName}</span>
                                     {structure.structureType &&
@@ -81,7 +81,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         {/* Close button */}
                         <div>
                             <div className="card-actions justify-end">
-                                <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
+                                <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose}>
                                     <X size={16} />
                                     Close
                                 </button>

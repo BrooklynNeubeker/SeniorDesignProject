@@ -68,7 +68,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                     <div className='flex flex-col gap-6'>
                         {/* Edit stall name */}
                         <div className="flex flex-col w-full gap-3">
-                            <label className='font-bold'>Structure Name:</label>
+                            <label className='font-bold'>Name:</label>
                             <input
                                 type="text"
                                 value={structureName}
@@ -76,7 +76,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 className="input input-bordered w-full font-bold text-lg"
                             />
                             <button
-                                className="btn btn-sm btn-primary w-auto"
+                                className="btn btn-sm btn-primary btn-outline w-auto"
                                 onClick={() => setShowSearch(!showSearch)}
                             >
                                 {showSearch ? "Collapse" : "Import Vendor Info"}
@@ -138,7 +138,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                         onChange={(e) => setCustomTag(e.target.value)}
                                         onKeyDown={(e) => e.key === "Enter" && addTag(customTag)}
                                     />
-                                    <button className="btn ml-2" onClick={() => {addTag(customTag)}}>+</button>
+                                    <button className="btn btn-sm btn-primary ml-2" onClick={() => {addTag(customTag)}}>Add Tag</button>
                                 </div>
                             )}
                         </div>
@@ -189,7 +189,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 onChange={(e) => setStructureDescription(e.target.value)}
                                 className="textarea textarea-bordered w-full"
                                 rows={3}
-                                placeholder="Enter a description for this structure here..."
+                                placeholder="Enter description..."
                             />
                         </div>
                     </div>
@@ -201,7 +201,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 <Trash2 size={16}/>
                                 Delete
                             </button>
-                            <button ref={closeBtnRef} className="btn btn-sm btn-primary" onClick={onClose}>
+                            <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose}>
                                 <X size={16} />
                                 Close
                             </button>

@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useGlobal } from "./GlobalContext";
 import { useMap } from 'react-leaflet';
+import toast from "react-hot-toast";
+import { Lock, LockOpen, } from 'lucide-react';
 
 const SetCenter = ({}) => {
     const { location, setLocation, setZoom } = useGlobal();
     const map = useMap();
+    const [locked, setLocked] = useState(true);    // lock mechanism to prevent accidental map center changes
 
     const handleClick = () => { //Click event for setting map center and zoom
         var coords = map.getCenter();
@@ -14,7 +17,7 @@ const SetCenter = ({}) => {
         lng: coords.lng,
         label: location.label,
         });
-        alert("Center set, don't forget to save :)");
+        toast.success("Map center set");
         console.log(map.getZoom());
         // Setting is buggy if zoom goes beyond 19, commented it out for now to test more later
         // if (map.getZoom() > 19){
@@ -27,15 +30,32 @@ const SetCenter = ({}) => {
         // Can we set the focus to the structure here somehow? 
     };
 
-    return (
-        <div className="fixed top-62 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex gap-4">
-            <button className="btn btn-primary" 
-            onClick={() => handleClick()}>
-            <span className="text-md">Set Map Center</span>
-            {/* and Zoom */}
-            </button>
-        </div>
-    );
+    if (locked) {
+        // locked
+        return (
+            <div className="fixed top-62 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex">
+                <button className="btn btn-soft cursor-not-allowed pointer-events-none" 
+                onClick={() => handleClick()}>
+                <span className="text-md text-gray-600">Set Map Center</span>
+                </button>
+                <button className="btn btn-square" onClick={() => setLocked(!locked)}><Lock size={18}/></button>
+            </div>
+        );
+    }
+    else {
+        // unlocked
+        return (
+            <div className="fixed top-62 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex">
+                <button className="btn btn-primary" 
+                onClick={() => handleClick()}>
+                <span className="text-md">Set Map Center</span>
+                </button>
+                <button className="btn btn-square" onClick={() => setLocked(!locked)}><LockOpen size={18}/></button>
+            </div>
+        );
+        console.log(locked);
+    }
+
 };
 
 export default SetCenter;

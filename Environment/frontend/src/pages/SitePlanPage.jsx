@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 const SitePlanPage = () => {
     const { imperial, setImperial, location, setLocation, zoom, setZoom, setEditing, setEventID} = useGlobal();
     const saveBtnRef = useRef();
+    const saveBtnRef2 = useRef();
     const{ id } = useParams();
     // Keep track of structures added, these will be rendered on map
     const [structures, setStructures] = useState([]);
@@ -100,7 +101,7 @@ const SitePlanPage = () => {
 
         try {
             axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
-            toast.success("Map updated successfully");
+            toast.success("Map saved successfully");
             //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
         } catch(error){
             console.error("Failed to update map", error);
@@ -129,6 +130,7 @@ const SitePlanPage = () => {
             name, Icon, bgColor, iconColor, border, description, tagType, structureType, orientation: 0,
             dimensions: [20, 20], position: [location.lat, location.lng], tags: []} //Show structures at the center from db
         setStructures(prev => [...prev, newStructure])
+        toast.success("Added " + newStructure.structureType + " object");
     }
 
     const removeStructure = (id) => {
@@ -147,13 +149,13 @@ const SitePlanPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]}  //Map should display at center coordinates from db by default if a search has not happened. To make these place at the right spot immediately after a search, change it back to location.lat and location.lng, but be aware that that means that when the map loads in and no search has happened, 
-                saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} addStructure={addStructure} saveEventMap={saveEventMap}/> 
+                saveBtnRef={saveBtnRef} saveBtnRef2={saveBtnRef2} imperial={imperial} zoom={zoom} addStructure={addStructure} saveEventMap={saveEventMap}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>
 
             {/* <div className='fixed inset-0 z-10 pointer-events-none'>
-                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/> 
+                <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveBtnRef2={saveBtnRef2} saveEventMap={saveEventMap}/> 
             </div> */ }
         </div>
     );

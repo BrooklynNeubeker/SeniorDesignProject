@@ -11,6 +11,7 @@ import Legend from '../components/Legend';
 const PreviewPage = () => {
     const { imperial, location, zoom, setZoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
     const saveBtnRef = useRef();
+    const saveBtnRef2 = useRef();
     const{ id } = useParams();
     const [searchParams] = useSearchParams();
     const isEmbedded = searchParams.get('embedded') === 'true';
@@ -104,7 +105,7 @@ const PreviewPage = () => {
             <div className="fixed inset-0 z-10">
                 {/* Some function checking if there is a function to check */}
                 <Map structures={structures} removeStructure={removeStructure} center={[location.lat, location.lng]} 
-                 saveBtnRef={saveBtnRef} imperial={imperial} zoom={zoom} event={events} isEmbedded={isEmbedded}/> 
+                 saveBtnRef={saveBtnRef} saveBtnRef2={saveBtnRef2} imperial={imperial} zoom={zoom} event={events} isEmbedded={isEmbedded}/> 
                
                 {/* Render structures on Map component, pass in structures prop */}
             </div>

@@ -88,14 +88,16 @@ const Legend = ({event, structures}) => {
     useEffect(() => { //Setter for all times
         setStartDate(formatDate(event.startDate));
         setEndDate(formatDate(event.endDate));
-        setStartTime(formatTime(event.startTime));
-        setEndTime(formatTime(event.endTime));
+        if (event.startTime != "") setStartTime(formatTime(event.startTime));
+        else setStartTime(false);
+        if (event.endTime != "") setEndTime(formatTime(event.endTime));
+        else setEndTime(false);
     }, []);
 
     const formatDate = (date) => { //Make date in form "Month Date, Year"
         let parts = date.split('-');
-        var months = ["Jan.", "Feb.", "Mar.", "Apr", "May", "June", 
-           "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+        var months = ["January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December"];
         var s = months[parts[1] - 1];
         s = s + " " + parts[2] +  ", " + parts[0];
         return s;
@@ -175,10 +177,12 @@ const Legend = ({event, structures}) => {
                             </li>
                             <div className="flex flex-col gap-2">
                                 <li className="pointer-events-none">
-                                    <p className="badge badge-primary badge-soft text font-bold">Start: <span className="font-medium">{startDateFormatted} {startTimeFormatted}</span></p>
+                                    <p className="badge badge-primary badge-soft text font-bold">Start: 
+                                        <span className="font-medium">{startDateFormatted} {startTimeFormatted}</span></p>
                                 </li>
                                 <li className="pointer-events-none">
-                                    <p className="badge badge-primary badge-soft text font-bold">End: <span className="font-medium">{endDateFormatted} {endTimeFormatted}</span></p>
+                                    <p className="badge badge-primary badge-soft text font-bold">End: 
+                                        <span className="font-medium">{endDateFormatted} {endTimeFormatted}</span></p>
                                 </li>
                             </div>
                         </div>
@@ -193,23 +197,22 @@ const Legend = ({event, structures}) => {
                                 <header id="eventName" tabIndex="0" className="flex flex-col items-start">
                                     <div className="flex items-center gap-3">
                                         <Search size={18}/>
-                                        <h1 className="text-lg text-nowrap font-bold">Search for Tags or Structures:</h1>
+                                        <h1 className="text-lg text-nowrap font-bold">Search tags or structures:</h1>
                                     </div>
-                                    <p className="text">e.g. Dairy-Free, Wheelchair Accessible, etc.</p>
+                                    <p className="text text-neutral-600">e.g. Dairy-free, Wheelchair-accessible, etc.</p>
                                 </header>
                             </li>
                             <form onSubmit={handleSubmit} className="flex gap-2 w-full">
-                                <input className={`input input-bordered`} type="text" placeholder="Search Tags or Structures Here..." value={search} onChange={e => setSearch(e.target.value)}></input>
-                                <button className="btn btn-primary" type="submit">Search</button>
+                                <input className={`input input-bordered`} type="text" placeholder="Enter tag or structure..." value={search} onChange={e => setSearch(e.target.value)}></input>
                             </form>
                         </div>
 
-                        <div className="flex flex-col gap-3 py-4">
+                        <div className="flex flex-col gap-3">
                             <li className="pointer-events-none">
                                 <header id="eventName" tabIndex="0">
                                     <div className="flex items-center gap-3">
                                         <StoreIcon size={18}/>
-                                        <h1 className="text-lg font-bold">Filtered Structures:</h1>
+                                        <h1 className="text-lg font-bold">Structures:</h1>
                                     </div>
                                 </header>
                             </li>

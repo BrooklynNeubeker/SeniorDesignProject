@@ -38,7 +38,7 @@ const Search = ({ baseZoom }) => {
     retainZoomLevel: false, // optional: true|false  - default false
     animateZoom: false, // optional: true|false  - default true
     autoClose: false, // optional: true|false  - default false
-    searchLabel: 'Enter an address for your event', // optional: string      - default 'Enter address'
+    searchLabel: 'Search address...', // optional: string      - default 'Enter address'
     keepResult: false, // optional: true|false  - default false
     updateMap: false, // optional: true|false  - default true
   });

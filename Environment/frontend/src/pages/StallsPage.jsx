@@ -60,7 +60,6 @@ const StallsPage = () => {
   const [showImport, setImport] = useState(false);
    
  const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
- const [modalOpen, setOpen] = useState(false);
 
   //grabs an event using the eventID in the route
   useEffect(() => {
@@ -356,7 +355,7 @@ const StallsPage = () => {
                     className="btn btn-error"
                     onClick={() => setShowModal({
                       open: true,
-                      type: "confirmDelete",
+                      type: "deleteStalls",
                       action: () => {deleteStalls(selectedIds), setShowModal({...showModal, open: false})},
                       input: selectedIds.length
                     })}

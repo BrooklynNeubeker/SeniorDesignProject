@@ -67,8 +67,8 @@ const CreateEventPage = () => {
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
               <div className="text-center mb-14">
-                <h1 className="text-3xl font-semibold ">Create a New Event</h1>
-                <p className="mt-2">Start by first creating a new event!</p>
+                <h1 className="text-3xl font-semibold ">Create Event</h1>
+                <p className="mt-2">Add name, location, and start/end times for your event.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 flex flex-col gap-3">
@@ -165,10 +165,13 @@ const CreateEventPage = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-end">
-              <button type="submit" className="btn btn-primary">
-                Create Event
-              </button>
+              <div className="flex flex-wrap justify-between">
+                <Link to={`/`} className={`btn btn-soft`}> 
+                  <span>Back</span>
+                </Link>
+                <button type="submit" className="btn btn-primary">
+                  Create Event
+                </button>
             </div>
           </form>
               
