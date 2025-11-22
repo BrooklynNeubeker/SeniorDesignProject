@@ -66,7 +66,9 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, imperial, zoom, 
                 minZoom={18}
             />
 
+            {editing && (
             <Overlay addStructure={addStructure} saveBtnRef={saveBtnRef} saveEventMap={saveEventMap}/>  
+            )}
 
             {editing && (
             <Search apiKey={"annregalab@gmail.com"} baseZoom={zoom}/>

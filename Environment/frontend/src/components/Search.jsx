@@ -12,10 +12,17 @@ import { useGlobal } from "./GlobalContext";
 const Search = ({ baseZoom }) => {
   const provider = new OpenStreetMapProvider({
     params: {
+        limit: 5,
+        countrycodes: 'us',
         email: 'annregalab@gmail.com',
     },
   });
 
+  const {setLocation} = useGlobal();
+
+  const map = useMap();
+
+  useEffect(() => {
   // @ts-ignore
   const searchControl = new GeoSearchControl({
     provider: provider, // required
@@ -36,26 +43,26 @@ const Search = ({ baseZoom }) => {
     updateMap: false, // optional: true|false  - default true
   });
 
-  const {setLocation} = useGlobal();
+  map.addControl(searchControl);
 
-  const map = useMap();
-  useEffect(() => {
-    map.addControl(searchControl);
-
-    // getting the results from the geosearch 
-    map.on('geosearch/showlocation', function(result) {
-
-      setLocation({
-        lat: result.location.y,
-        lng: result.location.x,
-        label: result.location.label,
-      });
-
-      map.setView([result.location.y, result.location.x], baseZoom)
+  const handleLocation = (result) => {
+    setLocation({
+      lat: result.location.y,
+      lng: result.location.x,
+      label: result.location.label,
     });
 
-    return () => map.removeControl(searchControl);
-  }, [map, setLocation]);
+    map.setView([result.location.y, result.location.x], baseZoom, { animate: false });
+  };
+
+  map.on("geosearch/showlocation", handleLocation);
+
+  return () => {
+    map.off("geosearch/showlocation", handleLocation);
+    map.removeControl(searchControl);
+  };
+  
+  }, []);
 
   return null;
 };

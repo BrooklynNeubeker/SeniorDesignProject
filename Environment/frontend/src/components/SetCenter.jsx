@@ -28,7 +28,7 @@ const SetCenter = ({}) => {
     };
 
     return (
-        <div className="fixed top-62 md:top-48 xl:top-34 left-4 pointer-events-auto z-10 flex gap-4">
+        <div className="fixed top-62 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex gap-4">
             <button className="btn btn-primary" 
             onClick={() => handleClick()}>
             <span className="text-md">Set Map Center</span>

@@ -181,17 +181,13 @@ const EventDashboardPage = () => {
                 </button>
               </div>
 
-            <div className="flex flex-wrap justify-between gap-y-6 mb-8 mt-8">
-              <span className="grid grid-cols-2 gap-x-6 justify-left">
-                <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary`}> 
+            <div className="flex flex-wrap justify-between gap-y-6 gap-x-2 mb-8 mt-8">
+                <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary w-fit`}> 
                       <span>Edit Event Layout</span>
                 </Link>
-                <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary`}>
+                <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary w-fit`}>
                       <span>View Stalls</span>
                 </Link>
-              </span>
-
-              <span className="grid grid-cols-2 gap-x-6 justify-right">
                 <button 
                   onClick={() => {
                     // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
@@ -221,13 +217,12 @@ const EventDashboardPage = () => {
                   handleSubmit();
                   console.log("map is now public")
                 }}  
-                className={`btn btn-primary`}>
+                className={`btn btn-primary w-fit`}>
                       {isPublished? "Unpublish Map" : "Publish Map"}
                 </button>
-              </span>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-y-6 mb-8 mt-8">
+            <div className="flex flex-wrap items-center justify-between gap-y-6 mt-8">
               <button 
                 onClick={() => {
                   const eventName = event.length > 0 ? event[0].eventName : "Event";
@@ -258,14 +253,14 @@ const EventDashboardPage = () => {
               <p className="mt-2">Manage your event details and layout</p>
             </div>
             
-            <div className="flex w-full gap-14">
-              <div className="w-1/2">
+            <div className="flex flex-col lg:flex-row w-full gap-14">
+              <div className="w-full lg:w-1/2">
                 {listEventInfo}
               </div>
 
-              <div className="w-1/2">
+              <div className="w-full lg:w-1/2">
                 {/* Right side - Preview */}
-                <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden h-full">
+                <div className="flex-1 bg-white rounded-lg shadow-lg overflow-hidden aspect-square lg:aspect-auto h-full">
                   <iframe 
                     src={`/event/${id}/dashboard/preview?embedded=true`}
                     className="w-full h-full border-none"

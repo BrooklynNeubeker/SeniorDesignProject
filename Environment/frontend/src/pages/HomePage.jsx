@@ -64,7 +64,7 @@ const HomePage = () => {
                 <div className="font-medium">{ev.eventName}</div>
                 <div className="text-sm text-base-content/60">{ev.location}</div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col sm:flex-row">
                 <Link to={`/event/${ev._id}/dashboard`} className="btn btn-sm btn-accent">
                     Open Dashboard
                 </Link>
