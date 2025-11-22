@@ -49,7 +49,7 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
             return (
             <div className="fixed inset-0 flex items-center justify-center z-50">
                 <div className="fixed inset-0 bg-black/50" onClick={onClose}></div>
-                <div className="bg-base-200 p-6 rounded-md shadow-lg z-10 w-96">
+                <div className="bg-base-200 p-6 rounded-md shadow-lg z-10 w-100">
                     <h2 className="text-lg font-bold mb-4 text-center text-base-content">{title}</h2>
                         <div className="flex flex-col items-center gap-4">
                             <div className="relative text-center inline-flex items-center justify-center">
