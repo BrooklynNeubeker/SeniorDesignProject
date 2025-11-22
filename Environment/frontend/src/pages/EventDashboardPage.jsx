@@ -204,17 +204,14 @@ const EventDashboardPage = () => {
               </div>
             </form>
 
-            <div className="flex flex-wrap justify-between gap-y-6 mb-8 mt-8">
-              <span className="flex gap-x-6 items-start">
+            <div className="flex flex-wrap gap-y-6 justify-between mb-8 mt-8">
                 <Link to={`/event/${id}/dashboard/site-plan`} className={`btn btn-primary w-fit`}> 
                       <span>Edit Event Layout</span>
                 </Link>
                 <Link to={`/event/${id}/dashboard/stalls`} className={`btn btn-primary w-fit`}>
                       <span>View Stalls</span>
                 </Link>
-              </span>
 
-              <div className="flex gap-x-6 items-end">
                 <button 
                   onClick={() => {
                     // setMini(false); //This isn't working for the full page, the global is resetting or something when the page loads? But it does work for the preview
@@ -246,7 +243,6 @@ const EventDashboardPage = () => {
                   className={`btn btn-primary w-fit`}>
                         {isPublished? "Unpublish Map" : "Publish Map"}
                 </button>
-                </div>
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-y-6 mb-8">
@@ -275,15 +271,14 @@ const EventDashboardPage = () => {
         <div className="mx-4 p-4 py-8">
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
-            <div className="grid grid-cols-3 justify-items-normal mb-14">
-              <Link to={`/`} className={`btn btn-soft justify-self-start`}> 
+            <div className="mb-14 relative flex items-center justify-center">
+              <Link to={`/`} className={`btn btn-soft absolute top-0 left-0`}> 
                 Back to Home
               </Link>
-              <div className="text-center justify-center">
+              <div className="text-center justify-center mt-20 md:mt-0">
                 <h1 className="text-3xl font-semibold">Event Dashboard</h1>
                 <p className="mt-2">Manage your event details and layout</p>
               </div>
-              <span></span>
             </div>
             
             <div className="flex flex-col lg:flex-row w-full gap-14">

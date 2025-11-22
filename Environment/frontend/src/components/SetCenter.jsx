@@ -33,7 +33,7 @@ const SetCenter = ({}) => {
     if (locked) {
         // locked
         return (
-            <div className="fixed top-62 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex">
+            <div className="fixed top-63 md:top-48 lg:top-34 left-4 pointer-events-auto z-10 flex">
                 <button className="btn btn-soft cursor-not-allowed pointer-events-none" 
                 onClick={() => handleClick()}>
                 <span className="text-md text-gray-600">Set Map Center</span>

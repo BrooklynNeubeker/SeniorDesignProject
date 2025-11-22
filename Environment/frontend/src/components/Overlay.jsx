@@ -23,8 +23,9 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
 
     return (
         <div>
+            {modalWindow}
+            
             <div className="flex flex-col lg:flex-row fixed top-34 md:top-20 left-4 pointer-events-auto z-14 gap-4">
-                {modalWindow}
 
                 {/* Back to dashboard with "Save changes" modal window*/}
                 <button ref={saveBtnRef2}

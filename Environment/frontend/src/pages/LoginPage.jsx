@@ -109,21 +109,32 @@ const LoginPage = () => {
           </form>
 
           <div className="text-center">
-              <p className="text-base-content/60">
-              Don't have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create an account
+            <p className="text-base-content/60">
+              <Link to="/forget-password" className="link link-primary">
+                Forgot Password?
               </Link>
             </p>
           </div>
 
-          <div className="text-center">
-            <p className="text-base-content/60">
-              <Link to="/forget-password" className="link link-primary">
-                Forget Password?
-              </Link>
-            </p>
+          <div className="flex flex-col gap-4">
+            <div className="text-center">
+                <p className="text-base-content/60">
+                Don't have an account?{" "}
+                <Link to="/signup" className="link link-primary">
+                  Sign up here!
+                </Link>
+              </p>
+            </div>
+            <div className="text-center">
+                <p className="text-base-content/60">
+                Invited as a vendor?{" "}
+                <Link to="/vendor/login" className="link link-primary">
+                  Log in as a vendor here!
+                </Link>
+              </p>
+            </div>
           </div>
+
         </div>
       </div>
 

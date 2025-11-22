@@ -221,7 +221,7 @@ const Legend = ({event, structures}) => {
                                     {filteredStructures.map(structure => (
                                         <div className="vertical-button-container">
                                             <li>
-                                            <button className="btn btn-soft border hover:btn-primary py-10"
+                                            <button className="btn btn-soft border hover:btn-primary py-10 rounded-lg"
                                             onClick={() => {handleClick(structure)
                                                 handleSelect(structure);
                                             }}>

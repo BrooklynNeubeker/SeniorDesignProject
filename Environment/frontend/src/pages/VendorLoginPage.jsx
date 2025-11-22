@@ -199,20 +199,22 @@ const VendorLoginPage = () => {
           </form>
 
           <div className="text-center">
-              <p className="text-base-content/60">
-              Don't have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create an account
-              </Link>
-            </p>
-          </div>
-
-          <div className="text-center">
             <p className="text-base-content/60">
               <Link to="/forget-password" className="link link-primary">
                 Forget Password?
               </Link>
             </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="text-center">
+                <p className="text-base-content/60">
+                Organizing the event?{" "}
+                <Link to="/login" className="link link-primary">
+                  Log in as a coordinator here!
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -331,11 +331,11 @@ const StallsPage = () => {
     listStalls = (
       <div className="flex flex-col gap-6">
         <div className="overflow-auto max-h-80 rounded-md ">
-          <div className="flex justify-end space-x-2 mb-2">
-            <div className="w-1/2">
+          <div className="flex flex-wrap justify-end space-x-2 mb-2 gap-4">
+            <div className="w-full md:w-1/2">
               {searchBar}
             </div>
-            <div className="flex space-x-2 ml-auto">
+            <div className="flex flex-wrap gap-2 ml-auto">
               {selectedIds.length > 0 && (
                 <>
                   <button
@@ -425,7 +425,7 @@ const StallsPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
 
             <label className="label">
               <span className="text-base-content font-medium"> Add Stalls</span>
@@ -660,15 +660,14 @@ const StallsPage = () => {
       <div className="max-w-5xl mx-auto p-4 py-8">
         <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
-          <div className="absolute">
-            <Link to={`/event/${id}/dashboard`} className="btn btn-primary justify-left gap-2">
+          <div className="mb-14 relative flex items-center justify-center">
+            <Link to={`/event/${id}/dashboard`} className={`btn btn-soft absolute top-0 left-0`}> 
               Back to Dashboard
             </Link>
-          </div>
-
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
-            <p className="mt-2">Manage your stalls</p>
+            <div className="text-center justify-center mt-20 md:mt-0">
+              <h1 className="text-3xl font-semibold">Stalls Dashboard</h1>
+              <p className="mt-2">Manage your event stalls and vendors</p>
+            </div>
           </div>
 
             <hr className="border-0 h-[1px] bg-base-content/10 rounded my-4" />
@@ -679,7 +678,7 @@ const StallsPage = () => {
             {listStalls}
           </div>
 
-          <div className="flex gap-4 my-4">
+          <div className="flex flex-wrap gap-4 my-4">
                 {toggleAddStallsButton}
                 {importStallsButton}
                 {invitationButton}
