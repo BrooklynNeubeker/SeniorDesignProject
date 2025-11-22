@@ -117,7 +117,7 @@ const VendorLoginPage = () => {
 
   
   return (
-    <div className="h-screen grid lg:grid-cols-2">
+    <div className="h-screen grid lg:grid-cols-2 bg-base-200">
       {/* left side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
@@ -129,15 +129,16 @@ const VendorLoginPage = () => {
                   src="/logo3t.png" alt="a tent with a map in inside"
                 ></img>
               </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
+              <h1 className="text-2xl font-bold mt-2">Glad to see you again!</h1>
+              <p className="text-base-content/60">Sign in to your AccessMap account</p>
+              <span className="badge badge-soft my-2">Event Vendor Login</span>
             </div>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
-            <div className="form-control">
+            <div className="form-control flex flex-col gap-1">
               <label className="label">
                 <span className="label-text font-medium">Email</span>
               </label>
@@ -150,7 +151,7 @@ const VendorLoginPage = () => {
             </div>
 
             {/* passowrd */}
-            <div className="form-control">
+            <div className="form-control flex flex-col gap-1">
               <label className="label">
                 <span className="label-text font-medium">Password</span>
               </label>
@@ -183,7 +184,7 @@ const VendorLoginPage = () => {
 
             <button
               type="submit"
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full py-4"
               disabled={isLoggingIn}
             >
               {isLoggingIn ? (
@@ -217,7 +218,12 @@ const VendorLoginPage = () => {
       </div>
 
       {/* Right hand side */}
-      <AuthImagePattern />
+      <AuthImagePattern 
+        title={"Know Before You Go"}
+        subtitle={
+          "Accessibility-Focused Event Mapping"
+        }
+      />
     </div>
   );
 };

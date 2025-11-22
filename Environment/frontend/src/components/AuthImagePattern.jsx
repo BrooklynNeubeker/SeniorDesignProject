@@ -1,4 +1,37 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+const AuthImagePattern = ( {title, subtitle} ) => {
+
+  const images = [
+    "/pexels-thanh-van-dinh-712218856-28459396.jpg",
+    "/unlv_img1.jpeg",
+    "/pexels-melissa-220267-698907.jpg",
+    "/pexels-nolandlive-34766307.jpg",
+    "/pexels-pixabay-433452.jpg",
+    "/pexels-soraya-mata-20197344-6536291.jpg",
+    "/unlv_img3.jpeg",
+    "/pexels-thanh-van-dinh-712218856-28459397.jpg",
+    "/unlv_img2.jpeg",
+  ]
+
+  return (
+    <div className="hidden lg:flex items-center justify-center bg-base-200 p-12">
+        <div className="w-lg text-center">
+            <div className="grid grid-cols-3 gap-3 mb-8">
+                {images.map((src, i) => (
+                    <div
+                        key={i}
+                        className={`aspect-square rounded-2xl bg-cover bg-center transform transition-transform duration-350 hover:scale-110`}
+                        style={{ backgroundImage: `url(${src})` }}
+                    />
+                ))}
+            </div>
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <p className="text-base-content/60">{subtitle}</p>
+        </div>
+    </div>
+  );
+};
+
+{/* import { ChevronLeft, ChevronRight } from "lucide-react";
 const AuthImagePattern = ({ title, subtitle }) => {
   return (
     <div className="carousel w-full">
@@ -64,6 +97,6 @@ const AuthImagePattern = ({ title, subtitle }) => {
       </div>
     </div>
   );
-};
+}; */}
 
 export default AuthImagePattern;
