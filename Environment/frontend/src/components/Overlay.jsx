@@ -22,7 +22,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
     );
 
     return (
-        <div>
+        <div className="font-sans">
             {modalWindow}
             
             <div className="flex flex-col lg:flex-row fixed top-34 md:top-20 left-4 pointer-events-auto z-14 gap-4">
