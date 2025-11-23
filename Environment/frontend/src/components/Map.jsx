@@ -9,11 +9,11 @@ import Legend from "./Legend";
 import SetCenter from "./SetCenter";
 import Overlay from "./Overlay";
 
-const Map = ({ structures, removeStructure, center, saveBtnRef, saveBtnRef2, imperial, zoom, event, isEmbedded, addStructure, saveEventMap }) => {
+const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, saveBtnRef2, imperial, zoom, event, isEmbedded, saveEventMap }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
-    const {editing, showGrid} = useGlobal();
+    const {editing, showGrid, setInfoOpen} = useGlobal();
 
     // Using Tab navigation between structures
     const tabNavigation = (direction) => {
@@ -88,10 +88,11 @@ const Map = ({ structures, removeStructure, center, saveBtnRef, saveBtnRef2, imp
                     totalStructures={structures.length}
                     structure={structure}
                     isOpen={currentlyOpen === index}
-                    onOpen={() => setCurrentlyOpen(index)}
+                    onOpen={() => {setCurrentlyOpen(index); setInfoOpen(true)}}
                     onClose={() => setCurrentlyOpen(null)}
                     onTabNext={() => tabNavigation('next')}
                     onTabPrev={() => tabNavigation('prev')}
+                    addStructure={addStructure}
                     removeStructure={removeStructure}
                     imperial={imperial}
                     saveBtnRef={saveBtnRef}

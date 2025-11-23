@@ -8,7 +8,7 @@ import ModalWindow from "../components/ModalWindow.jsx";
 
 const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
     const { id } = useParams();
-    const {imperial, setImperial, showGrid, setShowGrid} = useGlobal();
+    const {imperial, setImperial, showGrid, setShowGrid, setInfoOpen} = useGlobal();
     const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
 
     let modalWindow = (
@@ -30,12 +30,16 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
                 {/* Back to dashboard with "Save changes" modal window*/}
                 <button ref={saveBtnRef2}
                 className={`btn btn-primary`} 
-                onClick={() => setShowModal({
-                    open: true,
-                    type: "saveMap",
-                    action: saveEventMap, 
-                    input: `/event/${id}/dashboard`
-                })}>
+                onClick={() => {
+                    setShowModal({
+                        open: true,
+                        type: "saveMap",
+                        action: saveEventMap, 
+                        input: `/event/${id}/dashboard`
+                    });
+                    setInfoOpen(false);
+                }
+                }>
                     <span className="text-primary-content">Back to Dashboard</span>
                 </button>
 

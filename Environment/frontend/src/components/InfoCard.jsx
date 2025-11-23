@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, Copy } from 'lucide-react';
 import StallDropdown from './StallDropdown';
 import { useMap } from 'react-leaflet';
 
 const InfoCard = ({ structure, structureName, setStructureName, structureDescription, setStructureDescription, tagType, tagTypeList, 
-                    structureTags, setStructureTags, structureDimensions, setStructureDimensions, structureOrientation, setStructureOrientation,
-                    onClose, removeStructure, imperial }) => {
+                    structureTags, setStructureTags, structureDimensions, setStructureDimensions, structureLocation, setStructureLocation, 
+                    structureOrientation, setStructureOrientation, onClose, addStructure, removeStructure, imperial }) => {
 
     const [selectedTag, setSelectedTag] = useState("")  // State and setter for selecting which tag to add
     const [customTag, setCustomTag] = useState("")
@@ -197,9 +197,30 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                     {/* Close and delete button for info card */}
                     <div>
                         <div className="card-actions justify-between">
-                            <button className="btn btn-sm btn-error" onClick={() => (removeStructure(structure.id))}>
+                            <button className="btn btn-sm btn-error" onClick={() => (removeStructure(structure.structureType, structure.id))}>
                                 <Trash2 size={16}/>
                                 Delete
+                            </button>
+                            {/* {structureType, name, description, tags, tagType, dimensions, position, orientation, Icon, bgColor, iconColor, border } */}
+                            <button className="btn btn-sm btn-neutral btn-outline" 
+                                onClick={() => 
+                                    addStructure({
+                                        structureType: structure.structureType,
+                                        name: structureName + " Copy",
+                                        description: structureDescription,
+                                        tags: structureTags,
+                                        tagType: structure.tagType,
+                                        dimensions: structureDimensions, 
+                                        position: [parseFloat(structureLocation[0]) - 0.00004, parseFloat(structureLocation[1]) + 0.00004],
+                                        orientation: structureOrientation,
+                                        Icon: structure.Icon,
+                                        bgColor: structure.bgColor,
+                                        iconColor: structure.iconColor,
+                                        border: structure.border
+                                    })
+                                }>
+                                <Copy size={16}/>
+                                Copy
                             </button>
                             <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose}>
                                 <X size={16} />

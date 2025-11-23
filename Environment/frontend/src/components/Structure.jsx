@@ -6,7 +6,7 @@ import InfoCard from "./InfoCard";
 import PreviewInfoCard from "./PreviewInfoCard";
 import { useGlobal } from "../components/GlobalContext";
 
-const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperial, saveBtnRef, saveBtnRef2, index, totalStructures, onTabNext, onTabPrev }) => {
+const Structure = ({ structure, isOpen, onOpen, onClose, addStructure, removeStructure, imperial, saveBtnRef, saveBtnRef2, index, totalStructures, onTabNext, onTabPrev }) => {
 
     const [structureName, setStructureName] = useState(structure.name)  // State and setter for structure name
     const [structureDescription, setStructureDescription] = useState(structure.description || "")   // State and setter for structure description
@@ -14,7 +14,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
     const [structureDimensions, setStructureDimensions] = useState(structure.dimensions)    // State and setter for structure dimensions, default [20,20]
     const [structureLocation, setStructureLocation] = useState(structure.position)
     const [structureOrientation, setStructureOrientation] = useState(structure.orientation)
-    const { editing } = useGlobal();
+    const { editing, infoOpen } = useGlobal();
 
     const markerRef = useRef(); // Ref to instance of marker
     const map = useMap();   // Hook to get the map being used
@@ -252,10 +252,11 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
             />
             )}
             {/* Stall info card */}
-            {isOpen && editing && (
+            {infoOpen && isOpen && editing && (
 
                 <div className="flex h-screen items-start">
                 <InfoCard 
+                    structure={structure}
                     structureName={structureName} 
                     setStructureName={setStructureName} 
                     structureDescription={structureDescription}
@@ -266,10 +267,12 @@ const Structure = ({ structure, isOpen, onOpen, onClose, removeStructure, imperi
                     setStructureTags={setStructureTags}
                     structureDimensions={structureDimensions}
                     setStructureDimensions={setStructureDimensions}
+                    structureLocation={structureLocation}
+                    setStructureLocation={setStructureLocation}
                     structureOrientation={structureOrientation}
                     setStructureOrientation={setStructureOrientation}
                     onClose={onClose}
-                    structure={structure}
+                    addStructure={addStructure}
                     removeStructure={removeStructure}
                     imperial={imperial}
                 />

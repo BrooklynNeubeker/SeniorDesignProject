@@ -111,30 +111,43 @@ const SitePlanPage = () => {
         setMap(res.data)
     }
     
-
-    {/* 
-        Function to add structures to 'structures' array
-
-        name: name of the structure
-        Icon: Icon used to represent structure
-        bgColor: color of the strucutre object
-        iconColor: color of Icon and text attached to object
-        description: description of the structure
-        tagType: used to determine type of tags that can belong to structure
-
-        dimensions: width and length of structure in real-life feet/meters, default 20 x 20
-        position: position of structure on map, generates at center of map by default
-    */}
-    const addStructure = (name, Icon, bgColor, iconColor, border, description, tagType, structureType) => {
+    /**
+     * Function to add structures to 'structures' array 
+     * @param {*} structureType type of the structure (i.e. "Food/Drink", "Tent")
+     * @param {*} name name of the structure
+     * @param {*} description description of the structure
+     * @param {*} tags tags of the structure (default: [])
+     * @param {*} tagType used to determine type of tags that can belong to structure
+     * @param {*} dimensions width and length of structure in real-life feet/meters (default: 20 x 20)
+     * @param {*} position position of structure on map (default: map center)
+     * @param {*} orientation orientation of the structure (default: 0)
+     * @param {*} Icon Icon used to represent structure
+     * @param {*} bgColor color of the strucutre object
+     * @param {*} iconColor color of Icon and text attached to object
+     * @param {*} border border color of the structure
+     */
+    const addStructure = ({ structureType, name, description, tags=[], tagType, dimensions=[20, 20], position=[location.lat, location.lng], orientation=0, Icon, bgColor, iconColor, border }) => {
         const newStructure = { id: crypto.randomUUID(),
-            name, Icon, bgColor, iconColor, border, description, tagType, structureType, orientation: 0,
-            dimensions: [20, 20], position: [location.lat, location.lng], tags: []} //Show structures at the center from db
+            structureType: structureType, 
+            name: name, 
+            description: description, 
+            tags: tags, 
+            tagType: tagType, 
+            dimensions: dimensions, 
+            position: position, 
+            orientation: orientation,
+            Icon: Icon, 
+            bgColor: bgColor, 
+            iconColor: iconColor, 
+            border: border 
+        } 
         setStructures(prev => [...prev, newStructure])
         toast.success("Added " + newStructure.structureType + " object");
     }
 
-    const removeStructure = (id) => {
+    const removeStructure = (type, id) => {
         setStructures(prev => prev.filter(structure => structure.id !== id));
+        toast.success("Removed " + type + " object");
     }
 
     while (loading) { //Load until db has been fetched and the global variables are updated
