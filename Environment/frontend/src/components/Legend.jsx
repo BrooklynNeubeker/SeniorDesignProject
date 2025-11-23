@@ -165,7 +165,7 @@ const Legend = ({event, structures}) => {
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
-                                <label htmlFor="legend-drawer" className="btn btn-sm absolute right-0 top-0">
+                                <label htmlFor="legend-drawer" className="btn btn-sm btn-soft absolute right-0 top-0">
                                     <X size={18} />
                                     Close
                                 </label>
@@ -199,7 +199,7 @@ const Legend = ({event, structures}) => {
                                         <Search size={18}/>
                                         <h1 className="text-lg text-nowrap font-bold">Search tags or structures:</h1>
                                     </div>
-                                    <p className="text text-neutral-600">e.g. Dairy-free, Wheelchair-accessible, etc.</p>
+                                    <p className="text text-base-content/80">e.g. Dairy-free, Wheelchair-accessible, etc.</p>
                                 </header>
                             </li>
                             <form onSubmit={handleSubmit} className="flex gap-2 w-full">

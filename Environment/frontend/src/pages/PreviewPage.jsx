@@ -127,14 +127,14 @@ const PreviewPage = () => {
                 <div className="text-center p-2 pt-1 pb-1 rounded border border-base-400 bg-base-100">
                     <label className="label font-bold text-base-content">Map Preview</label>
                 </div>
-                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+                {/* <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                     <label className="label text-base-content">
                         Toggle Grid
                         <input type="checkbox" className="toggle checked:toggle-success"
                         checked={showGrid} onChange={() => setShowGrid(!showGrid)}
                         onKeyDown={e => (e.key === "Enter") && e.target.click()}/>
                     </label>
-                </div>
+                </div> */}
             </div>
             )};
 
@@ -144,14 +144,14 @@ const PreviewPage = () => {
                 <div className="text-center p-2 pt-1 pb-1 rounded border border-base-400 bg-base-100">
                     <label className="label font-bold text-base-content">Map Preview</label>
                 </div>
-                <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
+               {/* <div className="bg-base-100 p-3 pt-2 pb-2 rounded-lg shadow-lg border border-neutral-300">
                     <label className="label text-base-content">
                         Toggle Grid
                         <input type="checkbox" className="toggle checked:toggle-success"
                         checked={showGrid} onChange={() => setShowGrid(!showGrid)}
                         onKeyDown={e => (e.key === "Enter") && e.target.click()}/>
                     </label>
-                </div>
+                </div> */}
             </div>
             )};
 

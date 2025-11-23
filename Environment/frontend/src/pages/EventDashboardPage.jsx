@@ -47,7 +47,7 @@ const EventDashboardPage = () => {
   );
 
 // Gets the updated event, changes the data on the database
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, mapPublished) => {
       e.preventDefault();
 
       console.log("We got here!");
@@ -55,7 +55,7 @@ const EventDashboardPage = () => {
         eve._id === id
       );
 
-      const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID, stalls, published }) => ({ 
+      const payload = event.map(({eventName, location, startDate, startTime, endDate, endTime, eventCoordinatorName, eventCoordinatorID, stalls }) => ({ 
         eventName,
         location,
         startDate,
@@ -65,7 +65,7 @@ const EventDashboardPage = () => {
         eventCoordinatorName,
         eventCoordinatorID,
         stalls,
-        published
+        published: mapPublished
       }));
       console.log(payload);
 
@@ -232,12 +232,12 @@ const EventDashboardPage = () => {
 
                 {/* Publish the Map (Updates database as well) */}
                 <button 
-                  onClick={() => { 
+                  onClick={(e) => { 
                     console.log("event published: " + isPublished);
                     updateEvents(ev.id, "published", !isPublished);
                     setIsPublished(!isPublished);
                     console.log("event published: " + isPublished);
-                    //handleSubmit();
+                    handleSubmit(e, !isPublished);
                     (isPublished ? toast.success("Event unpublished") : toast.success("Event published"));
                   }}  
                   className={`btn btn-primary w-fit`}>
