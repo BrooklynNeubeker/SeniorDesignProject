@@ -150,7 +150,7 @@ export const checkAuth = (req, res) => {
   }
 };
 
-export const forgetPassword = async (req, res) => {
+export const forgotPassword = async (req, res) => {
   try {
     // finding the user by email
     const user = await User.findOne({ email: req.body.email });

@@ -200,8 +200,8 @@ const VendorLoginPage = () => {
 
           <div className="text-center">
             <p className="text-base-content/60">
-              <Link to="/forget-password" className="link link-primary">
-                Forget Password?
+              <Link to="/forgot-password" className="link link-primary">
+                Forgot Password?
               </Link>
             </p>
           </div>

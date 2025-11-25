@@ -22,7 +22,7 @@ import PublishedPage from "./pages/PublishedPage";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import ForgetPassPage from "./pages/ForgetPassPage";
+import ForgotPassPage from "./pages/ForgotPassPage";
 import { ResetPassPage } from "./pages/ResetPassPage";
 import ChangePassPage from "./pages/ChangePassPage";
 import EventDashboardPage from "./pages/EventDashboardPage";
@@ -107,7 +107,7 @@ const App = () => {
             element={authUser ? <StallsPage /> : <Navigate to="/login" />}
           />
 
-        <Route path="/forget-password" element={<ForgetPassPage />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassPage />}></Route>
         <Route path="/change-password" element={<ChangePassPage />}></Route>
         <Route path="/reset-password/:token" element={<ResetPassPage />}></Route>
         

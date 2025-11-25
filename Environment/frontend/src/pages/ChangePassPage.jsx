@@ -6,7 +6,7 @@ function ChangePassPage() {
     const [email, setEmail] = useState("");
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axiosInstance.post("/auth/forget-password", { email })
+        axiosInstance.post("/auth/forgot-password", { email })
         try {
             toast.success("Password reset link sent to your email");
         }

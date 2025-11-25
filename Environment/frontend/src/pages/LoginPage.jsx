@@ -110,7 +110,7 @@ const LoginPage = () => {
 
           <div className="text-center">
             <p className="text-base-content/60">
-              <Link to="/forget-password" className="link link-primary">
+              <Link to="/forgot-password" className="link link-primary">
                 Forgot Password?
               </Link>
             </p>
