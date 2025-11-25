@@ -12,7 +12,6 @@ import { axiosInstance } from "../lib/axios";
 const VendorHomePage = () => {
     //get user
     const { authUser, isCheckingAuth } = useAuthStore();
-    console.log(authUser);
     const [stalls, setStalls] = useState([]);
     const [loadingStalls, setLoadingStalls] = useState(true);
     const [loading, setLoading]= useState(true);
@@ -74,7 +73,6 @@ const VendorHomePage = () => {
         
     };
     useEffect(() => { fetchEvents(); }, [stalls]);
-    useEffect(() => { console.log("events:", events) });
 
     // Displays which step in the onboarding status the Vendor is at
     const onboardingStatusComponent = (onboardingStatus) => {

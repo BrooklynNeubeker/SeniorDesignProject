@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 
 const EventDashboardPage = () => {
   const { id } = useParams(); // id = :id in route
-  console.log("Loaded event ID:", id);
   const navigate = useNavigate();
   const { mini, setMini} = useGlobal();
   const [events, setEvents] = useState([]);
@@ -49,8 +48,6 @@ const EventDashboardPage = () => {
 // Gets the updated event, changes the data on the database
   const handleSubmit = async (e, mapPublished) => {
       e.preventDefault();
-
-      console.log("We got here!");
       const event = events.filter(eve => 
         eve._id === id
       );
@@ -67,7 +64,6 @@ const EventDashboardPage = () => {
         stalls,
         published: mapPublished
       }));
-      console.log(payload);
 
       // input validation for date range
       if (payload[0].startDate > payload[0].endDate) {
@@ -90,7 +86,6 @@ const EventDashboardPage = () => {
 
       try {
         await axiosInstance.put(`/events/${id}`, payload);
-        console.log("Event updated successfully");
         toast.success("Event updated successfully");
       } catch(error){
         console.error("Failed to update event", error);
@@ -233,10 +228,8 @@ const EventDashboardPage = () => {
                 {/* Publish the Map (Updates database as well) */}
                 <button 
                   onClick={(e) => { 
-                    console.log("event published: " + isPublished);
                     updateEvents(ev.id, "published", !isPublished);
                     setIsPublished(!isPublished);
-                    console.log("event published: " + isPublished);
                     handleSubmit(e, !isPublished);
                     (isPublished ? toast.success("Event unpublished") : toast.success("Event published"));
                   }}  

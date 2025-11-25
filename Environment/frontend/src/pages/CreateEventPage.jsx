@@ -54,7 +54,6 @@ const CreateEventPage = () => {
         const createdEventId = res.data._id;
         toast.success("Event created successfully");
         navigate(`/event/${createdEventId}/dashboard`);
-        console.log("created event:", res.data);
       } catch (err) {
         toast.error("Error creating event");
         console.error("create event failed:", err);

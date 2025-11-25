@@ -29,13 +29,12 @@ const Legend = ({event, structures}) => {
 
     // const {imperial, setImperial} = useGlobal();
     // const {stalls, setStalls} = useGlobal();
-    console.log(event);
-    console.log(event.eventName);
+
 
     // Search handle 
     const handleSubmit = async (e) => {
         e.preventDefault();
-          console.log("We are searching tags!");
+
     };
     //lowering the users search results
     const lowerCaseSearch = search.trim().toLowerCase();
@@ -56,13 +55,12 @@ const Legend = ({event, structures}) => {
                     lowerCaseStructureType.includes(lowerCaseSearch);
     });
 
-    console.log(structures);
+
 
     //this function can be changed but I made it for the time being if there's a better way to close
     const handleClose = () => {
         setIsOpen(false);
         setSelectItem(null);
-        console.log("closed clicked")
     };
     
     const handleSelect = (structure) => {
@@ -70,8 +68,6 @@ const Legend = ({event, structures}) => {
     };
 
     const handleClick = (structure) => { //Click event for structure list in legend
-        console.log(structure.position[0]);
-        console.log(structure.position[1]);
         map.setView([structure.position[0], structure.position[1]], map.getZoom());
         // Can we set the focus to the structure here somehow? 
         setIsShown(true);
@@ -165,7 +161,7 @@ const Legend = ({event, structures}) => {
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
-                                <label htmlFor="legend-drawer" className="btn btn-sm btn-soft absolute right-0 top-0">
+                                <label htmlFor="legend-drawer" className="btn btn-sm btn-soft absolute right-0 top-0" tabIndex="0">
                                     <X size={18} />
                                     Close
                                 </label>

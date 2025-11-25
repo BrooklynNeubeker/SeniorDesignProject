@@ -68,7 +68,6 @@ const StallsPage = () => {
       try {
         const res = await axiosInstance.get(`/events/${id}`); 
         setEvent(res.data);   
-        console.log("Fetched event:", res.data);
       } catch (err) {
         console.error("Failed to fetch event:", err);
       } finally {

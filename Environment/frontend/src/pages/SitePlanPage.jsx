@@ -28,12 +28,7 @@ const SitePlanPage = () => {
       setEventID(id);
     }
   }, [id, setEventID]);
-    /* useEffect(() => {
-        if (myMap && myMap.length > 0) {
-            console.log("Map updated:", myMap);
-            console.log("Map ID:", myMap[0]._id);
-        }
-    }, [myMap]); */
+
 
     const fetchMyMap = async () => {
         const payload = {
@@ -48,24 +43,18 @@ const SitePlanPage = () => {
             let res = await axiosInstance.get(`/events/${id}/site-plan`);
             if (res.data.length === 0) {
                 res = await axiosInstance.post(`/events/${id}/site-plan`, [payload]);
-                console.log("Created new map:", res.data);
                 fetchMyMap();
             }
             else {
-                console.log("Fetched existing map:", res.data);
             }
             setMap(res.data || []);
             const center = res.data[0].mapCenter;
-            // console.log(center.x['$numberDecimal']); //Set the state variable to display the map at the right location!!
-            // console.log(center.y['$numberDecimal']);
             setLocation({ //Set the location globals, but this won't update them right this moment so it's mostly just for the markers
                 lat: center.y['$numberDecimal'],
                 lng: center.x['$numberDecimal'],
                 label: location.label,
             });
             setZoom(res.data[0].zoomLevel);
-            // console.log(location.lat);
-            // console.log(location.lng);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
 
             setImperial(res.data[0].imperial)
@@ -96,13 +85,11 @@ const SitePlanPage = () => {
             mapMarkers: structures,
             imperial: imperial
         }
-        console.log(zoom);
         setMap(prev => [...prev, payload])
 
         try {
             axiosInstance.put(`/events/${id}/site-plan/${myMap[0]._id}`, [payload]);
             toast.success("Map saved successfully");
-            //console.log(`/events/${id}/site-plan/${myMap[0]._id}`)
         } catch(error){
             console.error("Failed to update map", error);
         }

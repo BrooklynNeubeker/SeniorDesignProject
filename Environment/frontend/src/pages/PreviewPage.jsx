@@ -15,7 +15,6 @@ const PreviewPage = () => {
     const{ id } = useParams();
     const [searchParams] = useSearchParams();
     const isEmbedded = searchParams.get('embedded') === 'true';
-    console.log(mini);
     const [structures, setStructures] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loading2, setLoading2] = useState(true);
@@ -32,9 +31,6 @@ const PreviewPage = () => {
       try {
       const res = await axiosInstance.get(`/events/${id}/public`);
       setEvents(res.data || []);
-    //   console.log(res.data[0]);
-      console.log("Hello world!");
-      console.log(res.data.published);
       setIsPublished(res.data.published);
       } catch (error) {
       console.error("Failed to load events:", error);
@@ -45,10 +41,7 @@ const PreviewPage = () => {
     const fetchMyMap = async () => {
         try {
             let res = await axiosInstance.get(`/events/${id}/site-plan/public`);
-            // console.log(res.data);
             setMap(res.data || []);
-            console.log("is this ok?");
-            console.log(res.data[0].mapCenter);
             const center = res.data[0].mapCenter;
             setLocation({ //Set the location globals based on db center
                 lat: center.y['$numberDecimal'],
@@ -56,7 +49,6 @@ const PreviewPage = () => {
                 label: location.label,
             });
             setZoom(res.data[0].zoomLevel);
-            console.log(res.data[0].mapMarkers);
             if (res.data && res.data.length > 0) { setStructures(res.data[0].mapMarkers || []); }
         } catch (error) {
             console.error("Failed to load map:", error);

@@ -52,7 +52,6 @@ const VendorRegisterStallPage = () => {
           if(res.data.onboardingStatus === "vendorRegistered"){
             setStallRegistered(true);
           }else{setStallRegistered(false)}
-          console.log("in FetchStall:",res.data);
       } catch (err) {
           console.error("Failed to fetch stall", err);
       } finally {
@@ -83,7 +82,6 @@ const VendorRegisterStallPage = () => {
       try {
         const res = await axiosInstance.put(`/events/stalls/update/${stallId}`, payload);
         alert("stall created");
-        console.log("updated stall:", res.data);
         navigate(`/vendor/${stallId}`);
       } catch (err) {
         alert("error");

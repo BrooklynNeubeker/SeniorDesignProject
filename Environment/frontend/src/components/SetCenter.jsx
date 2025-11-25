@@ -11,23 +11,12 @@ const SetCenter = ({}) => {
 
     const handleClick = () => { //Click event for setting map center and zoom
         var coords = map.getCenter();
-        console.log(coords.lat);
         setLocation({
         lat: coords.lat,
         lng: coords.lng,
         label: location.label,
         });
         toast.success("Map center set");
-        console.log(map.getZoom());
-        // Setting is buggy if zoom goes beyond 19, commented it out for now to test more later
-        // if (map.getZoom() > 19){
-        //     alert("Cannot set zoom this close, zoom level unchanged.");
-        // } else {
-        //     setZoom(map.getZoom());
-        // }
-        // setLocation([structure.position[0], structure.position[1]], zoom);
-        // setZoom();
-        // Can we set the focus to the structure here somehow? 
     };
 
     if (locked) {
@@ -53,7 +42,6 @@ const SetCenter = ({}) => {
                 <button className="btn btn-square" onClick={() => setLocked(!locked)}><LockOpen size={18}/></button>
             </div>
         );
-        console.log(locked);
     }
 
 };
