@@ -14,14 +14,14 @@ import { app, server } from "./lib/socket.js";
 
 dotenv.config();
 
-const PORT = process.env.PORT;
-
+//const PORT = process.env.PORT;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: FRONTEND_URL,
   credentials: true,
 }));
 
@@ -30,7 +30,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/events", eventRoutes); 
 
-server.listen(PORT, () => {
-  console.log("server is running on PORT:" + PORT);
+server.listen(FRONTEND_URL, () => {
+  console.log("server is running on:" + FRONTEND_URL);
   connectDB();
 });
