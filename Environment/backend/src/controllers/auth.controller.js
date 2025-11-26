@@ -164,14 +164,14 @@ export const forgotPassword = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '10m' }
     );
-   
+    const FRONTEND_URL = process.env.FRONTEND_URL;
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: "Password Reset",
       html: `<p>You requested for password reset</p>
       <p> Click on the link to reset your password: </p>
-      <a href="http://localhost:5173/reset-password/${token}">Reset Password</a>
+      <a href="${FRONTEND_URL}/reset-password/${token}">Reset Password</a>
       <p>This link will expire in 10 minutes</p>
       <p>If you did not request for password reset, please ignore this email</p>`,
     };
@@ -230,7 +230,7 @@ export const inviteNewVendor = async (req, res) => {
     }  
     const eventName = currentEvent.eventName;
     const eventStartDate = currentEvent.startDate;
-   
+    const FRONTEND_URL = process.env.FRONTEND_URL;
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: stallEmail,
@@ -238,7 +238,7 @@ export const inviteNewVendor = async (req, res) => {
       html: `<p>Hey there!</p>
       <p>You've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
       <p> Click on the link to register: </p>
-      <a href="http://localhost:5173/vendor/${stallId}/signup">Register Your Stall</a>`,
+      <a href="${FRONTEND_URL}/vendor/${stallId}/signup">Register Your Stall</a>`,
     };
     // send the email
     await transporter.sendMail(mailOptions)
@@ -276,7 +276,7 @@ export const inviteExistingVendor = async (req, res) => {
     const eventName = currentEvent.eventName;
     const eventStartDate = currentEvent.startDate;
 
-   
+    const FRONTEND_URL = process.env.FRONTEND_URL;
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: stallEmail,
@@ -284,7 +284,7 @@ export const inviteExistingVendor = async (req, res) => {
       html: `<p>Hey ${user.fullname}!</p>
       <p> We're reaching out to let you know that you've been invited to register ${stallName} for ${eventName} starting on ${eventStartDate}</p>
       <p> Click on the link to login </p>
-      <a href="http://localhost:5173/vendor/login">Register Your Stall</a>`,
+      <a href="${FRONTEND_URL}/vendor/login">Register Your Stall</a>`,
     };
 
     // send the email
