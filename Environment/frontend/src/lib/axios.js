@@ -8,5 +8,4 @@ export const axiosInstance = axios.create({
 });
 
 export default axiosInstance;
-console.log(BASE_URL + "/api");
 
