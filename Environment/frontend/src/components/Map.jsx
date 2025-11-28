@@ -61,9 +61,10 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxNativeZoom={22}
+                maxNativeZoom={19}
                 maxZoom={22}
                 minZoom={18}
+                noWrap={true}
             />
 
             {editing && (
