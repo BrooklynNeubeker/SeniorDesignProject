@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosInstance } from "../lib/axios";
+import { axiosInstance } from "../lib/axios.js";
 import { Trash2 } from 'lucide-react';
 import toast from "react-hot-toast";
 import ModalWindow from "../components/ModalWindow.jsx";
 
-const HomePage = () => {
+const CoordinatorHomePage = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState({ open: false, type:"", action:"", input:"" });
@@ -37,7 +37,8 @@ const HomePage = () => {
     };
 
     const [searchValue, setSearchValue] = useState("");
-    const filteredEvents = events.filter(event =>
+
+    const filteredEvents = events?.filter(event =>
             event.eventName.toLowerCase().includes(searchValue.toLowerCase())
         );
 
@@ -124,4 +125,4 @@ const HomePage = () => {
   );
 }
 
-export default HomePage;
+export default CoordinatorHomePage;

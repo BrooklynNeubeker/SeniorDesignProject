@@ -4,7 +4,7 @@ import { useThemeStore } from "./store/useThemeStore";
 
 // page and navbar imports
 import Navbar from "./components/Navbar";
-import HomePage from "./pages/HomePage";
+import CoordinatorHomePage from "./pages/CoordinatorHomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -29,6 +29,7 @@ import EventDashboardPage from "./pages/EventDashboardPage";
 import StallsPage from "./pages/StallsPage";
 import CheckPaths from "./components/CheckPaths";
 import { GlobalProvider } from "./components/GlobalContext";
+import LandingPage from "./pages/LandingPage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
@@ -55,15 +56,19 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={authUser ? <HomePage /> : <Navigate to="/login" />}
+            element={ <LandingPage /> }
+          />
+          <Route
+            path="/coordinator"
+            element={authUser ? <CoordinatorHomePage /> : <Navigate to="/login" />}
           />
           <Route
             path="/signup"
-            element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+            element={!authUser ? <SignUpPage /> : <Navigate to="/coordinator" />}
           />
           <Route
             path="/login"
-            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+            element={!authUser ? <LoginPage /> : <Navigate to="/coordinator" />}
           />
           <Route path="/settings" element={<SettingsPage />} />
           <Route
