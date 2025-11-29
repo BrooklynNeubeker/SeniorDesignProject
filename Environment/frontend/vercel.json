@@ -2,11 +2,14 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/index.html"
+      "destination": "https://seniordesignproject-q55z.onrender.com"
     },
     {
       "source": "/(.*)",
       "destination": "/index.html"
+    },
+    {
+      
     }
   ]
 }
