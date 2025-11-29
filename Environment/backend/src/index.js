@@ -31,11 +31,21 @@ const corsOption = {
   origin: function(origin, callback) {
     if(!origin) return callback(null, true);
 
-    if(allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // if(allowedOrigins.indexOf(origin) !== -1) {
+    //   callback(null, true);
+    // } else {
+    //   callback(new Error('Not allowed by CORS'));
+    // }
+
+    //regexing rules
+    /*
+      - ^ start of string
+      - $ end of string 
+    */
+    const regexedUrl = /^https?:\/\/(www\.)accessiblemap\.org$/.test(origin);
+
+    if(regexedUrl) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
   }, 
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
