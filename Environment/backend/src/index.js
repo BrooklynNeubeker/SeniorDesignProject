@@ -37,15 +37,14 @@ const corsOption = {
     //   callback(new Error('Not allowed by CORS'));
     // }
 
-    //regexing rules
-    /*
-      - ^ start of string
-      - $ end of string 
-    */
-    const regexedUrl = /^https?:\/\/(www\.)accessiblemap\.org$/.test(origin);
+    const url = origin.replace(/\/$/, "");
 
-    if(regexedUrl) callback(null, true);
-    else callback(new Error('Not allowed by CORS'));
+    if(allowedOrigins.includes(url)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+
   }, 
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
