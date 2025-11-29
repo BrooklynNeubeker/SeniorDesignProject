@@ -7,10 +7,16 @@ const server = http.createServer(app);
 const FRONTEND_URL = process.env.FRONTEND_URL;
 const io = new Server(server, {
   cors: {
-    origin: [FRONTEND_URL],
+    origin: [
+      FRONTEND_URL,
+      "http://localhost:5173",
+      "https://accessiblemap.org",
+      "https://www.accessiblemap.org",
+    ],
+    credentials: true,
   },
 });
-
+console.log("FRONTEND_URL", FRONTEND_URL)
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 };
