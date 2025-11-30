@@ -161,13 +161,13 @@ const Legend = ({event, structures}) => {
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
-                                <label htmlFor="legend-drawer" className="btn btn-sm btn-soft absolute right-0 top-0" tabIndex="0">
+                                <label htmlFor="legend-drawer" className="btn btn-sm btn-soft absolute right-0 top-0" tabIndex="1">
                                     <X size={18} />
                                     Close
                                 </label>
                             </li>
                             <li className="pointer-events-none">
-                                <header id="eventName" tabIndex="0">
+                                <header id="eventName" tabIndex="1">
                                     <h1 className="text-3xl font-bold">{event.eventName} </h1>
                                 </header>
                             </li>
@@ -190,7 +190,7 @@ const Legend = ({event, structures}) => {
                         </li> */}
                         <div className="flex flex-col">
                             <li className="pointer-events-none">
-                                <header id="eventName" tabIndex="0" className="flex flex-col items-start">
+                                <header id="eventName" tabIndex="1" className="flex flex-col items-start">
                                     <div className="flex items-center">
                                         <Search size={18}/>
                                         <h1 className="text-lg text-nowrap font-bold">&nbsp;Search tags or structures:</h1>
@@ -205,7 +205,7 @@ const Legend = ({event, structures}) => {
 
                         <div className="flex flex-col">
                             <li className="pointer-events-none">
-                                <header id="eventName" tabIndex="0">
+                                <header id="eventName" tabIndex="1">
                                     <div className="flex items-center">
                                         <StoreIcon size={18}/>
                                         <h1 className="text-lg font-bold">&nbsp;Structures:</h1>
