@@ -159,11 +159,11 @@ const Legend = ({event, structures}) => {
 
 
                 {/* Sidebar drawer */}
-                <div className="drawer-side h-screen w-screen">
+                <div className="drawer-side">
                     <label htmlFor="legend-drawer" aria-label="close legend" className="drawer-overlay"></label>
 
                     {/* Sidebar content */}
-                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 pb-10 gap-8 overflow-y-auto">
+                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 pb-10 gap-8">
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
