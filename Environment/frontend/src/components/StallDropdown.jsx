@@ -52,7 +52,7 @@ const StallDropdown = ( {onChange} ) => {
   const dropdown =(
       <ul
         tabIndex={0}
-        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-auto border border-neutral"
+        className="dropdown-content absolute menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-auto border border-neutral z-[20001]"
       >
           {filtered.length === 0 && (
             <li>
@@ -65,7 +65,10 @@ const StallDropdown = ( {onChange} ) => {
               <button
                 type="button"
                 className="text-left"
-                onClick={() => handleSelect(stall)}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleSelect(stall);
+                }}
               >
                 <span className="font-medium">{stall.name}</span>
               </button>
@@ -75,7 +78,7 @@ const StallDropdown = ( {onChange} ) => {
 
   )
   return (
-    <div className="dropdown w-full">
+    <div className="dropdown w-full relative z-[20000]">
       <div
         tabIndex={0}
         className="w-full"

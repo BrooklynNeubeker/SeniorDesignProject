@@ -60,7 +60,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
     
     return (
         <>
-            <div className="card bg-base-100 w-full md:w-100 shadow-sm flex justify-center md:justify-start m-2 mt-30 z-9999 h-[80vh] overflow-y-scroll cursor-default"
+            <div className="card bg-base-100 w-full md:w-100 shadow-sm flex justify-center md:justify-start m-2 mt-30 z-[9999] h-[80vh] overflow-y-scroll cursor-default"
             ref={cardRef}
             tabIndex={0}>
                 <div className="card-body flex flex-col justify-between gap-8">
