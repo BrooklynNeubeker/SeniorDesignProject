@@ -148,7 +148,7 @@ const Legend = ({event, structures}) => {
                 <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
 
                     {/* "Open Legend" button */}
-                    <label htmlFor="legend-drawer" className="drawer-button btn btn-primary">Legend</label>
+                    <label htmlFor="legend-drawer" className="drawer-button btn btn-primary" role="button">Legend</label>
                 </div>
 
 
@@ -255,5 +255,6 @@ const Legend = ({event, structures}) => {
         </div>
     );
 };
+
 
 export default Legend;
