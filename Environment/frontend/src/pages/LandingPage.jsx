@@ -203,8 +203,8 @@ function LandingPage() {
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
                       <h2 className="text-2xl lg:text-3xl font-semibold">Design Layout, Highlight Accommodations</h2>
                       <p className="text-md md:text-lg flex flex-col gap-4 text-base-content/80">
-                          <span>Create, edit, move, and delete structures to plan the event space.</span>
-                          <span>Add dietary information for vendors, mark wheelchair-accessible locations, indicate attendee services, and more.</span>
+                          <span>Add, edit, move, and delete structures to plan the event space.</span>
+                          <span>Include dietary information for vendors, mark wheelchair-accessible locations, indicate attendee services, and more.</span>
                       </p>
                   </div>
                   <img className="lg:w-1/2 rounded-lg border" src="/D7FBED6F-D4F4-4246-B4C2-81A8271424B0_1_201_a.jpeg"></img>

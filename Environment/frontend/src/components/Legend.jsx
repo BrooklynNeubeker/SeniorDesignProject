@@ -75,10 +75,6 @@ const Legend = ({event, structures}) => {
         setSelectItem(structure);
         //making the focus on the structure but don't know if it works
         focusRef.current.focus();
-
-        if (drawerRef.current) {
-            drawerRef.current.checked = false;
-        }
     };
 
     useEffect(() => { //Setter for all times
@@ -135,6 +131,14 @@ const Legend = ({event, structures}) => {
             drawer.removeEventListener("change", handleOpenDrawer);
         };
     }, [map]);
+
+
+    // Close drawer when info card open
+    useEffect(() => {
+        if (isShown && isOpen) {
+            drawerRef.current.checked = false;
+        }
+    }, [isShown, isOpen]);
 
 
     return (
@@ -199,7 +203,7 @@ const Legend = ({event, structures}) => {
                                 </header>
                             </li>
                             <form onSubmit={handleSubmit} className="flex gap-2 w-full">
-                                <input className={`input input-bordered`} type="text" placeholder="Enter tag or structure..." value={search} onChange={e => setSearch(e.target.value)}></input>
+                                <input className={`input input-bordered text-[16px]`} type="text" placeholder="Enter tag or structure..." value={search} onChange={e => setSearch(e.target.value)}></input>
                             </form>
                         </div>
 
