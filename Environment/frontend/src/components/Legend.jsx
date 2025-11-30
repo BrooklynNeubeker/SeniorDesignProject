@@ -140,6 +140,8 @@ const Legend = ({event, structures}) => {
         if (isShown && isOpen) {
             drawerRef.current.checked = false;
         }
+        map.scrollWheelZoom.enable();
+        map.dragging.enable();
     }, [isShown, isOpen]);
 
 
@@ -159,11 +161,11 @@ const Legend = ({event, structures}) => {
 
 
                 {/* Sidebar drawer */}
-                <div className="drawer-side">
+                <div className="drawer-side h-screen w-screen">
                     <label htmlFor="legend-drawer" aria-label="close legend" className="drawer-overlay"></label>
 
                     {/* Sidebar content */}
-                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 gap-8">
+                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 pb-10 gap-8 overflow-y-auto">
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
@@ -205,7 +207,7 @@ const Legend = ({event, structures}) => {
                                 </header>
                             </li>
                             <form onSubmit={handleSubmit} className="flex gap-2 w-full">
-                                <input className={`input input-bordered text-[16px]`} type="text" placeholder="Enter tag or structure..." value={search} onChange={e => setSearch(e.target.value)}></input>
+                                <input className={`input input-bordered text-[16px] w-full`} type="text" placeholder="Enter tag or structure..." value={search} onChange={e => setSearch(e.target.value)}></input>
                             </form>
                         </div>
 
