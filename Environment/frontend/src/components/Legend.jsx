@@ -143,7 +143,7 @@ const Legend = ({event, structures}) => {
             {/* "Legend" sidebar drawer */}
             <div className="drawer drawer-end">
 
-                <input id="legend-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef}
+                <input id="legend-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef} role="button" tabIndex={1}
                 onKeyDown={e => (e.key === "Enter") && e.target.click()} />
                 <div className="drawer-content top-20 fixed right-4 flex gap-4 items-center">
 

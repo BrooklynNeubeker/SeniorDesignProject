@@ -25,6 +25,7 @@ const Navbar = () => {
             <Link
               to={authUser?.role === "Vendor" ? "/vendor" : "/"}
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
+              tabIndex={1}
             >
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <img
@@ -44,22 +45,22 @@ const Navbar = () => {
             <>
               {authUser ? (
                 <>
-                  <Link to={"/profile"} className="btn btn-sm gap-2">
+                  <Link to={"/profile"} className="btn btn-sm gap-2" tabIndex={1}>
                     <User className="size-5" />
                     <span className="hidden md:inline">Profile</span>
                   </Link>
 
                   <Link 
                     to={authUser?.role === "Coordinator" ? "/" : "/vendor"}
-                    className={`btn btn-sm gap-2 transition-colors`} >
+                    className={`btn btn-sm gap-2 transition-colors`} tabIndex={1}>
                     <MapPin className="w-4 h-4" />
                     <span className="hidden md:inline">My Events</span>
                   </Link>
 
-                  <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
+                  {/* <Link to={'/chat'} className={`btn btn-sm gap-2 transition-colors`}>
                     <MessageSquareMore className="w-4 h-4" />
                     <span className="hidden md:inline">Chat</span>
-                  </Link>
+                  </Link> */}
                 
                   {/* <Link to={"/settings"} className="btn btn-sm gap-2 transition-colors">
                     <Settings className="w-4 h-4" />
@@ -67,7 +68,7 @@ const Navbar = () => {
                   </Link> */}
                   
                   <div className="flex gap-2">
-                    <button className="btn btn-sm transition-colors" 
+                    <button className="btn btn-sm transition-colors" tabIndex={1} 
                       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
 
                       <div className="swap swap-rotate relative w-5 h-5 flex items-center justify-center">
@@ -87,7 +88,7 @@ const Navbar = () => {
                       </span>
                     </button>
 
-                    <button className="btn btn-sm transition-colors" onClick={logout}>
+                    <button className="btn btn-sm transition-colors" onClick={logout} tabIndex={1}>
                       <LogOut className="size-5" />
                       <span className="hidden md:inline">Logout</span>
                     </button>
