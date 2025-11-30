@@ -118,8 +118,10 @@ const Legend = ({event, structures}) => {
        const handleOpenDrawer = () => {
             if (drawer.checked) {
                 map.scrollWheelZoom.disable();
+                map.dragging.disable();
             } else {
                 map.scrollWheelZoom.enable();
+                map.dragging.enable();
             }
         };
 
