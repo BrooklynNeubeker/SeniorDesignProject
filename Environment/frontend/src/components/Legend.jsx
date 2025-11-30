@@ -132,7 +132,7 @@ const Legend = ({event, structures}) => {
         return () => {
             drawer.removeEventListener("change", handleOpenDrawer);
         };
-    }, [map]);
+    }, [map, isShown, isOpen]);
 
 
     // Close drawer when info card open
