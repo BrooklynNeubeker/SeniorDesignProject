@@ -51,7 +51,7 @@ const Navbar = () => {
                   </Link>
 
                   <Link 
-                    to={authUser?.role === "Coordinator" ? "/" : "/vendor"}
+                    to={authUser?.role === "Coordinator" ? "/coordinator" : "/vendor"}
                     className={`btn btn-sm gap-2 transition-colors`} tabIndex={1}>
                     <MapPin className="w-4 h-4" />
                     <span className="hidden md:inline">My Events</span>

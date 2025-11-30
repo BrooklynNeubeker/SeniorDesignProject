@@ -14,7 +14,7 @@ const MenuNav = () => {
           </a>
         </li>
         <li>
-          <a className="tooltip z-50" data-tip="My Events" href="/">
+          <a className="tooltip z-50" data-tip="My Events" href="/coordinator">
             <MapPin/>
           </a>
         </li>
