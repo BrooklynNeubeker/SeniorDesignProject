@@ -139,8 +139,6 @@ const Legend = ({event, structures}) => {
     useEffect(() => {
         if (isShown && isOpen) {
             drawerRef.current.checked = false;
-            map.scrollWheelZoom.enable();
-            map.dragging.enable();
         }
     }, [isShown, isOpen]);
 

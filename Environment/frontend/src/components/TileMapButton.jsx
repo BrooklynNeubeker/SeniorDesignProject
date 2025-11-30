@@ -1,4 +1,4 @@
-const TileMapButton = ({ name, Icon, bgColor, iconColor, tagType, border, onClick, structureType }) => {
+const TileMapButton = ({ name, Icon, bgColor, iconColor, tagType, border, dimensions, onClick, structureType }) => {
 
     return (
         <button className="flex gap-4" 
@@ -10,7 +10,8 @@ const TileMapButton = ({ name, Icon, bgColor, iconColor, tagType, border, onClic
                 iconColor: iconColor, 
                 border: border, 
                 tagType: tagType, 
-                structureType: structureType
+                structureType: structureType,
+                dimensions: dimensions
             }
         )}>
             {Icon && (

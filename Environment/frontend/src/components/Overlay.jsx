@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin, Grid3x3 } from 'lucide-react';
+import { X, Utensils, Toilet, BriefcaseMedical, Info, Store, Undo2, Redo2, MapPin, Grid3x3, LogOut, Accessibility} from 'lucide-react';
 import TileMapButton from './TileMapButton';
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -165,7 +165,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
                                 structureType="Medical"
                                 tagType="medical"
                                 Icon={BriefcaseMedical} 
-                                bgColor="#E02229" 
+                                bgColor="#c6191f" 
                                 iconColor="text-white" 
                                 border="border border-white"
                                 onClick={addStructure} />
@@ -189,6 +189,28 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
                                 bgColor="#ffffff" 
                                 iconColor="text-black"
                                 border="border border-neutral-800"
+                                onClick={addStructure} />
+                            </li>
+                            <li>
+                                <TileMapButton 
+                                name="Exit"
+                                structureType="Exit"
+                                Icon={LogOut} 
+                                bgColor="#E02229"
+                                iconColor="text-white font-semibold text-xl"
+                                border="border border-white"
+                                dimensions={[15, 10]}
+                                onClick={addStructure} />
+                            </li>
+                            <li>
+                                <TileMapButton 
+                                name="Ramp"
+                                structureType="Ramp"
+                                Icon={Accessibility} 
+                                bgColor="#808080"
+                                iconColor="text-white font-semibold text-xl"
+                                border="border border-white"
+                                dimensions={[15, 10]}
                                 onClick={addStructure} />
                             </li>
 
