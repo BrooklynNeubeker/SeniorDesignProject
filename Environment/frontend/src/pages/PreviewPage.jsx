@@ -9,15 +9,17 @@ import Legend from '../components/Legend';
 
 
 const PreviewPage = () => {
+    const{ id } = useParams();
     const { imperial, location, zoom, setZoom, setLocation, setEditing, mini, showGrid, setShowGrid } = useGlobal();
     const saveBtnRef = useRef();
     const saveBtnRef2 = useRef();
-    const{ id } = useParams();
+    
     const [searchParams] = useSearchParams();
     const isEmbedded = searchParams.get('embedded') === 'true';
+
     const [structures, setStructures] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loading2, setLoading2] = useState(true);
+    const [mapLoading, setMapLoading] = useState(true);
+    const [eventLoading, setEventLoading] = useState(true);
     const [events, setEvents] = useState([]);
     const [isPublished, setIsPublished] = useState(false);
 
@@ -29,13 +31,13 @@ const PreviewPage = () => {
 
     const fetchMyEvents = async () => {
       try {
-      const res = await axiosInstance.get(`/events/${id}/public`);
-      setEvents(res.data || []);
-      setIsPublished(res.data.published);
-      } catch (error) {
-      console.error("Failed to load events:", error);
-      } finally {
-      setLoading2(false);
+        const res = await axiosInstance.get(`/events/${id}/public`);
+        setEvents(res.data || []);
+        setIsPublished(res.data.published);
+        } catch (error) {
+        console.error("Failed to load events:", error);
+        } finally {
+        setEventLoading(false);
       }
   };
     const fetchMyMap = async () => {
@@ -53,42 +55,36 @@ const PreviewPage = () => {
         } catch (error) {
             console.error("Failed to load map:", error);
         } finally {
-            setLoading(false);
+            setMapLoading(false);
         }
     };
 
-    let hasFetched = false;
-
+    let mapFetched = false;
     useEffect(() => {
-        if (!hasFetched) {
+        if (!mapFetched) {
             fetchMyMap();
-            hasFetched = true;
+            mapFetched = true;
         }
     }, []);
-    let hasFetched2 = false;
 
+    let eventFetched = false;
     useEffect(() => {
-        if (!hasFetched2) {
+        if (!eventFetched) {
             fetchMyEvents();
-            hasFetched2 = true;
+            eventFetched = true;
         }
     }, []);
-
 
     const removeStructure = (id) => {
         setStructures(prev => prev.filter(structure => structure.id !== id));
     }
 
-    while (loading || loading2) { //Load until db has been fetched and the global variables are updated
+    while (mapLoading || eventLoading) { //Load until db has been fetched and the global variables are updated
         return <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
-                </>;
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Loading...
+        </>;
     }
-
-    // const checkifPublished = () => {
-
-    // }
 
     return (
         <>

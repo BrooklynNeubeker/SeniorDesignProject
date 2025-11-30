@@ -24,13 +24,14 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
         setStructureTags(structureTags.filter((tag) => tag !== tagName));
     }
     
+    /*
     useEffect(() => {
         console.log("InfoCard updated:");
         console.log("structureName:", structureName);
         console.log("structureDescription:", structureDescription);
         console.log("structureTags:", structureTags);
     }, [structureName, structureDescription, structureTags]);
-
+    */
     
     const map = useMap();
     const cardRef = useRef(null);

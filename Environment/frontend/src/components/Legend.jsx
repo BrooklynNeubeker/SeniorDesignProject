@@ -39,7 +39,7 @@ const Legend = ({event, structures}) => {
     //lowering the users search results
     const lowerCaseSearch = search.trim().toLowerCase();
     // filtering the structure list so only those with valid tag types are visible.
-    const filteredStructures = structures.filter(structure => {
+    const filteredStructures = [...structures.filter(structure => {
         const lowerCaseTags = structure.tags.map(tag => tag.toLowerCase());
         const lowerCaseName = structure.name.toLowerCase();
         const lowerCaseStructureType = structure.structureType.toLowerCase();
@@ -53,7 +53,7 @@ const Legend = ({event, structures}) => {
             return lowerCaseTags.some(tag => tag.includes(lowerCaseSearch)) || 
                     lowerCaseName.includes(lowerCaseSearch) || 
                     lowerCaseStructureType.includes(lowerCaseSearch);
-    });
+    })].sort((a, b) => a.name.localeCompare(b.name));
 
 
 
@@ -138,7 +138,7 @@ const Legend = ({event, structures}) => {
 
 
     return (
-        <div>
+        <div className="font-sans">
 
             {/* "Legend" sidebar drawer */}
             <div className="drawer drawer-end">
@@ -157,7 +157,7 @@ const Legend = ({event, structures}) => {
                     <label htmlFor="legend-drawer" aria-label="close legend" className="drawer-overlay"></label>
 
                     {/* Sidebar content */}
-                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 sm:gap-12 gap-16">
+                    <ul className="menu bg-base-200 min-h-full sm:w-100 w-full p-4 pt-20 gap-8">
                         <div className="flex flex-col gap-4">
                             {/* Close button */}
                             <li className="mb-4">
@@ -188,14 +188,14 @@ const Legend = ({event, structures}) => {
                         {/* <li className="pointer-events-none">
                             <p className="text font-bold">{event.event.startTime} to {event.event.endTime}</p>
                         </li> */}
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col">
                             <li className="pointer-events-none">
                                 <header id="eventName" tabIndex="0" className="flex flex-col items-start">
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center">
                                         <Search size={18}/>
-                                        <h1 className="text-lg text-nowrap font-bold">Search tags or structures:</h1>
+                                        <h1 className="text-lg text-nowrap font-bold">&nbsp;Search tags or structures:</h1>
                                     </div>
-                                    <p className="text text-base-content/80">e.g. Dairy-free, Wheelchair-accessible, etc.</p>
+                                    {/* <p className="text text-base-content/80">e.g. Dairy-free, Wheelchair-accessible, etc.</p> */}
                                 </header>
                             </li>
                             <form onSubmit={handleSubmit} className="flex gap-2 w-full">
@@ -203,21 +203,21 @@ const Legend = ({event, structures}) => {
                             </form>
                         </div>
 
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col">
                             <li className="pointer-events-none">
                                 <header id="eventName" tabIndex="0">
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center">
                                         <StoreIcon size={18}/>
-                                        <h1 className="text-lg font-bold">Structures:</h1>
+                                        <h1 className="text-lg font-bold">&nbsp;Structures:</h1>
                                     </div>
                                 </header>
                             </li>
                             <div className="overflow-auto">
-                                <ul className="flex flex-col gap-4">
+                                <ul className="flex flex-col gap-2">
                                     {filteredStructures.map(structure => (
                                         <div className="vertical-button-container">
                                             <li>
-                                            <button className="btn btn-soft border hover:btn-primary py-10 rounded-lg"
+                                            <button className="btn btn-soft border hover:btn-primary py-5 rounded-lg"
                                             onClick={() => {handleClick(structure)
                                                 handleSelect(structure);
                                             }}>
