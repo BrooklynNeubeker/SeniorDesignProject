@@ -81,7 +81,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         {/* Close button */}
                         <div>
                             <div className="card-actions justify-end">
-                                <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose}>
+                                <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose} tabIndex="1">
                                     <X size={16} />
                                     Close
                                 </button>

@@ -8,12 +8,16 @@ import { useGlobal } from "./GlobalContext";
 import Legend from "./Legend";
 import SetCenter from "./SetCenter";
 import Overlay from "./Overlay";
+import { X } from 'lucide-react'; // used for vote alert
 
 const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, saveBtnRef2, imperial, zoom, event, isEmbedded, saveEventMap }) => {
 
     // Set base zoom for map (level of zoom on Leaflet), map will begin at this zoom level
     const [currentlyOpen, setCurrentlyOpen] = useState(null)    // Keep track of if another InfoCard is already currently open
     const {editing, showGrid, setInfoOpen} = useGlobal();
+
+    // used to display Vote for AccessMap! alert
+    const [voteVisible, setVoteVisible] = useState(true);
 
     // Using Tab navigation between structures
     const tabNavigation = (direction) => {
@@ -47,6 +51,21 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
         const map = useMap();
         return <CanvasLayer map={map}/>
     }
+
+    const hideVote = () => {
+        setVoteVisible(false);
+    };
+
+    let voteAlert = (
+        <div className="toast toast-top toast-start top-20">
+            <div className="btn btn-md btn-accent rounded-xl">
+                <a tabIndex={1} href="https://docs.google.com/forms/d/e/1FAIpQLSe-QxjRotSg4eDOQWcEd5yfNLqkd1wPpFsM9WPHndiQzf-4dA/viewform">
+                    <span className="underline text-accent-content">Vote for AccessMap!</span>
+                </a>
+                <button onClick={hideVote} tabIndex={1}> <X size={20}/> </button>
+            </div>
+        </div>
+    );
 
     return (
         <MapContainer 
@@ -103,6 +122,7 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
             
             <ScaleBar />
             {showGrid && editing && <MapWithGrid />}
+            {!editing && !isEmbedded && voteVisible && voteAlert}
             {!editing && !isEmbedded && <Legend style={{zIndex:1}} event={event} structures={structures} />}
         </MapContainer>
     );
