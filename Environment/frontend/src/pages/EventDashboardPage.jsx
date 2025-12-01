@@ -265,7 +265,7 @@ const EventDashboardPage = () => {
           <div className="bg-base-100 rounded-xl p-6 space-y-8">
 
             <div className="mb-14 relative flex items-center justify-center">
-              <Link to={`/`} className={`btn btn-soft absolute top-0 left-0`}> 
+              <Link to={`/coordinator`} className={`btn btn-soft absolute top-0 left-0`}> 
                 Back to Home
               </Link>
               <div className="text-center justify-center mt-20 md:mt-0">

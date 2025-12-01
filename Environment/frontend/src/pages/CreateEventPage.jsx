@@ -165,7 +165,7 @@ const CreateEventPage = () => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-between">
-                <Link to={`/`} className={`btn btn-soft`}> 
+                <Link to={`/coordinator`} className={`btn btn-soft`}> 
                   <span>Back</span>
                 </Link>
                 <button type="submit" className="btn btn-primary">
