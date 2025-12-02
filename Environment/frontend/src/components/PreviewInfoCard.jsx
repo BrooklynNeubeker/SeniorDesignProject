@@ -5,36 +5,21 @@ import { useMap } from 'react-leaflet';
 const PreviewInfoCard = ({ structure, structureName, structureDescription, structureTags, onClose }) => {
 
     const map = useMap();
-    const cardRef = useRef(null);
-    const closeBtnRef = useRef(null);
 
     useEffect(() => {
-        const card = cardRef.current;
-        const closeBtn = closeBtnRef.current;
-
-        const handleFocus = () => map.scrollWheelZoom.disable();
-        const handleBlur = () => map.scrollWheelZoom.enable();
-
-        if (card) {
-            card.addEventListener("mouseenter", handleFocus);
-            card.addEventListener("mouseleave", handleBlur);
-        }
-
-        closeBtn.addEventListener("click", handleBlur);
+        map.scrollWheelZoom.disable();
+        map.dragging.disable();
 
         return () => {
-        if (card) {
-            card.removeEventListener("mouseenter", handleFocus);
-            card.removeEventListener("mouseleave", handleBlur);
-        }
+            map.scrollWheelZoom.enable();
+            map.dragging.enable();
         };
     }, [map]);
     
     return (
         <>
             <div className="fixed h-screen w-screen z-50 bg-black/40 flex items-center justify-center">
-                <div className="card bg-base-100 w-100 shadow-sm m-2 z-[9999] h-[70vh] overflow-y-scroll cursor-default"
-                ref={cardRef}
+                <div className="card bg-base-100 w-100 shadow-sm m-2 z-[9999] h-[65vh] overflow-y-scroll cursor-default"
                 tabIndex={0}>
                     <div className="card-body flex flex-col justify-between gap-8">
 
@@ -81,7 +66,13 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                         {/* Close button */}
                         <div>
                             <div className="card-actions justify-end">
-                                <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose} tabIndex="1">
+                                <button className="btn btn-sm btn-soft" 
+                                        onClick={() => {
+                                            map.scrollWheelZoom.enable();
+                                            map.dragging.enable();
+                                            onClose()
+                                        }
+                                        } tabIndex="1">
                                     <X size={16} />
                                     Close
                                 </button>
