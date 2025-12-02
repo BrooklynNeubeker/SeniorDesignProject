@@ -83,7 +83,7 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                         {/* Accessibility tags */}
                         <div className="flex flex-wrap gap-2">
                             {structureTags.map((tag) => (
-                                <div key={tag} className="badge badge-outline relative group">
+                                <div key={tag} className="badge badge-outline relative group h-auto inline-flex">
                                     {tag}
                                     <X onClick={() => removeTag(tag)} className="hidden group-hover:block w-3 cursor-pointer" />
                                 </div>

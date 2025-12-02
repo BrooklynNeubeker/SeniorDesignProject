@@ -42,7 +42,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
                                     <div className="flex flex-wrap gap-2">
                                         {
                                             structureTags.map((tag) => (
-                                                <div key={tag} className="badge badge-outline">
+                                                <div key={tag} className="badge badge-outline h-auto inline-flex">
                                                     {tag}
                                                 </div>
                                             ))
