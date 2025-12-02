@@ -88,10 +88,10 @@ const Navbar = () => {
                       </span>
                     </button>
 
-                    <button className="btn btn-sm transition-colors" onClick={logout} tabIndex={1}>
+                    <Link to="/" className="btn btn-sm transition-colors" onClick={logout} tabIndex={1}>
                       <LogOut className="size-5" />
                       <span className="hidden md:inline">Logout</span>
-                    </button>
+                    </Link>
 
                   </div>
                 </>

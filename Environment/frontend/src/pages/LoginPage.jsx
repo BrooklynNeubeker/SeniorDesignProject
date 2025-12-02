@@ -60,7 +60,7 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* passowrd */}
+            {/* password */}
             <div className="form-control flex flex-col gap-1">
               <label className="label">
                 <span className="label-text font-medium">Password</span>
@@ -116,7 +116,7 @@ const LoginPage = () => {
             </p>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <div className="text-center">
                 <p className="text-base-content/60">
                 Don't have an account?{" "}
