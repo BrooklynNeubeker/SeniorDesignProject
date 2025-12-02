@@ -12,7 +12,7 @@ function LandingPage() {
     <li className="list-row">
       <PencilRuler size={30}/>
       <div>
-        <div className="text-md font-bold">Design Event Layouts</div>
+        <div className="text-md font-bold" tabIndex="0">Design Event Layouts</div>
         <p className="list-col-wrap text-sm">
           Create, edit, move, and delete structures to plan your event space.
         </p>
@@ -22,7 +22,7 @@ function LandingPage() {
     <li className="list-row">
       <Accessibility size={34}/>
       <div>
-        <div className="text-md font-bold">Highlight Accessibility Accommodations</div>
+        <div className="text-md font-bold" tabIndex="0">Highlight Accessibility Accommodations</div>
         <p className="list-col-wrap text-sm">
           Add dietary & allergen information for food vendors, mark wheelchair-accessible locations, 
           indicate attendee services, and more.
@@ -33,7 +33,7 @@ function LandingPage() {
     <li className="list-row">
       <Store size={30}/>
       <div>
-        <div className="text-md font-bold">Manage Vendor Information</div>
+        <div className="text-md font-bold" tabIndex="0">Manage Vendor Information</div>
         <p className="list-col-wrap text-sm">
           Invite vendors to provide booth information and dietary options.
         </p>
@@ -43,7 +43,7 @@ function LandingPage() {
     <li className="list-row">
       <MapPin size={30}/>
       <div>
-        <div className="text-md font-bold">Share Interactive Maps</div>
+        <div className="text-md font-bold" tabIndex="0">Share Interactive Maps</div>
         <p className="list-col-wrap text-sm">
           Provide attendees with an interactive event map via link or generated QR code.
         </p>
@@ -68,12 +68,12 @@ function LandingPage() {
                   src="/logo3t.png" alt="a tent with a map in inside"
                 ></img>
               </div>
-              <h1 className="text-xl font-bold mb-6 md:mb-4 mx-7 text-center">Welcome to AccessMap!</h1>  
+              <h1 className="text-xl font-bold mb-6 md:mb-4 mx-7 text-center" tabIndex="0">Welcome to AccessMap!</h1>  
 
               <div className="list items-center xl:grid xl:grid-cols-3 ml-7 mr-7 md:ml-14 md:mr-14 flex flex-col md:flex-row gap-10">
                 
                 <div className="col-span-2 xl:mr-45 2xl:mr-60 flex flex-col gap-3 md:gap-2">
-                  <h1 className="text-3xl md:text-4xl font-bold mb-2"> Accessibility-Focused Event Mapping </h1>
+                  <h1 className="text-3xl md:text-4xl font-bold mb-2" tabIndex="0"> Accessibility-Focused Event Mapping </h1>
                   <p className="text-base-content/80 mb-4 text-md md:text-lg">
                     AccessMap helps you create interactive & informative maps,
                     simplify event layout planning, and support accessibility & dietary needs for eventgoers.
@@ -117,7 +117,7 @@ function LandingPage() {
                 src="/logo3t.png" alt="a tent with a map in inside"
               ></img>
             </div>
-            <p>Created by Ann Regala, Bao Phung, Brooklyn Neubeker, Jared Smith, Natalie Tong, Primo StaAna</p>
+            <p tabIndex="0">Created by Ann Regala, Bao Phung, Brooklyn Neubeker, Jared Smith, Natalie Tong, Primo StaAna</p>
           </aside>
         </footer>
 
@@ -146,7 +146,7 @@ function LandingPage() {
               </div>
           </dialog>
 
-          <h1 className="text-3xl lg:text-4xl font-semibold underline mt-10 md:mt-20">Event Accessibility</h1>
+          <h1 className="text-3xl lg:text-4xl font-semibold underline mt-10 md:mt-20" tabIndex="0">Event Accessibility</h1>
           <div className="flex flex-col justify-center items-center">
               <p className="text-md md:text-lg lg:w-2/3 text-center text-base-content/80 mx-4">
                   Event attendees with specific needs often have poor experiences with organized events due to a <b>lack of information about accommodations. [3]</b>
@@ -190,18 +190,18 @@ function LandingPage() {
       {/* Features */}
       <div className='w-full bg-base-200 flex flex-col justify-center items-center gap-20 p-8'>
 
-          <h1 className="text-3xl lg:text-4xl font-semibold underline mt-10 md:mt-20">Features</h1>
+          <h1 className="text-3xl lg:text-4xl font-semibold underline mt-10 md:mt-20" tabIndex="0">Features</h1>
           <div className="flex flex-col justify-center items-center gap-10">
               <div className="flex flex-col lg:flex-row p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
-                      <h2 className="text-2xl lg:text-3xl font-semibold">Create Events and Edit Details</h2>
+                      <h2 className="text-2xl lg:text-3xl font-semibold" tabIndex="0">Create Events and Edit Details</h2>
                       <p className="text-md md:text-lg text-base-content/80">Create your event, view event information, and share your published map on the dashboard.</p>
                   </div>
                   <img className="lg:w-1/2 rounded-lg border" src="/C622A441-1C75-47E6-9147-9DC12B514ABE_1_201_a.jpeg"></img>
               </div>
               <div className="flex flex-col lg:flex-row-reverse p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
-                      <h2 className="text-2xl lg:text-3xl font-semibold">Design Layout, Highlight Accommodations</h2>
+                      <h2 className="text-2xl lg:text-3xl font-semibold" tabIndex="0">Design Layout, Highlight Accommodations</h2>
                       <p className="text-md md:text-lg flex flex-col gap-4 text-base-content/80">
                           <span>Add, edit, move, and delete structures to plan the event space.</span>
                           <span>Include dietary information for vendors, mark wheelchair-accessible locations, indicate attendee services, and more.</span>
@@ -211,7 +211,7 @@ function LandingPage() {
               </div>
               <div className="flex flex-col lg:flex-row p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
-                      <h2 className="text-2xl lg:text-3xl font-semibold">Manage Vendor Details</h2>
+                      <h2 className="text-2xl lg:text-3xl font-semibold" tabIndex="0">Manage Vendor Details</h2>
                       <p className="text-md md:text-lg flex flex-col gap-4 text-base-content/80">
                           Invite vendors to fill out stall information such as allergen and dietary details, reducing the workload for event organizers. 
                       </p>
@@ -220,7 +220,7 @@ function LandingPage() {
               </div>
               <div className="flex flex-col lg:flex-row-reverse p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
-                      <h2 className="text-2xl lg:text-3xl font-semibold">Share Interactive Maps</h2>
+                      <h2 className="text-2xl lg:text-3xl font-semibold" tabIndex="0">Share Interactive Maps</h2>
                       <p className="text-md md:text-lg flex flex-col gap-4 text-base-content/80">
                           Provide attendees with an interactive event map via link or QR code.
                       </p>
