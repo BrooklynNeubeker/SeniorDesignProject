@@ -34,35 +34,20 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
     */
     
     const map = useMap();
-    const cardRef = useRef(null);
-    const closeBtnRef = useRef(null);
 
     useEffect(() => {
-        const card = cardRef.current;
-        const closeBtn = closeBtnRef.current;
-
-        const handleFocus = () => map.scrollWheelZoom.disable();
-        const handleBlur = () => map.scrollWheelZoom.enable();
-
-        if (card) {
-            card.addEventListener("mouseenter", handleFocus);
-            card.addEventListener("mouseleave", handleBlur);
-        }
-
-        closeBtn.addEventListener("click", handleBlur);
+        map.scrollWheelZoom.disable();
+        map.dragging.disable();
 
         return () => {
-        if (card) {
-            card.removeEventListener("mouseenter", handleFocus);
-            card.removeEventListener("mouseleave", handleBlur);
-        }
+            map.scrollWheelZoom.enable();
+            map.dragging.enable();
         };
     }, [map]);
     
     return (
         <>
             <div className="card bg-base-100 w-full md:w-100 shadow-sm flex justify-center md:justify-start m-2 mt-30 z-[9999] h-[80vh] overflow-y-scroll cursor-default"
-            ref={cardRef}
             tabIndex={0}>
                 <div className="card-body flex flex-col justify-between gap-8">
 
@@ -223,7 +208,12 @@ const InfoCard = ({ structure, structureName, setStructureName, structureDescrip
                                 <Copy size={16}/>
                                 Copy
                             </button>
-                            <button ref={closeBtnRef} className="btn btn-sm btn-soft" onClick={onClose}>
+                            <button className="btn btn-sm btn-soft" 
+                            onClick={() => {
+                                map.scrollWheelZoom.enable();
+                                map.dragging.enable();
+                                onClose()
+                            }}>
                                 <X size={16} />
                                 Close
                             </button>
