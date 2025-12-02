@@ -33,7 +33,7 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
     return (
         <>
             <div className="fixed h-screen w-screen z-50 bg-black/40 flex items-center justify-center">
-                <div className="card bg-base-100 w-100 shadow-sm m-2 z-[9999] h-auto cursor-default"
+                <div className="card bg-base-100 w-100 shadow-sm m-2 z-[9999] h-[70vh] overflow-y-scroll cursor-default"
                 ref={cardRef}
                 tabIndex={0}>
                     <div className="card-body flex flex-col justify-between gap-8">
