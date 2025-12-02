@@ -65,8 +65,8 @@ const PreviewInfoCard = ({ structure, structureName, structureDescription, struc
 
                         {/* Close button */}
                         <div>
-                            <div className="card-actions justify-end">
-                                <button className="btn btn-sm btn-soft" 
+                            <div className="card-actions">
+                                <button className="btn btn-sm btn-soft absolute right-4 top-6" 
                                         onClick={() => {
                                             map.scrollWheelZoom.enable();
                                             map.dragging.enable();
