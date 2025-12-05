@@ -168,6 +168,14 @@ const Structure = ({ structure, isOpen, onOpen, onClose, addStructure, removeStr
                 return []
         }
     }
+
+    const infoCardRef = useRef(null);
+
+    useEffect(() => {
+        if (isOpen && infoCardRef.current) {
+            infoCardRef.current.focus();
+        }
+    }, [isOpen])
     
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -260,7 +268,7 @@ const Structure = ({ structure, isOpen, onOpen, onClose, addStructure, removeStr
             {/* Stall info card */}
             {infoOpen && isOpen && editing && (
 
-                <div className="flex h-screen items-start">
+                <div className="flex h-screen items-start" ref={infoCardRef} tabIndex={0}>
                 <InfoCard 
                     structure={structure}
                     structureName={structureName} 
