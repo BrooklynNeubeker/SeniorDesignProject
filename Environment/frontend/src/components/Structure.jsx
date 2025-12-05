@@ -232,6 +232,9 @@ const Structure = ({ structure, isOpen, onOpen, onClose, addStructure, removeStr
                 <Marker ref={markerRef} key={structure.id} position={structureLocation} draggable={true} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
+                        keydown: (e) => {
+                            if (e.originalEvent.key === "Enter") { isOpen ? onClose() : onOpen(); }
+                        },
                         dragend: (e) => {
                             const updatedPos = e.target.getLatLng();
                             setStructureLocation([updatedPos.lat, updatedPos.lng]);
@@ -244,6 +247,9 @@ const Structure = ({ structure, isOpen, onOpen, onClose, addStructure, removeStr
                 <Marker ref={markerRef} key={structure.id} position={structureLocation} draggable={false} 
                     eventHandlers={{
                         click: isOpen ? onClose : onOpen,
+                        keydown: (e) => {
+                            if (e.originalEvent.key === "Enter") { isOpen ? onClose() : onOpen(); }
+                        },
                         dragend: (e) => {
                             const updatedPos = e.target.getLatLng();
                             setStructureLocation([updatedPos.lat, updatedPos.lng]);
