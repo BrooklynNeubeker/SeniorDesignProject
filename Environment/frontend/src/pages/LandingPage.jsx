@@ -197,7 +197,8 @@ function LandingPage() {
                       <h2 className="text-2xl lg:text-3xl font-semibold" tabIndex="0">Create Events and Edit Details</h2>
                       <p className="text-md md:text-lg text-base-content/80">Create your event, view event information, and share your published map on the dashboard.</p>
                   </div>
-                  <img className="lg:w-1/2 rounded-lg border" src="/C622A441-1C75-47E6-9147-9DC12B514ABE_1_201_a.jpeg"></img>
+                  <img className="lg:w-1/2 rounded-lg border" src="/C622A441-1C75-47E6-9147-9DC12B514ABE_1_201_a.jpeg"
+                  alt="Image of Event Dashboard page with form for event details and preview of the event map"></img>
               </div>
               <div className="flex flex-col lg:flex-row-reverse p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
@@ -207,7 +208,8 @@ function LandingPage() {
                           <span>Include dietary information for vendors, mark wheelchair-accessible locations, indicate attendee services, and more.</span>
                       </p>
                   </div>
-                  <img className="lg:w-1/2 rounded-lg border" src="/D7FBED6F-D4F4-4246-B4C2-81A8271424B0_1_201_a.jpeg"></img>
+                  <img alt="Image of Site Planning page. Multiple structures are placed down. An info card is open in editing mode" 
+                  className="lg:w-1/2 rounded-lg border" src="/D7FBED6F-D4F4-4246-B4C2-81A8271424B0_1_201_a.jpeg"></img>
               </div>
               <div className="flex flex-col lg:flex-row p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
@@ -216,7 +218,8 @@ function LandingPage() {
                           Invite vendors to fill out stall information such as allergen and dietary details, reducing the workload for event organizers. 
                       </p>
                   </div>
-                  <img className="lg:w-1/2 rounded-lg border" src="/3C8C87E5-831B-4E3D-BABC-9222ED874990_1_201_a.jpeg"></img>
+                  <img className="lg:w-1/2 rounded-lg border" src="/3C8C87E5-831B-4E3D-BABC-9222ED874990_1_201_a.jpeg"
+                  alt="Image of Stalls Dashboard page with one vendor highlighted."></img>
               </div>
               <div className="flex flex-col lg:flex-row-reverse p-6 lg:p-12 gap-10 lg:gap-20 justify-center items-center">
                   <div className="flex flex-col gap-6 text-center lg:text-start mx-4">
@@ -228,7 +231,8 @@ function LandingPage() {
                   <div className="mockup-phone w-[90vw] max-w-[390px] aspect-[390/844] mx-auto">
                       <div className="mockup-phone-camera"></div>
                       <div className="mockup-phone-display w-full h-full">
-                          <img src="/EDA9FC75-C5E7-4A58-924A-5887BE83B81E.png" className="w-full h-full object-contain"/>
+                          <img src="/EDA9FC75-C5E7-4A58-924A-5887BE83B81E.png" className="w-full h-full object-contain"
+                          alt="Image of mobile view of a published map. An info card for a food stall is open."/>
                       </div>
                   </div>
               </div>
