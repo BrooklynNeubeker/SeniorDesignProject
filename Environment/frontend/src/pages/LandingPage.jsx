@@ -89,7 +89,7 @@ function LandingPage() {
                   </div>
 
                   <a href="https://docs.google.com/forms/d/e/1FAIpQLSe-QxjRotSg4eDOQWcEd5yfNLqkd1wPpFsM9WPHndiQzf-4dA/viewform" className="btn btn-accent h-auto rounded-xl p-3 space-y-6 font-semibold">
-                    <span>
+                    <span className='text-black'>
                       Vote for AccessMap in the&nbsp;
                       <span className="underline">
                       Fall 2025 Senior Design Popular Choice Vote</span> 

@@ -195,7 +195,7 @@ const EventDashboardPage = () => {
               </div>
 
               <div className="flex justify-end">
-                <button type="submit" className="btn btn-accent">
+                <button type="submit" className="btn btn-accent text-black">
                   Save Changes
                 </button>
               </div>

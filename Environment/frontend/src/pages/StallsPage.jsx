@@ -339,7 +339,7 @@ const StallsPage = () => {
                 <>
                   <button
                     type="button"
-                    className="btn btn-accent"
+                    className="btn btn-accent text-black"
                     onClick={sendInvites}
                     disabled={sending}>
                     {allSelected ? <><Mail size={16}/>Invite All</> : <><Mail size={16}/>Invite</>}

@@ -66,7 +66,7 @@ const CoordinatorHomePage = () => {
                 <div className="text-sm text-base-content/60">{ev.location}</div>
             </div>
             <div className="flex gap-4 flex-col sm:flex-row">
-                <Link to={`/event/${ev._id}/dashboard`} className="btn btn-sm btn-accent">
+                <Link to={`/event/${ev._id}/dashboard`} className="btn btn-sm btn-accent text-black">
                     Open Dashboard
                 </Link>
 

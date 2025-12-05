@@ -44,7 +44,7 @@ const Overlay = ({ addStructure, saveBtnRef, saveBtnRef2, saveEventMap }) => {
                 </button>
 
                 {/* Save EventMap*/}
-                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent w-fit'}>
+                <button type="button" ref={saveBtnRef} onClick={saveEventMap} className={'btn btn-accent w-fit text-black'}>
                     <span>Save</span>
                 </button>
             </div>

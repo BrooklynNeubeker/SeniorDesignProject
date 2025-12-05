@@ -58,7 +58,7 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
                         </div>
 
                     <div className="flex gap-2 mt-6">
-                        <button to={input} className={"btn btn-accent flex-1"} 
+                        <button to={input} className={"btn btn-accent flex-1 text-black"} 
                             onClick={async (e) => {
                                 await action(e);
                                 onClose();
