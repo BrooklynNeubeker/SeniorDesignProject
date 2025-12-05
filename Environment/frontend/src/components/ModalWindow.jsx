@@ -71,7 +71,7 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
                             <span className="text-md text-primary-content">Don't Save</span>
                         </Link>
                         
-                        <button className="btn btn-primary btn-outline flex-1" onClick={onClose}>Cancel</button>
+                        <button className="btn btn-soft flex-1" onClick={onClose}>Cancel</button>
                     </div>
                     
                 </div>
@@ -146,7 +146,7 @@ const ModalWindow = ({ open, onClose, type, action, input }) => {
                 <div className="flex gap-2 mt-6">
                     {actionBtn}
                     
-                    <button className="btn btn-primary btn-outline flex-1" onClick={onClose}>Cancel</button>
+                    <button className="btn btn-soft flex-1" onClick={onClose}>Cancel</button>
                 </div>
                 
             </div>
