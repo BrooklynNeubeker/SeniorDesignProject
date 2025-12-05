@@ -58,7 +58,7 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
 
     let voteAlert = (
         <div className="toast toast-top toast-start top-20">
-            <div className="btn btn-md btn-accent rounded-xl">
+            <div className="btn btn-md btn-accent rounded-xl text-black">
                 <a tabIndex={1} href="https://docs.google.com/forms/d/e/1FAIpQLSe-QxjRotSg4eDOQWcEd5yfNLqkd1wPpFsM9WPHndiQzf-4dA/viewform">
                     <span className="underline text-accent-content">Vote for AccessMap!</span>
                 </a>
