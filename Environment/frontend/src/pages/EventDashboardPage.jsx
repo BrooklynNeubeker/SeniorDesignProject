@@ -114,6 +114,7 @@ const EventDashboardPage = () => {
                     onChange={(e) =>
                       updateEvents(ev.id, "eventName", e.target.value)
                     }
+                    type="text"
                   />
                 </div>
               </div>
@@ -132,6 +133,7 @@ const EventDashboardPage = () => {
                     onChange={(e) =>
                       updateEvents(ev.id, "location", e.target.value)
                     }
+                    type="text"
                   />
                 </div>
               </div>

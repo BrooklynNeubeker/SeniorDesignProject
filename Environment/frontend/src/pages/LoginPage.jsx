@@ -56,6 +56,7 @@ const LoginPage = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -77,6 +78,7 @@ const LoginPage = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
+                  autoComplete="password"
                 />
                 <button
                   type="button"
