@@ -1,21 +1,9 @@
-# Senior Design Project
+# AccessMap
 
-Docker Instructions:<br>
-(NOTE: Make sure you have docker desktop installed. I use wsl, so as long as docker desktop is open on my windows side I can use docker commands in my Ubuntu distro. Also make sure you have your node stuff installed so that npm will work.) After pulling all these changes, while in the directory with the Dockerfile, do the following:<br><br>
+AccessMap is a web application for event map creation. Organizers can design interactive maps, generating a link or QR code for event attendees to view from their devices. These maps comply with parts of the Web Content Accessibility Guidelines (WCAG) 2.1 and allow coordinators to communicate available accommodations, in order to increase event accessibility and share layouts with attendees.  Currently, many local outdoor events and festivals rely on paper maps, which are inaccessible for many. Additionally, vendor information can be outdated or inaccurate. This resource allows event organizers to create an accessible interactive event experience.  
 
-docker build -t node-application . <br>
-docker run -it -p 9000:8080 node-application<br><br>
-
-After these two commands, in your browser go to : localhost:9000  <br><br>
-
-To stop the running container, open a new terminal and do:<br><br>
-
-docker ps<br>
-docker stop containerIDHere <br><br>
-
-
-You can also run it using "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
-" then "npm run start" commands, but I think the docker way standardizes it so no matter which machine we are on it will work.
+Note: Please allow time for Render to spin up after following the link
+Link to AccessMap: https://www.accessiblemap.org/  
 
 To run Environment:
 
