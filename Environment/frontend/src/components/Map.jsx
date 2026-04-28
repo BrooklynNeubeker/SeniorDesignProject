@@ -17,7 +17,7 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
     const {editing, showGrid, setInfoOpen} = useGlobal();
 
     // used to display Vote for AccessMap! alert
-    const [voteVisible, setVoteVisible] = useState(true);
+    const [voteVisible, setVoteVisible] = useState(false);
 
     // Using Tab navigation between structures
     const tabNavigation = (direction) => {
