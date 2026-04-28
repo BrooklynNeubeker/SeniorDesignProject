@@ -71,6 +71,26 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
         </div>
     );
 
+
+    const hideAbout = () => {
+        setAboutVisible(false);
+    };
+
+    let aboutAlert = (
+        <div className="toast toast-top toast-start top-20">
+            <div className="btn btn-md btn-accent rounded-xl text-black">
+                <a tabIndex={1} onClick={showAboutModal}>
+                    <span className="underline text-accent-content">About AccessMap</span>
+                </a>
+                <button onClick={hideAbout} tabIndex={1}> <X size={20}/> </button>
+            </div>
+        </div>
+    );
+
+    const showAboutModal = () => {
+        setAboutModalVisible(true);
+    };
+
     let aboutModal = (
         <>
             <div className="fixed h-screen w-screen z-50 bg-black/40 flex items-center justify-center">
@@ -106,10 +126,7 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
                             <div className="card-actions">
                                 <button className="btn btn-sm btn-soft absolute right-4 top-6" 
                                         onClick={() => {
-                                            map.scrollWheelZoom.enable();
-                                            map.dragging.enable();
                                             setAboutModalVisible(false);
-                                            onClose()
                                         }
                                         } tabIndex="1">
                                     <X size={16} />
@@ -124,24 +141,6 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
         </>
     );
 
-    const showAboutModal = () => {
-        setAboutModalVisible(true);
-    };
-
-    const hideAbout = () => {
-        setAboutVisible(false);
-    };
-
-    let aboutAlert = (
-        <div className="toast toast-top toast-start top-20">
-            <div className="btn btn-md btn-accent rounded-xl text-black">
-                <a tabIndex={1} onClick={showAboutModal}>
-                    <span className="underline text-accent-content">About AccessMap</span>
-                </a>
-                <button onClick={hideAbout} tabIndex={1}> <X size={20}/> </button>
-            </div>
-        </div>
-    );
 
     return (
         <MapContainer 
