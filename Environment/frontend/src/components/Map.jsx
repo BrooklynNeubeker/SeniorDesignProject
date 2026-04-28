@@ -19,6 +19,9 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
     // used to display Vote for AccessMap! alert
     const [voteVisible, setVoteVisible] = useState(false);
 
+    // used to display About AccessMap alert
+    const [infoVisible, setInfoVisible] = useState(true);
+
     // Using Tab navigation between structures
     const tabNavigation = (direction) => {
         if (currentlyOpen === null) return;
@@ -63,6 +66,91 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
                     <span className="underline text-accent-content">Vote for AccessMap!</span>
                 </a>
                 <button onClick={hideVote} tabIndex={1}> <X size={20}/> </button>
+            </div>
+        </div>
+    );
+
+    const showInfo = () => {
+        const map = useMap();
+
+        useEffect(() => {
+            map.scrollWheelZoom.disable();
+            map.dragging.disable();
+
+            return () => {
+                map.scrollWheelZoom.enable();
+                map.dragging.enable();
+            };
+        }, [map]);
+        
+        return (
+            <>
+                <div className="fixed h-screen w-screen z-50 bg-black/40 flex items-center justify-center">
+                    <div className="card bg-base-100 w-100 shadow-sm m-2 z-[9999] h-auto max-h-[60vh] overflow-y-scroll cursor-default"
+                    tabIndex={0}>
+                        <div className="card-body flex flex-col justify-between gap-8">
+
+                            <div className='flex flex-col gap-6'>
+                                {/* Structure name - read only */}
+                                <div className="flex flex-col w-full gap-3">
+                                    <div className="w-full pointer-events-none flex flex-col gap-3">
+                                        <span className='font-bold text-xl'>About AccessMap</span>
+                                    </div>
+                                </div>
+
+                                {/* Description - read only */}
+                                {structureDescription &&
+                                    <div className='flex flex-col gap-2'>
+                                        <div className="w-full bg-base-200 border pointer-events-none p-3 rounded"
+                                            style={{resize: 'none'}}>
+                                            <span>
+                                                AccessMap is a senior design project created in Fall 2025 by 
+                                                Ann Regala, Bao Phung, Brooklyn Neubeker, Jared Smith, Natalie Tong, and Primo StaAna (Computer Science). 
+                                                Designed as an accessibility-focused event mapping tool, AccessMap allows organizers to
+                                                design event layouts, highlight accommodations, support accessibility needs, and share
+                                                interactive maps. While AccessMap isn't present today, please be sure to explore and support the
+                                                Spring 2026 Senior Design Competition and all of the seniors who have worked hard to
+                                                bring change to the world.
+                                            </span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            {/* Close button */}
+                            <div>
+                                <div className="card-actions">
+                                    <button className="btn btn-sm btn-soft absolute right-4 top-6" 
+                                            onClick={() => {
+                                                map.scrollWheelZoom.enable();
+                                                map.dragging.enable();
+                                                onClose()
+                                            }
+                                            } tabIndex="1">
+                                        <X size={16} />
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    };
+
+    const hideInfo = () => {
+        setInfoVisible(false);
+    };
+
+    let infoAlert = (
+        <div className="toast toast-top toast-start top-20">
+            <div className="btn btn-md btn-accent rounded-xl text-black">
+                <a tabIndex={1} onClick={showInfo}>
+                    <span className="underline text-accent-content">About AccessMap</span>
+                </a>
+                <button onClick={hideInfo} tabIndex={1}> <X size={20}/> </button>
             </div>
         </div>
     );
@@ -122,7 +210,7 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
             
             <ScaleBar />
             {showGrid && editing && <MapWithGrid />}
-            {!editing && !isEmbedded && voteVisible && voteAlert}
+            {!editing && !isEmbedded && infoVisible && infoAlert /*voteVisible && voteAlert*/}
             {!editing && !isEmbedded && <Legend style={{zIndex:1}} event={event} structures={structures} />}
         </MapContainer>
     );
