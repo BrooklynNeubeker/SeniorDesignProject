@@ -59,7 +59,6 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
     const hideVote = () => {
         setVoteVisible(false);
     };
-
     let voteAlert = (
         <div className="toast toast-top toast-start top-20">
             <div className="btn btn-md btn-accent rounded-xl text-black">
@@ -70,6 +69,23 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
             </div>
         </div>
     );
+
+
+    const hideAbout = () => { setAboutVisible(false); };
+
+    let aboutAlert = (
+        <div className="toast toast-top toast-start top-20">
+            <div className="btn btn-md btn-accent rounded-xl text-black">
+                <a tabIndex={1} onClick={showAboutModal}>
+                    <span className="underline text-accent-content">About AccessMap</span>
+                </a>
+                <button onClick={hideAbout} tabIndex={1}> <X size={20}/> </button>
+            </div>
+        </div>
+    );
+
+    const showAboutModal = () => { setAboutModalVisible(true); };
+    const hideAboutModal = () => { setAboutModalVisible(false); };
 
     let aboutModal = (
         <>
@@ -105,43 +121,18 @@ const Map = ({ structures, addStructure, removeStructure, center, saveBtnRef, sa
                         <div>
                             <div className="card-actions">
                                 <button className="btn btn-sm btn-soft absolute right-4 top-6" 
-                                        onClick={() => {
-                                            map.scrollWheelZoom.enable();
-                                            map.dragging.enable();
-                                            setAboutModalVisible(false);
-                                            onClose()
-                                        }
-                                        } tabIndex="1">
+                                        onClick={hideAboutModal} tabIndex="1">
                                     <X size={16} />
                                     Close
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </>
     );
 
-    const showAboutModal = () => {
-        setAboutModalVisible(true);
-    };
-
-    const hideAbout = () => {
-        setAboutVisible(false);
-    };
-
-    let aboutAlert = (
-        <div className="toast toast-top toast-start top-20">
-            <div className="btn btn-md btn-accent rounded-xl text-black">
-                <a tabIndex={1} onClick={showAboutModal}>
-                    <span className="underline text-accent-content">About AccessMap</span>
-                </a>
-                <button onClick={hideAbout} tabIndex={1}> <X size={20}/> </button>
-            </div>
-        </div>
-    );
 
     return (
         <MapContainer 
